@@ -68,9 +68,9 @@ public class UserController {
  
 		UserModel u1 = new UserModel("Max","Schwinger","MaxSng",now,"w",12.34,11.34,2,"max@schwinger",11.23,false,true);
 		userRepository.persist(u1);
-		UserModel u2 = new UserModel("Max","Musterman","MaMu",now,"m",12.34,11.34,2,"max@schwinger",11.23,false,true);
+		UserModel u2 = new UserModel("Max","Musterman","MaMu",now,"m",12.34,11.34,2,"max@schwinge2r",11.23,false,true);
 		userRepository.persist(u2);
-		UserModel u3 = new UserModel("Max","Musterfrau","MaxSng",now,"w",12.34,11.34,2,"max@schwinger",11.23,false,true);
+		UserModel u3 = new UserModel("Max","Musterfrau","Peter",now,"w",12.34,11.34,2,"max@schwinger3",11.23,false,true);
 		userRepository.persist(u3);
 		
 		// holen der User aus der Datenbank
