@@ -25,6 +25,8 @@ public class LogModel {
 	
 	private float bmi;
 	
+	private int points =0;
+	
 	private Date date;
 	
 	
@@ -32,14 +34,22 @@ public class LogModel {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LogModel(int id, UserModel userId, float height, float weight, float bmi, Date date) {
+	public LogModel( UserModel userId, float height, float weight, float bmi, int points, Date date) {
 		super();
-		this.id = id;
 		this.userId = userId;
 		this.height = height;
 		this.weight = weight;
 		this.bmi = bmi;
+		this.points = points;
 		this.date = date;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 
 	public int getId() {

@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Shards Dashboard Lite - Free Bootstrap Admin Template –
-	DesignRevision</title>
+<title>Ultimate Fitness</title>
 <meta name="description"
 	content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
 <meta name="viewport"
@@ -23,8 +22,8 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
 <body class="h-100">
-	
-	
+
+
 	<div class="container-fluid">
 		<div class="row">
 			<!-- Main Sidebar -->
@@ -37,8 +36,9 @@
 							<div class="d-table m-auto">
 								<img id="main-logo" class="d-inline-block align-top mr-1"
 									style="max-width: 25px;"
-									src="./images/shards-dashboards-logo.svg" alt="Shards Dashboard">
-								<span class="d-none d-md-inline ml-1">Shards Dashboard</span>
+									src="./images/shards-dashboards-logo.svg"
+									alt="Shards Dashboard"> <span
+									class="d-none d-md-inline ml-1">Shards Dashboard</span>
 							</div>
 						</a> <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none"> <i
 							class="material-icons">&#xE5C4;</i>
@@ -64,8 +64,9 @@
 									Dashboard</span>
 						</a></li>
 						<li class="nav-item"><a class="nav-link "
-							href="./components-blog-posts.html"> <i class="material-icons">vertical_split</i>
-								<span>Blog Posts</span>
+							href="./components-blog-posts.html"> <i
+								class="material-icons">vertical_split</i> <span>Blog
+									Posts</span>
 						</a></li>
 						<li class="nav-item"><a class="nav-link "
 							href="./add-new-post.html"> <i class="material-icons">note_add</i>
@@ -75,15 +76,16 @@
 							href="./form-components.html"> <i class="material-icons">view_module</i>
 								<span>Forms &amp; Components</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link " href="./tables.html">
-								<i class="material-icons">table_chart</i> <span>Tables</span>
+						<li class="nav-item"><a class="nav-link "
+							href="./tables.html"> <i class="material-icons">table_chart</i>
+								<span>Tables</span>
 						</a></li>
 						<li class="nav-item"><a class="nav-link "
 							href="./user-profile-lite.html"> <i class="material-icons">person</i>
 								<span>User Profile</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link " href="./errors.html">
-								<i class="material-icons">error</i> <span>Errors</span>
+						<li class="nav-item"><a class="nav-link "
+							href="./errors.html"> <i class="material-icons">error</i> <span>Errors</span>
 						</a></li>
 					</ul>
 				</div>
@@ -183,7 +185,16 @@
 				</nav>
 			</div>
 			<!-- / .main-navbar -->
-			
+			<div class="main-content-container container-fluid px-4">
+				<!-- Page Header -->
+				<div class="page-header row no-gutters py-4">
+					<div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+						<span class="text-uppercase page-subtitle">Dashboard</span>
+						<h3 class="page-title">Blog Overview</h3>
+					</div>
+				</div>
+				<!-- End Page Header -->
+
 				<!-- End Small Stats Blocks -->
 				<div class="row">
 					<!-- Users Stats -->
@@ -192,29 +203,29 @@
 							<div class="card-header border-bottom">
 								<h6 class="m-0">Users</h6>
 							</div>
-							
+
 							<!-- hier kommt die Tabelle rein -->
-							
+
 							<table>
-						<!--  list all items ----------------------------------------------------------- -->
-						<tr th:each="user : ${users}">
-							<td th:text="${user.firstName}">...aaaaaaaaaaaaaaaaa</td>
-							<td th:text="${user.lastName}">....bbbbbb</td>
-							<td th:text="${user.weight}">....cccc</td>
-							<td th:text="${user.height}">....dddddd</td>
-					
-						</tr>
-						<!--  list all items ----------------------------------------------------------- -->
-					</table>
-							
-							
-							
+								<!--  list all items ----------------------------------------------------------- -->
+								<tr th:each="user : ${users}">
+									<td th:text="${user.firstName}">...aaaaaaaaaaaaaaaaa</td>
+									<td th:text="${user.lastName}">....bbbbbb</td>
+									<td th:text="${user.weight}">....cccc</td>
+									<td th:text="${user.height}">....dddddd</td>
+
+								</tr>
+								<!--  list all items ----------------------------------------------------------- -->
+							</table>
+
+
+
 						</div>
-					</div> 
+					</div>
 					<!-- End Users Stats -->
-					
-					
-					
+
+
+
 				</div>
 			</div>
 			<footer class="main-footer d-flex p-2 px-3 bg-white border-top">
@@ -230,10 +241,12 @@
 				<span class="copyright ml-auto my-auto mr-2">Copyright © 2018
 					<a href="https://designrevision.com" rel="nofollow">DesignRevision</a>
 				</span>
-			</footer> </main>
 		</div>
+		</footer>
+		</main>
 	</div>
-	
+	</div>
+
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous"></script>

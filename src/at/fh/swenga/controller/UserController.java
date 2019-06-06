@@ -71,16 +71,16 @@ public class UserController {
 		// holen der User aus der Datenbank
 		List<UserModel> users = userRepository.getUsers();
 		
-	/*	if (users.isEmpty())
+		if (users.isEmpty())
 		{
-			UserModel u1 = new UserModel("Max","Schwinger","MaxSng",now,"w",12.34,11.34,2,"max@schwinger",11.23,false,true);
+			UserModel u1 = new UserModel("Max","Schwinger","MaxSng",now,"w",12.34,11.34,2,"max@schwinger",11.23,100,false,true);
 			userRepository.persist(u1);
-			UserModel u2 = new UserModel("Max","Musterman","MaMu",now,"m",12.34,11.34,2,"max@schwinge2r",11.23,false,true);
+			UserModel u2 = new UserModel("Max","Musterman","MaMu",now,"m",12.34,11.34,2,"max@schwinge2r",11.23,100,false,true);
 			userRepository.persist(u2);
-			UserModel u3 = new UserModel("Max","Musterfrau","Peter",now,"w",12.34,11.34,2,"max@schwinger3",11.23,false,true);
+			UserModel u3 = new UserModel("Max","Musterfrau","Peter",now,"w",12.34,11.34,2,"max@schwinger3",11.23,100,false,true);
 			userRepository.persist(u3); 
 			
-		} */
+		} 
 		
 		model.addAttribute("users", users);
 		return "index";

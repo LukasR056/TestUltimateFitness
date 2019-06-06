@@ -62,6 +62,18 @@ public class UserModel implements java.io.Serializable {
 	@Column(nullable = false)
 	private double bmi;
 	
+	public int getPoints() {
+		return points;
+	}
+
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
+	@Column()
+	private int points = 0;
+	
 	@Column()
 	private boolean isAdmin;
 	
@@ -100,12 +112,8 @@ public class UserModel implements java.io.Serializable {
 	{
 		
 	}
-	
-	
-	public UserModel(String firstName, String lastName, 
-			String userName, Date birthDate, String gender,
-			double height, double weight, int coach, String eMail, 
-			double bmi, boolean isAdmin, boolean enabled) {
+	public UserModel(String firstName, String lastName, String userName, Date birthDate, String gender, double height,
+			double weight, int coach, String eMail, double bmi, int points, boolean isAdmin, boolean enabled) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -117,9 +125,11 @@ public class UserModel implements java.io.Serializable {
 		this.coach = coach;
 		this.eMail = eMail;
 		this.bmi = bmi;
+		this.points = points;
 		this.isAdmin = isAdmin;
 		this.enabled = enabled;
 	}
+
 
 	public int getId() {
 		return id;
@@ -337,10 +347,10 @@ public class UserModel implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
+		return "UserModel [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
 				+ ", birthDate=" + birthDate + ", gender=" + gender + ", height=" + height + ", weight=" + weight
-				+ ", coach=" + coach + ", eMail=" + eMail + ", bmi=" + bmi + ", isAdmin=" + isAdmin + ", enabled="
-				+ enabled + "]";
+				+ ", coach=" + coach + ", eMail=" + eMail + ", bmi=" + bmi + ", points=" + points + ", isAdmin="
+				+ isAdmin + ", enabled=" + enabled + ", version=" + version + "]";
 	}
 
 }
