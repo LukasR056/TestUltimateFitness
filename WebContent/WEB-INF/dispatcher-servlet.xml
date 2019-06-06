@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd">
- 
-	<!-- - POJOs labeled with the @Controller and @Service annotations are auto-detected in this package and all sub packages. -->
-	<context:component-scan base-package="at.fh.swenga" />
- 
-	<!-- JSR-303/JSR-349 (= databinding and validation) support will be detected on classpath and enabled automatically -->
+		
+		<context:property-placeholder location="classpath:db.properties" />
+
+	<!-- - POJOs labeled with the @Controller and @Service annotations are auto-detected 
+		in this package and all sub packages. -->
+	<context:component-scan
+		base-package="at.fh.swenga" />
+
+	<!-- JSR-303/JSR-349 (= databinding and validation) support will be detected 
+		on classpath and enabled automatically -->
 	<mvc:annotation-driven />
-	<mvc:default-servlet-handler/>
-	
- 
-	<!-- SpringResourceTemplateResolver automatically integrates with Spring's own -->
+
+
+	<!-- <mvc:default-servlet-handler/> -->
+
+
+	<!-- SpringResourceTemplateResolver automatically integrates with Spring's 
+		own -->
 	<!-- resource resolution infrastructure, which is highly recommended. -->
 	<bean id="templateResolver"
 		class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
@@ -34,22 +50,65 @@
 		<!-- templates to be automatically updated when modified. -->
 		<property name="cacheable" value="false" />
 	</bean>
- 
+
 	<!-- SpringTemplateEngine automatically applies SpringStandardDialect and -->
 	<!-- enables Spring's own MessageSource message resolution mechanisms. -->
-	<bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+	<bean id="templateEngine"
+		class="org.thymeleaf.spring5.SpringTemplateEngine">
 		<property name="templateResolver" ref="templateResolver" />
-		<!-- Enabling the SpringEL compiler with Spring 4.2.4 or newer can speed up -->
+		<!-- Enabling the SpringEL compiler with Spring 4.2.4 or newer can speed 
+			up -->
 		<!-- execution in most scenarios, but might be incompatible with specific -->
-		<!-- cases when expressions in one template are reused across different data -->
+		<!-- cases when expressions in one template are reused across different 
+			data -->
 		<!-- types, so this flag is "false" by default for safer backwards -->
 		<!-- compatibility. -->
-		<property name="enableSpringELCompiler" value="false" />
+		<property name="enableSpringELCompiler" value="true" /> <!-- wurde von false auf true geändert -->
 	</bean>
- 
+
 	<bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
-  	  <property name="templateEngine" ref="templateEngine" />
-  </bean>
- 
- 
+		<property name="templateEngine" ref="templateEngine" />
+	</bean>
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		<property name="initialSize" value="2" />
+		<property name="maxTotal" value="5" />
+	</bean>
+
+	<bean
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		id="entityManagerFactory">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="at.fh.swenga" />
+		<property name="jpaVendorAdapter">
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<!-- validate: validate the schema, makes no changes to the database. 
+					update: update the schema. create: creates the schema, destroying previous 
+					data. create-drop: drop the schema at the end of the session. -->
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory"
+			ref="entityManagerFactory" />
+	</bean>
+	<tx:annotation-driven />
+	
+	<bean id="persistenceExceptionTranslationPostProcessor"
+      class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 </beans>

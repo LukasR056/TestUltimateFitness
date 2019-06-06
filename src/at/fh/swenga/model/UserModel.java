@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 import javax.persistence.JoinColumn; 
 
 @Entity
@@ -67,6 +68,10 @@ public class UserModel implements java.io.Serializable {
 	@Column()
 	private boolean enabled;
 	
+	@Version
+	long version;
+	
+	//Relations
 	// ManyToMany
 	// https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
 	@ManyToMany(cascade = {

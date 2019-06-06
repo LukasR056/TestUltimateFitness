@@ -28,10 +28,10 @@ import at.fh.swenga.repository.UserRepository;
 @Controller
 public class UserController {
 
-	/*@Autowired
+	@Autowired
 	UserRepository userRepository;
 	
- 	@Autowired
+ 	/*@Autowired
 	LogRepository logRepository;
 	
 	@Autowired
@@ -41,7 +41,7 @@ public class UserController {
 	private UserService userService;
 
 	
-	@RequestMapping(value = { "/"})
+	/*@RequestMapping(value = { "/"})
 	public String showAllUsers(Model model) {
 		
 		
@@ -56,6 +56,27 @@ public class UserController {
 		
 		return "index";
 		
+	}  vorher mit userService unten gehts weiter mit repository*/
+	
+	@RequestMapping(value = { "/" })
+	public String index(Model model) {
+		
+		
+		//test users erstellen und gespeichert.
+
+		Date now = new Date();
+ 
+		UserModel u1 = new UserModel("Max","Schwinger","MaxSng",now,"w",12.34,11.34,2,"max@schwinger",11.23,false,true);
+		userRepository.persist(u1);
+		UserModel u2 = new UserModel("Max","Musterman","MaMu",now,"m",12.34,11.34,2,"max@schwinger",11.23,false,true);
+		userRepository.persist(u2);
+		UserModel u3 = new UserModel("Max","Musterfrau","MaxSng",now,"w",12.34,11.34,2,"max@schwinger",11.23,false,true);
+		userRepository.persist(u3);
+		
+		// holen der User aus der Datenbank
+		List<UserModel> users = userRepository.getUsers();
+		model.addAttribute("users", users);
+		return "index";
 	}
 	
 	/*@RequestMapping(value = { "/getPage" })
