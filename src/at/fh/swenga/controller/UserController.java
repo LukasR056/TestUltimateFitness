@@ -96,7 +96,11 @@ public class UserController {
 */
 	
 
-	
+	@RequestMapping(value = {"/exercise"})
+	public String getExercise(Model model) 
+	{
+		return "exercise";
+	}
 
 
 
