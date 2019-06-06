@@ -22,19 +22,7 @@ public class UserRepository  {
 	
 	
 	List<UserModel> users = new ArrayList<UserModel>();
-	
-	
-	public   List<UserModel> getAllUsers()
-	{
-		return users;
-		
-	}
 
-	public  void addUser(UserModel user) {
-		
-		users.add(user);
-	}
-	
 	
 	// von der Übung raus
 	public  List<UserModel> getUsers() {
