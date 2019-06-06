@@ -37,8 +37,7 @@ public class UserController {
 	@Autowired
 	ForumentryRepository forumentryRepository; */
 	
-	@Autowired
-	private UserService userService;
+
 
 	
 	/*@RequestMapping(value = { "/"})

@@ -34,7 +34,7 @@
 	<mvc:annotation-driven />
 
 
-	<!-- <mvc:default-servlet-handler/> -->
+	<mvc:default-servlet-handler/>
 
 
 	<!-- SpringResourceTemplateResolver automatically integrates with Spring's 
