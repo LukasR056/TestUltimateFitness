@@ -101,7 +101,22 @@ public class UserController {
 	{
 		return "exercise";
 	}
-
+	@RequestMapping(value = {"/picture"})
+	public String getPicture(Model model) 
+	{
+		return "picture";
+	}
+	@RequestMapping(value = {"/forum"})
+	public String getForum(Model model) 
+	{
+		return "forum";
+	}
+	@RequestMapping(value = {"/profile"})
+	public String getProfile(Model model) 
+	{
+		return "profile";
+	}
+	
 
 
 	
