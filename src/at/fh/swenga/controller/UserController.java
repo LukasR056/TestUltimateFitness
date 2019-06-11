@@ -41,6 +41,7 @@ public class UserController {
 	 * 
 	 * @Autowired ForumentryRepository forumentryRepository;
 	 */
+ 	// test für branch
 
 	@RequestMapping(value = { "/" })
 	public String index(Model model) {
