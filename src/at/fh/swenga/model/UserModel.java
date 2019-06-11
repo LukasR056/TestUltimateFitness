@@ -59,7 +59,7 @@ public class UserModel implements java.io.Serializable {
 	@Column(unique = true)
 	private String eMail;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private double bmi;
 	
 	public int getPoints() {
@@ -82,6 +82,8 @@ public class UserModel implements java.io.Serializable {
 	
 	@Version
 	long version;
+	
+	// password fehlt und BMI gehört weg!!!!
 	
 	//Relations
 	// ManyToMany

@@ -193,11 +193,11 @@
 								<div class="d-flex flex-column m-auto">
 									<div class="stats-small__data text-center">
 										<span class="stats-small__label text-uppercase">Height</span>
-										<h6 class="stats-small__value count my-3">2,390</h6>
+										<h6 class="stats-small__value count my-3" th:text="${user.height}">xxx</h6>
 									</div>
 									<div class="stats-small__data">
 										<span
-											class="stats-small_percentage stats-small_percentage--increase">4.7%</span>
+											class="stats-small_percentage stats-small_percentage--increase" >4.7%</span>
 									</div>
 								</div>
 								<canvas height="120" class="blog-overview-stats-small-1"></canvas>
@@ -210,7 +210,7 @@
 								<div class="d-flex flex-column m-auto">
 									<div class="stats-small__data text-center">
 										<span class="stats-small__label text-uppercase">Weight</span>
-										<h6 class="stats-small__value count my-3">182</h6>
+										<h6 class="stats-small__value count my-3" th:text="${user.weight}">xxx</h6>
 									</div>
 									<div class="stats-small__data">
 										<span
@@ -227,7 +227,7 @@
 								<div class="d-flex flex-column m-auto">
 									<div class="stats-small__data text-center">
 										<span class="stats-small__label text-uppercase">BMI</span>
-										<h6 class="stats-small__value count my-3">8,147</h6>
+										<h6 class="stats-small__value count my-3" th:text="${#numbers.formatDecimal(user.weight / (user.height *user.height),2,'COMMA',2,'POINT')}">xxx</h6>
 									</div>
 									<div class="stats-small__data">
 										<span
@@ -244,7 +244,7 @@
 								<div class="d-flex flex-column m-auto">
 									<div class="stats-small__data text-center">
 										<span class="stats-small__label text-uppercase">Points</span>
-										<h6 class="stats-small__value count my-3">2,413</h6>
+										<h6 class="stats-small__value count my-3" th:text="${user.points}">2,413</h6>
 									</div>
 									<div class="stats-small__data">
 										<span

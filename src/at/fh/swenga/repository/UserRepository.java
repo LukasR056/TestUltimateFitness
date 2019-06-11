@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+//import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import at.fh.swenga.model.UserModel;
@@ -36,6 +36,9 @@ public class UserRepository  {
 		entityManager.persist(user);
 		
 	}
+
+	
+	
 	
  /*	public List<UserModel> searchUsers(String searchString) {
 		TypedQuery<UserModel> typedQuery = entityManager.createQuery(
