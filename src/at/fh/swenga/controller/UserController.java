@@ -122,7 +122,10 @@ public class UserController {
 	@RequestMapping(value = { "/userSettings" }, method = RequestMethod.POST)
 	public String editUser(@Valid UserModel changedUserModel, BindingResult bindingResult, Model model) {
 
-		UserModel user = userQueryRepository.findByUserName("MaMu");
+		String[] partUserName = (changedUserModel.userName).split(",");
+		
+		UserModel user = userQueryRepository.findByUserName(partUserName[0]); 
+		//keine schöne lösung, wieso ist aber userName=MaMu,MaMu,??
 
 		
 		 //* if (user == null) { model.addAttribute("errorMessage",
@@ -137,7 +140,7 @@ public class UserController {
 		
 		user = userRepository.merge(user);
 		
-		//unser Ansatz um das Problem zu lï¿½sen. Jedoch funktioniert die zuweisung zu user nicht.
+		//unser Ansatz um das Problem zu löschen. Jedoch funktioniert die zuweisung zu user nicht.
 		
 		 
 		
