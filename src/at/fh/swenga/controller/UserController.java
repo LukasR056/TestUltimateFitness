@@ -46,7 +46,7 @@ public class UserController {
 	 * 
 	 * @Autowired ForumentryRepository forumentryRepository;
 	 */
-	// test für branch
+	// test fï¿½r branch
 
 	@RequestMapping(value = { "/" })
 	public String index(Model model) {
@@ -122,11 +122,11 @@ public class UserController {
 	@RequestMapping(value = { "/userSettings" }, method = RequestMethod.POST)
 	public String editUser(@Valid UserModel changedUserModel, BindingResult bindingResult, Model model) {
 
-		UserModel user = userQueryRepository.findByUserName(changedUserModel.userName);
+		UserModel user = userQueryRepository.findByUserName("MaMu");
 
-		/*
-		 * if (user == null) { model.addAttribute("errorMessage",
-		 * "User does not exist!<br>"); } 	
+		
+		 //* if (user == null) { model.addAttribute("errorMessage",
+		// * "User does not exist!<br>"); } 	
 
 		 
 		user.setFirstName(changedUserModel.getFirstName());
@@ -135,18 +135,18 @@ public class UserController {
 		user.setHeight(changedUserModel.getHeight());
 		user.setWeight(changedUserModel.getWeight());
 		
-		user = userRepository.merge(changedUserModel);
+		user = userRepository.merge(user);
 		
-		unser Ansatz um das Problem zu lösen. Jedoch funktioniert die zuweisung zu user nicht.
+		//unser Ansatz um das Problem zu lï¿½sen. Jedoch funktioniert die zuweisung zu user nicht.
 		
-		 */
+		 
 		
 		// coach fehlt noch
 
 		// Save a message for the web page
 
-		model.addAttribute("message", "update succes by " + changedUserModel.userName);
-		model.addAttribute("user", user);
+		model.addAttribute("message", "update succes by " + changedUserModel.toString());
+		//model.addAttribute("user", user);
 		return "forward:/profile";
 	}
 
