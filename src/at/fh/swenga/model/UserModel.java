@@ -29,9 +29,11 @@ public class UserModel implements java.io.Serializable {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	// von Janik hinzugefügt, sonst gibt es keine Autogenerierung (meiner Meinung nach)
+	
 	public int id;
 	
+	
+
 	@Column(nullable = false, length = 40)
 	private String firstName;
 	
@@ -59,8 +61,8 @@ public class UserModel implements java.io.Serializable {
 	@Column(unique = true)
 	private String eMail;
 	
-	@Column(nullable = true)
-	private double bmi;
+ /*	@Column(nullable = true)
+	private double bmi;  wird über thymeleaf berechnet*/
 	
 	public int getPoints() {
 		return points;
@@ -80,10 +82,13 @@ public class UserModel implements java.io.Serializable {
 	@Column()
 	private boolean enabled;
 	
+	@Column(nullable=false)
+	private String password;
+	
 	@Version
 	long version;
 	
-	// password fehlt und BMI gehört weg!!!!
+	
 	
 	//Relations
 	// ManyToMany
@@ -114,23 +119,7 @@ public class UserModel implements java.io.Serializable {
 	{
 		
 	}
-	public UserModel(String firstName, String lastName, String userName, Date birthDate, String gender, double height,
-			double weight, int coach, String eMail, double bmi, int points, boolean isAdmin, boolean enabled) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.userName = userName;
-		this.birthDate = birthDate;
-		this.gender = gender;
-		this.height = height;
-		this.weight = weight;
-		this.coach = coach;
-		this.eMail = eMail;
-		this.bmi = bmi;
-		this.points = points;
-		this.isAdmin = isAdmin;
-		this.enabled = enabled;
-	}
+
 
 
 	public int getId() {
@@ -164,6 +153,36 @@ public class UserModel implements java.io.Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	
+
+
+	public UserModel(String firstName, String lastName, String userName, Date birthDate, String gender, double height,
+			double weight, int coach, String eMail, int points, boolean isAdmin, boolean enabled, String password) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userName = userName;
+		this.birthDate = birthDate;
+		this.gender = gender;
+		this.height = height;
+		this.weight = weight;
+		this.coach = coach;
+		this.eMail = eMail;
+		this.points = points;
+		this.isAdmin = isAdmin;
+		this.enabled = enabled;
+		this.password = password;
+	}
+
 
 	public Date getBirthDate() {
 		return birthDate;
@@ -212,15 +231,7 @@ public class UserModel implements java.io.Serializable {
 	public void seteMail(String eMail) {
 		this.eMail = eMail;
 	}
-
-	public double getBmi() {
-		return bmi;
-	}
-
-	public void setBmi(double bmi) {
-		this.bmi = bmi;
-	}
-
+	
 	public boolean isAdmin() {
 		return isAdmin;
 	}
@@ -349,10 +360,10 @@ public class UserModel implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "UserModel [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
+		return "UserModel [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
 				+ ", birthDate=" + birthDate + ", gender=" + gender + ", height=" + height + ", weight=" + weight
-				+ ", coach=" + coach + ", eMail=" + eMail + ", bmi=" + bmi + ", points=" + points + ", isAdmin="
-				+ isAdmin + ", enabled=" + enabled + ", version=" + version + "]";
+				+ ", coach=" + coach + ", eMail=" + eMail + ", points=" + points + ", isAdmin=" + isAdmin + ", enabled="
+				+ enabled + ", password=" + password + "]";
 	}
 
 }

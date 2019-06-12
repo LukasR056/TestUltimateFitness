@@ -34,11 +34,12 @@
 						<a class="navbar-brand w-100 mr-0" href="#"
 							style="line-height: 25px;">
 							<div class="d-table m-auto">
-							<!-- Website Logo	<img id="main-logo" class="d-inline-block align-top mr-1"
+								<!-- Website Logo	<img id="main-logo" class="d-inline-block align-top mr-1"
 									style="max-width: 25px;"
 									src="./images/shards-dashboards-logo.svg"
-									alt="Shards Dashboard">  --> <span
-									class="d-none d-md-inline ml-1" style= "font-size: 20px;">  Ultimate Fitness </span>
+									alt="Shards Dashboard">  -->
+								<span class="d-none d-md-inline ml-1" style="font-size: 20px;">
+									Ultimate Fitness </span>
 							</div>
 						</a> <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none"> <i
 							class="material-icons">&#xE5C4;</i>
@@ -95,12 +96,17 @@
 					<form action="#"
 						class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
 						<div class="input-group input-group-seamless ml-3">
-							<div class="input-group-prepend"> <div style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px; "> <h5 class="card-title"> USER NAME</h5>  </div>
-							<!-- Lupe für serach bar	<div class="input-group-text">
+							<div class="input-group-prepend">
+								<div
+									style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px;">
+									<h5 class="card-title" th:text="${user.userName}">USER
+										NAME</h5>
+								</div>
+								<!-- Lupe für serach bar	<div class="input-group-text">
 									<i class="fas fa-search"></i>
 								</div> -->
 							</div>
-					<!--  search bar		<input class="navbar-search form-control" type="text"
+							<!--  search bar		<input class="navbar-search form-control" type="text"
 								placeholder="Search for something..." aria-label="Search">  -->
 						</div>
 					</form>
@@ -141,7 +147,7 @@
 								View all Notifications </a>
 						</div>
 						</li>
-				<!--  profil pic		<li class="nav-item dropdown"><a
+						<!--  profil pic		<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle text-nowrap px-3"
 							data-toggle="dropdown" href="#" role="button"
 							aria-haspopup="true" aria-expanded="false"> 
@@ -175,7 +181,24 @@
 					</nav> -->
 				</nav>
 			</div>
-			<!-- / .main-navbar -->
+			<!-- / .main-navbar --> <!--   message ----------------------------------------------------------- -->
+
+			<div th:unless="${message} == null" th:utext="${message}"
+				class="alert alert-success alert-dismissible fade show mb-0"
+				role="alert">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<i class="fa fa-check mx-2"></i> <strong>Success!</strong> Your
+				profile has been updated!
+			</div>
+
+			<!--   message ----------------------------------------------------------- -->
+
+
+
+
 			<div class="main-content-container container-fluid px-4">
 				<!-- Page Header -->
 				<div class="page-header row no-gutters py-4">
@@ -193,11 +216,12 @@
 								<div class="d-flex flex-column m-auto">
 									<div class="stats-small__data text-center">
 										<span class="stats-small__label text-uppercase">Height</span>
-										<h6 class="stats-small__value count my-3" th:text="${user.height}">xxx</h6>
+										<h6 class="stats-small__value count my-3"
+											th:text="${user.height}">xxx</h6>
 									</div>
 									<div class="stats-small__data">
 										<span
-											class="stats-small_percentage stats-small_percentage--increase" >4.7%</span>
+											class="stats-small_percentage stats-small_percentage--increase">4.7%</span>
 									</div>
 								</div>
 								<canvas height="120" class="blog-overview-stats-small-1"></canvas>
@@ -210,7 +234,8 @@
 								<div class="d-flex flex-column m-auto">
 									<div class="stats-small__data text-center">
 										<span class="stats-small__label text-uppercase">Weight</span>
-										<h6 class="stats-small__value count my-3" th:text="${user.weight}">xxx</h6>
+										<h6 class="stats-small__value count my-3"
+											th:text="${user.weight}">xxx</h6>
 									</div>
 									<div class="stats-small__data">
 										<span
@@ -227,7 +252,8 @@
 								<div class="d-flex flex-column m-auto">
 									<div class="stats-small__data text-center">
 										<span class="stats-small__label text-uppercase">BMI</span>
-										<h6 class="stats-small__value count my-3" th:text="${#numbers.formatDecimal(user.weight / (user.height *user.height),2,'COMMA',2,'POINT')}">xxx</h6>
+										<h6 class="stats-small__value count my-3"
+											th:text="${#numbers.formatDecimal(user.weight / (user.height *user.height),2,'COMMA',2,'POINT')}">xxx</h6>
 									</div>
 									<div class="stats-small__data">
 										<span
@@ -244,7 +270,8 @@
 								<div class="d-flex flex-column m-auto">
 									<div class="stats-small__data text-center">
 										<span class="stats-small__label text-uppercase">Points</span>
-										<h6 class="stats-small__value count my-3" th:text="${user.points}">2,413</h6>
+										<h6 class="stats-small__value count my-3"
+											th:text="${user.points}">2,413</h6>
 									</div>
 									<div class="stats-small__data">
 										<span
@@ -257,8 +284,9 @@
 					</div>
 					<div class="col">
 
-						<button type="button" class="mb-2 btn btn-primary btn-lg">Update
-							your Stats</button>
+						<a type="button" class="mb-2 btn btn-primary btn-lg"
+							th:href="@{/userSettings(userName=${user.userName})}">Update
+							your Stats</a>
 						<!-- mr-2 -->
 					</div>
 				</div>

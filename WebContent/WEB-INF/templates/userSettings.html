@@ -131,7 +131,7 @@
 					<form action="#"
 						class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
 						<div class="input-group input-group-seamless ml-3">
-							<div class="input-group-prepend"> <div style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px; "> <h5 class="card-title"> USER NAME</h5>  </div>
+							<div class="input-group-prepend"> <div style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px; "> <h5 class="card-title" th:text="${user.userName}"> USER NAME</h5>  </div>
 							<!-- Lupe für serach bar	<div class="input-group-text">
 									<i class="fas fa-search"></i>
 								</div> -->
@@ -212,12 +212,12 @@
 				</nav>
 			</div>
 			<!-- / .main-navbar -->
-          <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
+     <!--     <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">×</span>
             </button>
             <i class="fa fa-check mx-2"></i>
-            <strong>Success!</strong> Your profile has been updated! </div>
+            <strong>Success!</strong> Your profile has been updated! </div>  success nachricht --> 
           <div class="main-content-container container-fluid px-4">
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
@@ -241,28 +241,29 @@
                     <li class="list-group-item p-3">
                       <div class="row">
                         <div class="col">
-                          <form>
+                          <form  method="post"
+					th:action="${user} ? @{/userSettings(userName=${user.userName})}  : @{/addUser}">
                             <div class="form-row">
                               <div class="form-group col-md-6">
                                 <label for="feFirstName">First Name</label>
-                                <input type="text" class="form-control" id="feFirstName" placeholder="First Name" value="Sierra"> </div>
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" th:value="${user.firstName}"> </div>
                                 
                               <div class="form-group col-md-6">
                                 <label for="feLastName">Last Name</label>
-                                <input type="text" class="form-control" id="feLastName" placeholder="Last Name" value="Brooks"> </div>
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" th:value="${user.lastName}"> </div>
                                 
                                 <div class="form-group col-md-6">
                                 <label for="feLastName">Username</label>
-                                <input type="text" class="form-control" id="feUserName" placeholder="Username" value="user"> </div>
+                                <input type="text" class="form-control" id="inputUserName" placeholder="Username" th:value="${user.userName}" readonly> </div>
                             </div>
                             <div class="form-row">
                               <div class="form-group col-md-6">
                                 <label for="feEmailAddress">Email</label>
-                                <input type="email" class="form-control" id="feEmailAddress" placeholder="Email" value="sierra@example.com"> </div>
-                              <div class="form-group col-md-6">
+                                <input type="email" class="form-control" id="inputEMail" placeholder="Email" th:value="${user.eMail}"> </div>
+                   <!-- <div class="form-group col-md-6">
                                 <label for="fePassword">Password</label>
-                                <input type="password" class="form-control" id="fePassword" placeholder="Password"> </div>
-                            </div>
+                                <input type="password" class="form-control" id="fePassword" placeholder="Password"> </div>-->  
+                            </div>           
                             
                             <!-- 
                             <div class="form-group">
@@ -286,17 +287,17 @@
                               
 	                              <div class="form-group col-md-2">
 	                                <label for="inputZip">Height</label>
-	                                <input type="text" class="form-control" id="inputZip"> </div>
+	                                <input type="text" class="form-control" id="inputHeight"  th:value="${user.height}"> </div>
 	                          
 	                            
 	                            <div class="form-group col-md-2">
 	                                <label for="inputZip">Weight</label>
-	                                <input type="text" class="form-control" id="inputZip"> </div>
+	                                <input type="text" class="form-control" id="inputWeight"  th:value="${user.weight}"> </div>
 	                            
 	                            
 	                            <div class="form-group col-md-2">
 	                                <label for="inputZip">BMI</label>
-	                                <input type="text" class="form-control" id="inputZip"> </div>
+	                                <input type="text" class="form-control"   th:value="${#numbers.formatDecimal(user.weight / (user.height *user.height),2,'COMMA',2,'POINT')}" readonly> </div>
 	                                
 	                          <div class="form-group col-md-4">
                                 <label for="feInputState">Coach</label>
