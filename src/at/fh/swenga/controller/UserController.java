@@ -26,10 +26,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import at.fh.swenga.model.LogModel;
+import at.fh.swenga.model.RoleModel;
 import at.fh.swenga.model.UserModel;
 import at.fh.swenga.model.UserService;
 import at.fh.swenga.repository.ForumentryRepository;
 import at.fh.swenga.repository.LogRepository;
+import at.fh.swenga.repository.RoleRepository;
 import at.fh.swenga.repository.UserQueryRepository;
 import at.fh.swenga.repository.UserRepository;
 
@@ -40,6 +42,8 @@ public class UserController {
 	UserRepository userRepository;
 	@Autowired
 	UserQueryRepository userQueryRepository;
+	@Autowired
+	RoleRepository roleRepository;
 
 	/*
 	 * @Autowired LogRepository logRepository;
@@ -72,6 +76,18 @@ public class UserController {
 		}
 
 		model.addAttribute("users", users);
+		
+		 List<RoleModel> roles = roleRepository.getRoles();
+         if (roles.isEmpty()) {
+                RoleModel r1 = new RoleModel("ADMIN");
+                roleRepository.persist(r1);
+               
+                RoleModel r2 = new RoleModel("COACH");
+                roleRepository.persist(r2);
+               
+                RoleModel r3 = new RoleModel("USER");
+                roleRepository.persist(r3);
+         }
 		return "index";
 	}
 
@@ -103,7 +119,7 @@ public class UserController {
 		return "profile";
 	}
 
-	@RequestMapping(value = { "/userSettings" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/userSettings1" }, method = RequestMethod.GET)
 	public String getUserSettings(Model model, @RequestParam String userName) {
 
 		UserModel user = userQueryRepository.findByUserName(userName);
@@ -115,19 +131,22 @@ public class UserController {
 			 * else { model.addAttribute("errorMessage", "Couldn't find user " + userName);
 			 * return "profile"; }
 			 */
-		return "profile";
+		return "forward:/profile";
 
 	}
 
 	@RequestMapping(value = { "/userSettings" }, method = RequestMethod.POST)
 	public String editUser(@Valid UserModel changedUserModel, BindingResult bindingResult, Model model) {
 
-		UserModel user = userQueryRepository.findByUserName("MaMu");
 
 		
 		 //* if (user == null) { model.addAttribute("errorMessage",
 		// * "User does not exist!<br>"); } 	
 
+		
+		String[] partUserName = (changedUserModel.userName).split(",");
+		
+		UserModel user = userQueryRepository.findByUserName(partUserName[0]);
 		 
 		user.setFirstName(changedUserModel.getFirstName());
 		user.setLastName(changedUserModel.getLastName());
