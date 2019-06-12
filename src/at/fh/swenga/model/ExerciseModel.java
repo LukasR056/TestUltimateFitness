@@ -21,6 +21,7 @@ import javax.persistence.Table;
 public class ExerciseModel {
 
 	@Id
+	@Column(name = "exerciseId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
@@ -38,9 +39,9 @@ public class ExerciseModel {
 	 * public String[] typesList = {"Brust", "Schulter", "Bizeps", "Trizeps", "Bauch", "Beine", "Po"};
 	 */
 	
-	@Lob // noch genauer betrachten! Lob ist für Large Objects in einer Datenbank
+	@Lob // noch genauer betrachten! Lob ist fï¿½r Large Objects in einer Datenbank
 	@Basic(fetch = FetchType.LAZY) // Lob sollte mit Basic kombiniert werden
-	// whs um Daten nur zu fetchen, wenn diese tatsächlich benötigt werden
+	// whs um Daten nur zu fetchen, wenn diese tatsï¿½chlich benï¿½tigt werden
 	private byte[] video;
 	
 	@Column(nullable = false, length = 500)

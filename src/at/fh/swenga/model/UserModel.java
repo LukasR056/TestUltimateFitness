@@ -27,7 +27,7 @@ import javax.persistence.JoinColumn;
 public class UserModel implements java.io.Serializable {
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "userId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	public int id;
@@ -62,7 +62,7 @@ public class UserModel implements java.io.Serializable {
 	private String eMail;
 	
  /*	@Column(nullable = true)
-	private double bmi;  wird über thymeleaf berechnet*/
+	private double bmi;  wird ï¿½ber thymeleaf berechnet*/
 	
 	public int getPoints() {
 		return points;
@@ -96,11 +96,17 @@ public class UserModel implements java.io.Serializable {
 	@ManyToMany(cascade = {
 	        CascadeType.PERSIST,
 	        CascadeType.MERGE })
-    @JoinTable(name = "user_exercises",
-        joinColumns = @JoinColumn(name = "user_id"), // Table Name + id???
-        inverseJoinColumns = @JoinColumn(name = "exercise_id") )
+    @JoinTable(name = "userExercises",
+        joinColumns = @JoinColumn(name = "userId"), // Table Name + id???
+        inverseJoinColumns = @JoinColumn(name = "exerciseId") )
 	private Set<ExerciseModel> exercises = new HashSet<>(); // = new HashSet<>(); NOTWENDIG? */
 	
+	// fÃ¼r User Roles!
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "userRoles", joinColumns = @JoinColumn(name = "userId"),
+       inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private Set<RoleModel> roles;
+
 	
 	@OneToMany(mappedBy="userId",fetch=FetchType.LAZY)
 	@OrderBy("id")
@@ -322,7 +328,7 @@ public class UserModel implements java.io.Serializable {
                 postTag.setTag(null);
             }
         }
-    } */ // WIRD DAS ÜBERHAUPT BENÖTIGT???	
+    } */ // WIRD DAS ï¿½BERHAUPT BENï¿½TIGT???	
 
 	@Override
 	public int hashCode() {
