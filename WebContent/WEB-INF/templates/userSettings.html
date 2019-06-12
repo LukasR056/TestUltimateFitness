@@ -246,20 +246,20 @@
                             <div class="form-row">
                               <div class="form-group col-md-6">
                                 <label for="feFirstName">First Name</label>
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" th:value="${user.firstName}"> </div>
+                                <input type="text" class="form-control" id="inputFirstName" name="firstName" placeholder="First Name" th:value="${user.firstName}"> </div>
                                 
                               <div class="form-group col-md-6">
                                 <label for="feLastName">Last Name</label>
-                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" th:value="${user.lastName}"> </div>
+                                <input type="text" class="form-control" id="inputLastName" name="lastName" placeholder="Last Name" th:value="${user.lastName}"> </div>
                                 
                                 <div class="form-group col-md-6">
                                 <label for="feLastName">Username</label>
-                                <input type="text" class="form-control" id="inputUserName" placeholder="Username" th:value="${user.userName}" readonly> </div>
+                                <input type="text" class="form-control" id="inputUserName" name="userName" placeholder="Username" th:value="${user.userName}" readonly> </div>
                             </div>
                             <div class="form-row">
                               <div class="form-group col-md-6">
                                 <label for="feEmailAddress">Email</label>
-                                <input type="email" class="form-control" id="inputEMail" placeholder="Email" th:value="${user.eMail}"> </div>
+                                <input type="email" class="form-control" id="inputEMail" name="eMail" placeholder="Email" th:value="${user.eMail}"> </div>
                    <!-- <div class="form-group col-md-6">
                                 <label for="fePassword">Password</label>
                                 <input type="password" class="form-control" id="fePassword" placeholder="Password"> </div>-->  
@@ -287,12 +287,12 @@
                               
 	                              <div class="form-group col-md-2">
 	                                <label for="inputZip">Height</label>
-	                                <input type="text" class="form-control" id="inputHeight"  th:value="${user.height}"> </div>
+	                                <input type="text" class="form-control" id="inputHeight" name="height"  th:value="${user.height}"> </div>
 	                          
 	                            
 	                            <div class="form-group col-md-2">
 	                                <label for="inputZip">Weight</label>
-	                                <input type="text" class="form-control" id="inputWeight"  th:value="${user.weight}"> </div>
+	                                <input type="text" class="form-control" id="inputWeight" name="weight" th:value="${user.weight}"> </div>
 	                            
 	                            
 	                            <div class="form-group col-md-2">
