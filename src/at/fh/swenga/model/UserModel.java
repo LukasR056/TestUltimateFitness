@@ -20,6 +20,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.JoinColumn; 
 
 @Entity
@@ -79,7 +82,7 @@ public class UserModel implements java.io.Serializable {
 	@Column()
 	private boolean isAdmin;
 	
-	@Column()
+	@Column(nullable=false)
 	private boolean enabled;
 	
 	@Column(nullable=false)
@@ -101,8 +104,8 @@ public class UserModel implements java.io.Serializable {
         inverseJoinColumns = @JoinColumn(name = "exerciseId") )
 	private Set<ExerciseModel> exercises = new HashSet<>(); // = new HashSet<>(); NOTWENDIG? */
 	
-	// für User Roles!
-    @ManyToMany(cascade = CascadeType.ALL)
+	// fuer User Roles!
+	@ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "userRoles", joinColumns = @JoinColumn(name = "userId"),
        inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<RoleModel> roles;
@@ -307,28 +310,28 @@ public class UserModel implements java.io.Serializable {
 
 	public boolean remove(Object o) {
 		return userPictures.remove(o);
+	}	
+
+	public Set<RoleModel> getRoles() {
+		return roles;
 	}
-	 
-    /* public void addTag(PictureModel picture) {
-        UserPicturesModel userPicture = new UserPicturesModel(this, picture);
-        userPictures.add(userPicture);
-        picture.getPicture().add(userPicture);
-    }
- 
-    public void removeTag(Tag tag) {
-        for (Iterator<PostTag> iterator = tags.iterator();
-             iterator.hasNext(); ) {
-            PostTag postTag = iterator.next();
- 
-            if (postTag.getPost().equals(this) &&
-                    postTag.getTag().equals(tag)) {
-                iterator.remove();
-                postTag.getTag().getPosts().remove(postTag);
-                postTag.setPost(null);
-                postTag.setTag(null);
-            }
-        }
-    } */ // WIRD DAS �BERHAUPT BEN�TIGT???	
+
+
+	public void setRoles(Set<RoleModel> roles) {
+		this.roles = roles;
+	}
+
+	public void addRoleModel(RoleModel role) {
+		if (roles == null) roles = new HashSet<RoleModel>();
+		roles.add(role);
+	}
+	
+	public void encryptPassword() {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		password = passwordEncoder.encode(password);
+	}
+	
+
 
 	@Override
 	public int hashCode() {

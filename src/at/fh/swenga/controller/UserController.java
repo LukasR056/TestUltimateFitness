@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.fluttercode.datafactory.impl.DataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 //import org.springframework.data.domain.Page;
 //import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -50,15 +51,32 @@ public class UserController {
 	 * 
 	 * @Autowired ForumentryRepository forumentryRepository;
 	 */
-	// test f�r branch
+	// test fuer branch
 
 	@RequestMapping(value = { "/" })
 	public String index(Model model) {
 
 		// test users erstellen und gespeichert.
 
-		Date now = new Date();
+		/*Date now = new Date();
 
+		// Rolen erstellen
+		
+		RoleModel adminRole = roleRepository.getRole("ROLE_ADMIN");
+		if (adminRole == null) {
+			adminRole = new RoleModel("ROLE_ADMIN");
+		}
+		
+		RoleModel coachRole = roleRepository.getRole("ROLE_COACH");
+		if (coachRole == null) {
+			coachRole = new RoleModel("ROLE_COACH");
+		}
+		
+		RoleModel userRole = roleRepository.getRole("ROLE_USER");
+		if (userRole == null) {
+			userRole = new RoleModel("ROLE_USER");
+		}
+		
 		// holen der User aus der Datenbank
 		List<UserModel> users = userRepository.getUsers();
 
@@ -74,10 +92,30 @@ public class UserController {
 			userRepository.persist(u3);
 
 		}
+		
+		
+		
+		UserModel u1 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, 2, "test@schwinger", 100,
+				false, true, "password");
+		u1.encryptPassword();
+		userQueryRepository.save(u1);
+		roleRepository.persist(userRole);
+		u1.addRoleModel(userRole);
+		userRole.addUser(u1);
+		//roleRepository.persist(userRole);
+		//userQueryRepository.save(u1);
+		
+		UserModel u2 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, 2, "test@schwinge2r", 100,
+				false, true, "password");
+		u2.encryptPassword();
+		u2.addRoleModel(userRole);
+		u2.addRoleModel(coachRole);
+		u2.addRoleModel(adminRole);
+		userRepository.persist(u2);
 
 		model.addAttribute("users", users);
 		
-		 List<RoleModel> roles = roleRepository.getRoles();
+		 /*List<RoleModel> roles = roleRepository.getAllRoles();
          if (roles.isEmpty()) {
                 RoleModel r1 = new RoleModel("ADMIN");
                 roleRepository.persist(r1);
@@ -87,10 +125,56 @@ public class UserController {
                
                 RoleModel r3 = new RoleModel("USER");
                 roleRepository.persist(r3);
-         }
-		return "index";
+         } */
+		
+		RoleModel adminRole = roleRepository.getRole("ROLE_ADMIN");
+		if (adminRole == null) {
+			adminRole = new RoleModel("ROLE_ADMIN");
+		}
+		
+		RoleModel coachRole = roleRepository.getRole("ROLE_COACH");
+		if (coachRole == null) {
+			coachRole = new RoleModel("ROLE_COACH");
+		}
+		
+		RoleModel userRole = roleRepository.getRole("ROLE_USER");
+		if (userRole == null) {
+			userRole = new RoleModel("ROLE_USER");
+		}
+        
+			
+		Date now = new Date();
+		
+		List<UserModel> users = userRepository.getUsers();
+
+		if (users.isEmpty()) {
+			UserModel u1 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, 2, "test@schwinger", 100,
+					false, true, "password");
+			u1.encryptPassword();
+			u1.addRoleModel(userRole);
+			userRepository.persist(u1);
+			
+			UserModel u2 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, 2, "test@schwinge2r", 100,
+					false, true, "password");
+			u2.encryptPassword();
+			u2.addRoleModel(userRole);
+			u2.addRoleModel(coachRole);
+			u2.addRoleModel(adminRole);
+			userRepository.persist(u2);
+		}
+		
+		return "login";
+		
+		//return "login";
 	}
 
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String handleLogin() {//@Valid UserModel changedUserModel, BindingResult bindingResult, Model model) {
+		
+		//UserModel user = userQueryRepository.findByUserName(changedUserModel.userName);
+				
+		return "login";
+	}
 	@RequestMapping(value = { "/exercise" })
 	public String getExercise(Model model) {
 		return "exercise";
@@ -105,13 +189,19 @@ public class UserController {
 	public String getForum(Model model) {
 		return "forum";
 	}
+	
+	@RequestMapping(value = { "/registration" })
+	public String getRegistration(Model model) {
+		return "registration";
+	}
+
 
 	@RequestMapping(value = { "/profile" })
-	public String getProfile(Model model) {
+	public String getProfile(Model model, Authentication authentication) {
 
 		UserModel user = null;
 
-		String searchString = "MaMu";
+		String searchString = authentication.getName();
 
 		user = userQueryRepository.findByUserName(searchString);
 

@@ -8,7 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import org.springframework.dao.DataAccessException;
 //import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +15,7 @@ import at.fh.swenga.model.UserModel;
 
 @Repository
 @Transactional		
-public class UserRepository  {
+public class UserRepository {
 	
 	@PersistenceContext
 	protected EntityManager entityManager;
@@ -35,8 +34,8 @@ public class UserRepository  {
 	    return entityManager.merge(user);
 	}
 
-	public void persist(UserModel u1) {
-		entityManager.persist(u1);
+	public void persist(UserModel user) {
+		entityManager.persist(user);
 		
 	}
 	public UserModel merge(UserModel user) {
