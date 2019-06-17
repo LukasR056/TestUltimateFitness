@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Shards Dashboard Lite - Free Bootstrap Admin Template –
-	DesignRevision</title>
+<title>Create new Account</title>
 <meta name="description"
 	content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
 <meta name="viewport"
@@ -28,7 +27,7 @@
 		<div class="page-header row no-gutters py-4">
 			<div class="col-12 col-sm-4 text-center text-sm-left mb-0">
 				<span class="text-uppercase page-subtitle">Overview</span>
-				<h3 class="page-title">User Profile</h3>
+				<h3 class="page-title">Create new User Profile</h3>
 			</div>
 		</div>
 		<!-- End Page Header -->
@@ -45,77 +44,90 @@
 							<div class="row">
 								<div class="col">
 									<form method="post"
-										th:action="${user} ? @{/userSettings(userName=${user.userName})}  : @{/addUser}">
+										th:action="${user} ?: @{/addUser}"> <!-- @{/userSettings(userName=${user.userName})}  : -->
 										<div class="form-row">
+											<div class="form-group col-md-12">
+												<div th:unless="${errorMessage} == null" th:utext="${errorMessage}" class="alert alert-danger" role="alert"></div>
+											</div>
+											
 											<div class="form-group col-md-6">
-												<label for="feFirstName">First Name</label> <input
+												<label for="inputFirstName">First Name</label> <input
 													type="text" class="form-control" id="inputFirstName"
-													name="firstName" placeholder="Max">
+													name="firstName" placeholder="Max" th:value="${user} ? ${user.firstName}">
 											</div>
 
 											<div class="form-group col-md-6">
-												<label for="feLastName">Last Name</label> <input type="text"
+												<label for="inputLastName">Last Name</label> <input type="text"
 													class="form-control" id="inputLastName" name="lastName"
-													placeholder="Mustermann">
+													placeholder="Mustermann" th:value="${user} ? ${user.lastName}">
 											</div>
-
-											<div class="form-group col-md-6">
-												<label for="feLastName">Day of Birth</label> <input
-													type="text" class="form-control" id="inputLastName"
-													name="lastName" placeholder="01.01.1990">
+											
+											<div class="form-group col-md-4">
+												<label for="inputLastName">Username</label> <input type="text"
+													class="form-control" id="inputUserName" name="userName"
+													placeholder="MuMax" th:value="${user} ? ${user.userName}">
 											</div>
 
 											<div class="form-group col-md-4">
-												<label for="feInputState">Gender</label> <select
-													id="feInputState" class="form-control">
+												<label for="inputBirthDate">Day of Birth</label> <input
+													type="number" class="form-control" id="inputBirthDate"
+													name="birthDate" placeholder="1990-01-01" th:value="${user} ? ${#dates.format(user.birthDate, 'yyyy-MM-dd')}">
+											</div>
+					
+											<div class="form-group col-md-4">
+												<label for="inputGender">Gender</label> <select
+													id="inputGender" class="form-control" name="gender" 
+													th:value="${user} ? ${user.gender}">
 													<option selected>Choose...</option>
-													<option>male</option>
-													<option>female</option>
+													<option value="m">male</option> <!-- value="m" -->
+													<option value="f">female</option> <!-- value="f" -->
 												</select>
 											</div>
 											<div class="form-group col-md-6">
-												<label for="feEmailAddress">Email</label> <input
+												<label for="inputEMail">Email</label> <input
 													type="email" class="form-control" id="inputEMail"
-													name="eMail" placeholder="max@mustermann.at">
+													name="eMail" placeholder="max@mustermann.at" th:value="${user} ? ${user.eMail}">
 											</div>
 										</div>
 										<div class="form-row">
 											<div class="form-group col-md-6">
-												<label for="fePassword">Password</label> <input
-													type="password" class="form-control" id="fePassword"
-													placeholder="Password">
+												<label for="inputPassword">Password</label> <input
+													type="password" class="form-control" id="inputPassword" name="password"
+													placeholder="Password" th:value="${user} ? ${user.password}">
 											</div>
 											<div class="form-group col-md-6">
-												<label for="fePassword">Confirm Password</label> <input
-													type="password" class="form-control" id="fePassword"
-													placeholder="Password">
-											</div>
+												<label for="inputPassword2">Confirm Password</label> <input
+													type="password" class="form-control" id="inputPassword2"
+													placeholder="Password">		<!-- den 2er nach Password whs entfernen! -->
+											</div>	
 										</div>
-
+			
 										<div class="form-row">
 
-											<div class="form-group col-md-2">
-												<label for="inputZip">Height (m)</label> <input type="text"
+											<div class="form-group col-md-4">
+												<label for="inputHeight">Height (m)</label> <input type="text"
 													class="form-control" id="inputHeight" name="height"
-													placeholder="1.75">
+													placeholder="1.75" th:value="${user} ? ${user.height}">
 											</div>
 
 
-											<div class="form-group col-md-2">
-												<label for="inputZip">Weight (kg)</label> <input type="text"
+											<div class="form-group col-md-4">
+												<label for="inputWeight">Weight (kg)</label> <input type="text"
 													class="form-control" id="inputWeight" name="weight"
-													placeholder="75">
+													placeholder="75" th:value="${user} ? ${user.weight}">
 											</div>
 
 											<div class="form-group col-md-4">
-												<label for="feInputState">Coach</label> <select
-													id="feInputState" class="form-control">
-													<option selected>Coach 1</option>
-													<option>Coach 2</option>
-													<option>Coach 3</option>
-													<option>Coach 4</option>
-													<option>Coach 5</option>
-												</select>
+												<label for="inputCoach">Coach</label> <select
+													id="inputCoach" class="form-control" name="coach"
+													th:value="${user} ? ${user.coach}">
+													<tr th:each="coach : ${coaches}">
+														<option th:value="${coach.userName}" th:text= "${coach.firstName} + ' ' + ${coach.lastName}"> test </option>
+													</tr> <!-- VALUE wird nicht mitübergben!!!-->
+													
+											  	</select>
+												
+												
 											</div>
 
 										</div>

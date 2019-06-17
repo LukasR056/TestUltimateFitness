@@ -13,6 +13,7 @@
 		<intercept-url pattern="/fillUser" access="permitAll" />
 		<intercept-url pattern="/fillUsers" access="permitAll" />
 		<intercept-url pattern="/registration" access="permitAll" />
+		<intercept-url pattern="/addUser" access="permitAll" />
 		<intercept-url pattern="/login" access="permitAll" />
 		<!--  intercept-url pattern="/fillUsers" access="permitAll" /-->
 		<intercept-url pattern="/images/**" access="permitAll" />

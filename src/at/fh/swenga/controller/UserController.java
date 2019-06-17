@@ -1,5 +1,6 @@
 package at.fh.swenga.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +10,7 @@ import javax.validation.Valid;
 
 import org.fluttercode.datafactory.impl.DataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.Authentication;
 //import org.springframework.data.domain.Page;
 //import org.springframework.data.domain.Pageable;
@@ -17,14 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import at.fh.swenga.model.LogModel;
 import at.fh.swenga.model.RoleModel;
@@ -45,6 +51,12 @@ public class UserController {
 	UserQueryRepository userQueryRepository;
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@InitBinder
+	public void initDateBinder(final WebDataBinder binder) {
+		binder.registerCustomEditor(Date.class, new 
+				CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
+	}
 
 	/*
 	 * @Autowired LogRepository logRepository;
@@ -148,13 +160,13 @@ public class UserController {
 		List<UserModel> users = userRepository.getUsers();
 
 		if (users.isEmpty()) {
-			UserModel u1 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, 2, "test@schwinger", 100,
+			UserModel u1 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, null, "test@schwinger", 100,
 					false, true, "password");
 			u1.encryptPassword();
 			u1.addRoleModel(userRole);
 			userRepository.persist(u1);
 			
-			UserModel u2 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, 2, "test@schwinge2r", 100,
+			UserModel u2 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, null, "test@schwinge2r", 100,
 					false, true, "password");
 			u2.encryptPassword();
 			u2.addRoleModel(userRole);
@@ -192,8 +204,42 @@ public class UserController {
 	
 	@RequestMapping(value = { "/registration" })
 	public String getRegistration(Model model) {
+		List<UserModel> coaches = null;
+		coaches = userQueryRepository.findCoach();
+		model.addAttribute("coaches", coaches);
+		
 		return "registration";
 	}
+	
+	@RequestMapping(value = { "/addUser" }, method = RequestMethod.POST)
+	public String addUser(@Valid UserModel newUserModel, BindingResult bindingResult, Model model) {
+	
+		if (bindingResult.hasErrors()) {
+			String errorMessage = "";
+			for (FieldError fieldError : bindingResult.getFieldErrors()) {
+				errorMessage += fieldError.getField() + " is invalid: " + fieldError.getCode() + "<br>";
+			}
+			model.addAttribute("errorMessage", errorMessage);
+			return "registration";
+		}
+		
+		UserModel user = userQueryRepository.findByUserName(newUserModel.getUserName());
+				//new UserModel();
+		
+		if (user != null) {
+			model.addAttribute("errorMessage", "User already exists!");
+			return "registration";
+		} else {
+			//System.out.print(newUserModel.getPassword());
+			//newUserModel.encryptPassword();
+			userRepository.persist(newUserModel);
+			System.out.print("ERFOLGREICH!");
+			model.addAttribute("message", "New User " + newUserModel.getUserName() + " successfully added!");
+			
+			return "login";
+		}
+		
+	} 
 
 
 	@RequestMapping(value = { "/profile" })
@@ -245,6 +291,7 @@ public class UserController {
 		user.setWeight(changedUserModel.getWeight());
 		
 		user = userRepository.merge(user);
+		
 		
 		//unser Ansatz um das Problem zu l�sen. Jedoch funktioniert die zuweisung zu user nicht.
 		

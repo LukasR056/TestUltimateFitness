@@ -51,39 +51,44 @@ public class SecurityController {
 		
 		Date now = new Date();
 		
-		UserModel u1 = new UserModel("Max", "Schwinger", "MaxSng", now, "w", 1.70, 70.5, 2, "max@schwinger", 100,
-				false, true, "pwd1");
-		u1.encryptPassword();
-		u1.addRoleModel(userRole);
-		u1.addRoleModel(coachRole);
-		userRepository.persist(u1);
-		
-		UserModel u2 = new UserModel("Max", "Musterman", "MaMu", now, "m", 1.80, 80.7, 2, "max@schwinge2r", 100,
-				false, true, "pwd2");
-		u2.encryptPassword();
-		u2.addRoleModel(userRole);
-		userRepository.persist(u2);
-		
-		UserModel u3 = new UserModel("Max", "Musterfrau", "Peter", now, "w", 1.64, 90.9, 2, "max@schwinger3", 100,
-				false, true, "pwd3");
-		u3.encryptPassword();
-		u3.addRoleModel(userRole);
-		userRepository.persist(u3);
-		
-		UserModel u4 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, 2, "test@schwinger", 100,
-				false, true, "password");
-		u4.encryptPassword();
-		u4.addRoleModel(userRole);
-		userRepository.persist(u4);
-		
-		UserModel u5 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, 2, "test@schwinge2r", 100,
-				false, true, "password");
-		u5.encryptPassword();
-		u5.addRoleModel(userRole);
-		u5.addRoleModel(coachRole);
-		u5.addRoleModel(adminRole);
-		userRepository.persist(u5);
+		List<UserModel> users = userRepository.getUsers();
+
+		if (users.isEmpty()) 
+		{
+			UserModel u1 = new UserModel("Max", "Schwinger", "MaxSng", now, "w", 1.70, 70.5, null, "max@schwinger", 100,
+					false, true, "pwd1");
+			u1.encryptPassword();
+			u1.addRoleModel(userRole);
+			u1.addRoleModel(coachRole);
+			userRepository.persist(u1);
 			
+			UserModel u2 = new UserModel("Max", "Musterman", "MaMu", now, "m", 1.80, 80.7, "MaxSng", "max@schwinge2r", 100,
+					false, true, "pwd2");
+			u2.encryptPassword();
+			u2.addRoleModel(userRole);
+			userRepository.persist(u2);
+			
+			UserModel u3 = new UserModel("Ludi", "Poserfrau", "Ludi", now, "w", 1.64, 90.9, null, "max@schwinger3", 100,
+					false, true, "pwd3");
+			u3.encryptPassword();
+			u3.addRoleModel(userRole);
+			userRepository.persist(u3);
+			
+			UserModel u4 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, "MaxSng", "test@schwinger", 100,
+					false, true, "password");
+			u4.encryptPassword();
+			u4.addRoleModel(userRole);
+			userRepository.persist(u4);
+			
+			UserModel u5 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, "MaxSng", "test@schwinge2r", 100,
+					false, true, "password");
+			u5.encryptPassword();
+			u5.addRoleModel(userRole);
+			u5.addRoleModel(coachRole);
+			u5.addRoleModel(adminRole);
+			userRepository.persist(u5);
+		}
+		
 		return "forward:login";
 	}
 	

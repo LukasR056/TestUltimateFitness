@@ -21,6 +21,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.JoinColumn; 
@@ -47,6 +48,8 @@ public class UserModel implements java.io.Serializable {
 	public String userName;
 	
 	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
+	// @DateTimeFormat(pattern = "dd.MM.yyyy")
 	public Date birthDate;
 	
 	@Column(nullable = false, length = 1)
@@ -59,7 +62,9 @@ public class UserModel implements java.io.Serializable {
 	private double weight;
 	
 	@Column()
-	private int coach;
+	private String coach;
+	// AUF USERNAME umgeändert damit dieser zugewiesen werden kann
+	// ist td eindeutig! DEFAULT ist man selber Coach -> null
 	
 	@Column(unique = true)
 	private String eMail;
@@ -175,7 +180,7 @@ public class UserModel implements java.io.Serializable {
 
 
 	public UserModel(String firstName, String lastName, String userName, Date birthDate, String gender, double height,
-			double weight, int coach, String eMail, int points, boolean isAdmin, boolean enabled, String password) {
+			double weight, String coach, String eMail, int points, boolean isAdmin, boolean enabled, String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -225,11 +230,11 @@ public class UserModel implements java.io.Serializable {
 		this.weight = weight;
 	}
 
-	public int getCoach() {
+	public String getCoach() {
 		return coach;
 	}
 
-	public void setCoach(int coach) {
+	public void setCoach(String coach) {
 		this.coach = coach;
 	}
 

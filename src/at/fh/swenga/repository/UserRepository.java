@@ -42,4 +42,8 @@ public class UserRepository {
 		return entityManager.merge(user);
 	}
 
+	public void addUser(UserModel user) {
+		users.add(user);
+	}
+	
 }
