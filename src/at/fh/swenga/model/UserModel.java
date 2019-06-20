@@ -1,9 +1,7 @@
 package at.fh.swenga.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,8 +21,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.JoinColumn; 
 
@@ -33,10 +31,9 @@ import javax.persistence.JoinColumn;
 public class UserModel implements java.io.Serializable {
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "userId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
-	public int id;
+	private int id;
 	
 	
 
@@ -50,6 +47,7 @@ public class UserModel implements java.io.Serializable {
 	public String userName;
 	
 	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
 	public Date birthDate;
 	
 	@Column(nullable = false, length = 1)
@@ -62,15 +60,15 @@ public class UserModel implements java.io.Serializable {
 	private double weight;
 	
 	@Column()
-	private int coach;
+	private String coach;
+	// AUF USERNAME umgeÃ¤ndert damit dieser zugewiesen werden kann
+	// ist td eindeutig! DEFAULT ist man selber Coach -> null
 	
-	@Column(unique = true)
+	@Column(nullable = false, unique = true)
 	private String eMail;
 	
  /*	@Column(nullable = true)
-	private double bmi;  wird über thymeleaf berechnet*/
-	
-	
+	private double bmi;  wird Ã¯Â¿Â½ber thymeleaf berechnet*/
 	
 	public int getPoints() {
 		return points;
@@ -87,16 +85,23 @@ public class UserModel implements java.io.Serializable {
 	@Column()
 	private boolean isAdmin;
 	
-	@Column()
+	@Column(nullable=false)
 	private boolean enabled;
 	
 	@Column(nullable=false)
 	private String password;
 	
+	@Column
+	private String passwordConfirmed;
+	
 	@Version
 	long version;
 	
-	// diese Beziehung wird benöigt für die m:n mit die exercise
+	
+	
+	//Relations
+	// ManyToMany
+  // diese Beziehung wird benÃ¶igt fÃ¼r die m:n mit die exercise
 	
 	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
 	@JoinTable(
@@ -106,11 +111,28 @@ public class UserModel implements java.io.Serializable {
 		      inverseJoinColumns={@JoinColumn(name="Exercise_id", referencedColumnName="id")})
 	private List<ExerciseModel> exercises;
 	
+  
+	// fuer User Roles!
+	@ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "userRoles", joinColumns = @JoinColumn(name = "userId"),
+       inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private Set<RoleModel> roles;
+
 	
-/*	@OneToMany(mappedBy="userId",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="userId",fetch=FetchType.LAZY)
 	@OrderBy("id")
-	private Set<LogModel> logs; */
+	private Set<LogModel> logs; 
 	
+	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
+	@OrderBy("id")
+	private Set<ForumentryModel> entries;
+	
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, 
+			fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<UserPicturesModel> userPictures;
+	
+  
+  // Luki Exercises
 	public void setExercises(List<ExerciseModel> exercises) {
 		this.exercises = exercises;
 	}
@@ -123,28 +145,23 @@ public class UserModel implements java.io.Serializable {
 		
 	}
 	
-	
 
 	public ExerciseModel remove(int index) {
 		return exercises.remove(index);
 	}
+  
+  public List<ExerciseModel> getExercises() {
+		return exercises;
+	}
+  // Luki Exercises
 
-
-	@OneToMany(mappedBy="userId",fetch=FetchType.LAZY)
-	@OrderBy("id")
-	private Set<ForumentryModel> entries;
-	
-	/*@OneToMany(mappedBy="user", cascade = CascadeType.ALL, 
-			fetch = FetchType.LAZY, orphanRemoval = true)
-	private Set<UserPicturesModel> userPictures; */
-	
+  
 
 	public UserModel ()
 	{
 		
 	}
 
-	
 
 
 	public int getId() {
@@ -186,12 +203,19 @@ public class UserModel implements java.io.Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	
+
+	public String getPasswordConfirmed() {
+		return passwordConfirmed;
+	}
+
+	public void setPasswordConfirmed(String passwordConfirmed) {
+		this.passwordConfirmed = passwordConfirmed;
+	}
 
 
 	public UserModel(String firstName, String lastName, String userName, Date birthDate, String gender, double height,
-			double weight, int coach, String eMail, int points, boolean isAdmin, boolean enabled, String password) {
+			double weight, String coach, String eMail, int points, boolean isAdmin, boolean enabled, String password, String passwordConfirmed) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -206,13 +230,7 @@ public class UserModel implements java.io.Serializable {
 		this.isAdmin = isAdmin;
 		this.enabled = enabled;
 		this.password = password;
-	}
-	
-	
-
-
-	public List<ExerciseModel> getExercises() {
-		return exercises;
+		this.passwordConfirmed = passwordConfirmed;
 	}
 
 
@@ -248,11 +266,11 @@ public class UserModel implements java.io.Serializable {
 		this.weight = weight;
 	}
 
-	public int getCoach() {
+	public String getCoach() {
 		return coach;
 	}
 
-	public void setCoach(int coach) {
+	public void setCoach(String coach) {
 		this.coach = coach;
 	}
 
@@ -279,17 +297,16 @@ public class UserModel implements java.io.Serializable {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
-	
 
-/*	public Set<LogModel> getLogs() {
+
+	public Set<LogModel> getLogs() {
 		return logs;
 	}
 
 
 	public void setLogs(Set<LogModel> logs) {
 		this.logs = logs;
-	}*/
+	}
 
 
 	public Set<ForumentryModel> getEntries() {
@@ -302,7 +319,14 @@ public class UserModel implements java.io.Serializable {
 	}
 
 
-	
+	public Set<UserPicturesModel> getUserPictures() {
+		return userPictures;
+	}
+
+
+	public void setUserPictures(Set<UserPicturesModel> userPictures) {
+		this.userPictures = userPictures;
+	}
 
 
 	public String getGender() {
@@ -311,28 +335,35 @@ public class UserModel implements java.io.Serializable {
 
 	
 	
+	public boolean add(UserPicturesModel e) {
+		return userPictures.add(e);
+	}
+
+
+	public boolean remove(Object o) {
+		return userPictures.remove(o);
+	}	
+
+	public Set<RoleModel> getRoles() {
+		return roles;
+	}
+
+
+	public void setRoles(Set<RoleModel> roles) {
+		this.roles = roles;
+	}
+
+	public void addRoleModel(RoleModel role) {
+		if (roles == null) roles = new HashSet<RoleModel>();
+		roles.add(role);
+	}
 	
-	 
-    /* public void addTag(PictureModel picture) {
-        UserPicturesModel userPicture = new UserPicturesModel(this, picture);
-        userPictures.add(userPicture);
-        picture.getPicture().add(userPicture);
-    }
- 
-    public void removeTag(Tag tag) {
-        for (Iterator<PostTag> iterator = tags.iterator();
-             iterator.hasNext(); ) {
-            PostTag postTag = iterator.next();
- 
-            if (postTag.getPost().equals(this) &&
-                    postTag.getTag().equals(tag)) {
-                iterator.remove();
-                postTag.getTag().getPosts().remove(postTag);
-                postTag.setPost(null);
-                postTag.setTag(null);
-            }
-        }
-    } */ // WIRD DAS ÜBERHAUPT BENÖTIGT???	
+	public void encryptPassword() {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		password = passwordEncoder.encode(password);
+	}
+	
+
 
 	@Override
 	public int hashCode() {
@@ -368,18 +399,13 @@ public class UserModel implements java.io.Serializable {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "UserModel [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
 				+ ", birthDate=" + birthDate + ", gender=" + gender + ", height=" + height + ", weight=" + weight
 				+ ", coach=" + coach + ", eMail=" + eMail + ", points=" + points + ", isAdmin=" + isAdmin + ", enabled="
-				+ enabled + ", password=" + password + ", exercises=" + exercises + "]";
+				+ enabled + ", password=" + password + ", passwordConfirmed=" + passwordConfirmed + "]";
 	}
 
-
-	
-
-	
-
 }
+

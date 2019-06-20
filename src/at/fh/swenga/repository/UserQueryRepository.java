@@ -15,22 +15,15 @@ import at.fh.swenga.model.UserModel;
 public interface UserQueryRepository extends JpaRepository<UserModel, Integer> {
 
 	UserModel findByUserName(String searchString);
+	
+	UserModel findByEMail(String searchString);
 
 	UserModel getUserByUserName(String searchString);
-	
-	
-/*	@Query("Delete ue FROM User u INNER JOIN User_Exercise ue on  u.id = ue.User_id INNER JOIN Exercise e on    ue.Exercise_id = e.id WHERE u.userName =:userName AND e.name = ':exerciseName'")
-	List<UserModel> deleteExerciseFromUser(@Param("userName") String userName,@Param("exerciseName") String exerciseName); */
-
-
 
 	
-
-	
- 
-	
-
-
+	@Query("SELECT u FROM UserModel u WHERE u.coach = null")
+	public List<UserModel> findCoach();
+		
 
 	
 }

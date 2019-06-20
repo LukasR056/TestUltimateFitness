@@ -1,15 +1,19 @@
 package at.fh.swenga.controller;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.fluttercode.datafactory.impl.DataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 //import org.springframework.data.domain.Page;
 //import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -17,21 +21,29 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 import at.fh.swenga.model.ExerciseModel;
 import at.fh.swenga.model.UserModel;
 import at.fh.swenga.model.UserService;
 import at.fh.swenga.repository.ExerciseRepository;
-import at.fh.swenga.repository.ForumentryRepository;
+
 //import at.fh.swenga.repository.LogRepository;
+
+import at.fh.swenga.model.ForumentryModel;
+import at.fh.swenga.model.RoleModel;
+
+import at.fh.swenga.repository.ForumentryRepository;
+import at.fh.swenga.repository.RoleQueryRepository;
+import at.fh.swenga.repository.RoleRepository;
+
 import at.fh.swenga.repository.UserQueryRepository;
 import at.fh.swenga.repository.UserRepository;
 
@@ -44,6 +56,19 @@ public class UserController {
 	UserQueryRepository userQueryRepository;
 	@Autowired
 	ExerciseRepository exerciseRepository;
+  @Autowired
+	RoleRepository roleRepository;
+	@Autowired
+	RoleQueryRepository roleQueryRepository;
+	@Autowired
+	ForumentryRepository forumentryRepository;
+	
+	@InitBinder
+	public void initDateBinder(final WebDataBinder binder) {
+		binder.registerCustomEditor(Date.class, new 
+				CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
+	}
+
 
 	/*
 	 * @Autowired LogRepository logRepository;
@@ -51,13 +76,39 @@ public class UserController {
 	 * @Autowired ForumentryRepository forumentryRepository;
 	 */
 
+	// test fuer branch
+	
+	public void findCoaches(Model model) {
+		List<UserModel> coaches = null;
+		coaches = userQueryRepository.findCoach();
+		model.addAttribute("coaches", coaches);
+	}
+
+
 	@RequestMapping(value = { "/" })
 	public String index(Model model, String name, String type) {
 
 		// test users erstellen und gespeichert.
 
-		Date now = new Date();
+		/*Date now = new Date();
 
+		// Rolen erstellen
+		
+		RoleModel adminRole = roleRepository.getRole("ROLE_ADMIN");
+		if (adminRole == null) {
+			adminRole = new RoleModel("ROLE_ADMIN");
+		}
+		
+		RoleModel coachRole = roleRepository.getRole("ROLE_COACH");
+		if (coachRole == null) {
+			coachRole = new RoleModel("ROLE_COACH");
+		}
+		
+		RoleModel userRole = roleRepository.getRole("ROLE_USER");
+		if (userRole == null) {
+			userRole = new RoleModel("ROLE_USER");
+		}
+		
 		// holen der User aus der Datenbank
 
 		List<UserModel> users = userQueryRepository.findAll();
@@ -76,13 +127,13 @@ public class UserController {
 
 			// Exercises erstellen
 			ExerciseModel exercise1 = new ExerciseModel("Hip Lift", "Stomach", null,
-					"Du legst dich auf den Rücken und stellst deine Beine hüftbreit auf. Deine Arme liegen ganz locker neben deinem Körper, die Handflächen drücken gegen den Boden. Nun hebst du deine Hüfte so weit an, bis Oberschenkel und Rücken eine gerade Linie bilden. Kurz halten (dabei Po und Bauchmuskeln anspannen) und beim Einatmen die Hüfte wieder absenken. Wichtig: Die Hüfte darf nicht den Boden berühren.");
+					"Du legst dich auf den RÃ¼cken und stellst deine Beine hÃ¼ftbreit auf. Deine Arme liegen ganz locker neben deinem KÃ¶rper, die HandflÃ¤chen drÃ¼cken gegen den Boden. Nun hebst du deine HÃ¼fte so weit an, bis Oberschenkel und RÃ¼cken eine gerade Linie bilden. Kurz halten (dabei Po und Bauchmuskeln anspannen) und beim Einatmen die HÃ¼fte wieder absenken. Wichtig: Die HÃ¼fte darf nicht den Boden berÃ¼hren.");
 			ExerciseModel exercise2 = new ExerciseModel("Sit-ups", "Stomach", null,
-					" Leg dich auf den Rücken und winkele die Beine an. Halte deine Hände an den Schläfen oder platziere sie hinter deinem Kopf. Die Ellbogen zeigen nach außen, der Blick ist nach oben gerichtet. Nun hebst du mithilfe der Bauchmuskulatur die obere Rückenpartie inklusive der Schulterblätter an bis Oberkörper und Oberschenkel einen 90-Grad-Winkel bilden. Halte diese Position für einige Sekunden und kehre dann wieder in die Grundposition zurück");
+					" Leg dich auf den RÃ¼cken und winkele die Beine an. Halte deine HÃ¤nde an den SchlÃ¤fen oder platziere sie hinter deinem Kopf. Die Ellbogen zeigen nach auÃŸen, der Blick ist nach oben gerichtet. Nun hebst du mithilfe der Bauchmuskulatur die obere RÃ¼ckenpartie inklusive der SchulterblÃ¤tter an bis OberkÃ¶rper und Oberschenkel einen 90-Grad-Winkel bilden. Halte diese Position fÃ¼r einige Sekunden und kehre dann wieder in die Grundposition zurÃ¼ck");
 			ExerciseModel exercise3 = new ExerciseModel("Up Downs", "Schoulders", null,
-					"Starte in der Low Plank Position und drück dich vom Boden weg in die High Plank Position. Achte dabei darauf, dass du den Rumpf anspannst und das Becken so stabil wie möglich hältst. Geh dann wieder zurück in die Low Plank Position und wiederhole die Übung von vorn. Beginne immer abwechselnd mit dem linken bzw. rechten Arm.");
+					"Starte in der Low Plank Position und drÃ¼ck dich vom Boden weg in die High Plank Position. Achte dabei darauf, dass du den Rumpf anspannst und das Becken so stabil wie mÃ¶glich hÃ¤ltst. Geh dann wieder zurÃ¼ck in die Low Plank Position und wiederhole die Ãœbung von vorn. Beginne immer abwechselnd mit dem linken bzw. rechten Arm.");
 			ExerciseModel exercise4 = new ExerciseModel(" Frontheben mit einer Kurzhantel", "Schoulders", null,
-					"Im stabilen Stand wird eine Kurzhantel mit den Handflächen verschränkt und vor der Hüfte gehalten Hebe die Hantel mit leicht gebeugten Armen, ohne mit dem Körper zu pendeln, bis auf Augenhöhe.Lasse anschließend das Gewicht behutsam vor die Hüfte zurück, ohne die Hantel abzulegen.");
+					"Im stabilen Stand wird eine Kurzhantel mit den HandflÃ¤chen verschrÃ¤nkt und vor der HÃ¼fte gehalten Hebe die Hantel mit leicht gebeugten Armen, ohne mit dem KÃ¶rper zu pendeln, bis auf AugenhÃ¶he.Lasse anschlieÃŸend das Gewicht behutsam vor die HÃ¼fte zurÃ¼ck, ohne die Hantel abzulegen.");
 
 			u2.addExercise(exercise1);
 			u2.addExercise(exercise4);
@@ -100,10 +151,116 @@ public class UserController {
 			userQueryRepository.save(u1);
 			userQueryRepository.save(u3);
 		}
+		
+		
+		
+		UserModel u1 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, 2, "test@schwinger", 100,
+				false, true, "password");
+		u1.encryptPassword();
+		userQueryRepository.save(u1);
+		roleRepository.persist(userRole);
+		u1.addRoleModel(userRole);
+		userRole.addUser(u1);
+		//roleRepository.persist(userRole);
+		//userQueryRepository.save(u1);
+		
+		UserModel u2 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, 2, "test@schwinge2r", 100,
+				false, true, "password");
+		u2.encryptPassword();
+		u2.addRoleModel(userRole);
+		u2.addRoleModel(coachRole);
+		u2.addRoleModel(adminRole);
+		userRepository.persist(u2);
 
-		return "index";
+		model.addAttribute("users", users);
+		
+		 /*List<RoleModel> roles = roleRepository.getAllRoles();
+         if (roles.isEmpty()) {
+                RoleModel r1 = new RoleModel("ADMIN");
+                roleRepository.persist(r1);
+               
+                RoleModel r2 = new RoleModel("COACH");
+                roleRepository.persist(r2);
+               
+                RoleModel r3 = new RoleModel("USER");
+                roleRepository.persist(r3);
+         } */
+		
+		RoleModel adminRole = roleRepository.getRole("ROLE_ADMIN");
+		if (adminRole == null) {
+			adminRole = new RoleModel("ROLE_ADMIN");
+		}
+		
+		RoleModel coachRole = roleRepository.getRole("ROLE_COACH");
+		if (coachRole == null) {
+			coachRole = new RoleModel("ROLE_COACH");
+		}
+		
+		RoleModel userRole = roleRepository.getRole("ROLE_USER");
+		if (userRole == null) {
+			userRole = new RoleModel("ROLE_USER");
+		}
+        
+			
+		Date now = new Date();
+		
+		List<UserModel> users = userRepository.getUsers();
+
+		if (users.isEmpty()) {
+			UserModel u1 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, null, "test@schwinger", 100,
+					false, true, "password", null);
+			u1.encryptPassword();
+			u1.addRoleModel(userRole);
+			userRepository.persist(u1);
+			
+			UserModel u2 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, null, "test@schwinge2r", 100,
+					false, true, "password", null);
+			u2.encryptPassword();
+			u2.addRoleModel(userRole);
+			u2.addRoleModel(coachRole);
+			u2.addRoleModel(adminRole);
+			userRepository.persist(u2);
+		}
+		
+		return "login";
+		
+		
+
 	}
 
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String handleLogin() {
+				
+		return "login";
+	}
+	
+	@Transactional
+	@PostMapping("/logout")
+	public String handleLogout(Model model, Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
+		if (authentication != null){    
+	        new SecurityContextLogoutHandler().logout(request, response, authentication);
+	    }
+		
+		model.addAttribute("message", "You have been logged out successfully!");
+		
+	    // return "login";
+		return "redirect:/login?logout";		
+		
+	}
+	
+	@RequestMapping(value = { "/profile" })
+	public String getProfile(Model model, Authentication authentication) {
+		
+		UserModel user = null;
+		
+		String searchString = authentication.getName();
+		
+		user = userQueryRepository.findByUserName(searchString);
+		
+		model.addAttribute("user", user);
+		return "profile";
+	}
+	
 	@RequestMapping(value = { "/exercise" })
 	public String getExercise(Model model) {
 
@@ -151,7 +308,7 @@ public class UserController {
 
 		return "exercise";
 	}
-	//----------------------Exercise dem User hinzufügen
+	//----------------------Exercise dem User hinzufÃ¼gen
 	@RequestMapping(value = {"/addexercise"})
 	public String addExercise(Model model, @RequestParam int id)
 	{
@@ -174,7 +331,7 @@ public class UserController {
 		return "exercise";
 	}
 	
-	//--------Exercise löschen
+	//--------Exercise lÃ¶schen
 	@RequestMapping(value = {"deleteexercise"})
 	public String deleteExercise(Model model, @RequestParam int id)
 	{
@@ -202,21 +359,211 @@ public class UserController {
 	public String getForum(Model model) {
 		return "forum";
 	}
-
-	@RequestMapping(value = { "/profile" })
-	public String getProfile(Model model) {
-
+	
+	// Param thread wird im HTML abhÃ¤ngig vom tatsÃ¤chlichen Thread Ã¼bergeben!	
+	@RequestMapping(value = { "/blogEntries" })
+	public String getBlogEntries(Model model, @RequestParam String thread, Authentication authentication) {
 		UserModel user = null;
-
-		String searchString = "MaMu";
-
-		user = userQueryRepository.findByUserName(searchString);
-
+		user = userQueryRepository.findByUserName(authentication.getName());
+		
+		ForumentryModel lastForumentry = forumentryRepository.findTop1ByThreadOrderByCreateDate(thread);
+		if (lastForumentry != null) {
+			int sizeForumentryModel = forumentryRepository.threadSize(thread);
+			UserModel lastForumentryUser = lastForumentry.getUser();
+			List<ForumentryModel> forumentries = forumentryRepository.findByThreadOrderByIdDesc(thread);
+			
+			model.addAttribute("sizeForumentryModel", sizeForumentryModel);
+			model.addAttribute("lastForumentryUser", lastForumentryUser);
+			model.addAttribute("lastForumentry", lastForumentry);
+			model.addAttribute("forumentries", forumentries);
+			
+			System.out.print(forumentries);
+		}
+		
 		model.addAttribute("user", user);
-		return "profile";
+		model.addAttribute("thread", thread);
+		
+			
+		return "blogEntries";
 	}
+	
+	// Forumentry verspeichern
+	@RequestMapping(value = { "/newPost" })
+	public String newPost(@Valid ForumentryModel newForumentryModel, BindingResult bindingResult,
+			Model model, @RequestParam String thread, Authentication authentication) {
+		UserModel user = null;
+		user = userQueryRepository.findByUserName(authentication.getName());
+		
+						
+		model.addAttribute("forumentry", newForumentryModel);
+		model.addAttribute("user", user);
+		model.addAttribute("thread", thread);
+		return "newPost";
+	}
+	
+	//@{/safePost(thread=${thread})}
+	@Transactional
+	@PostMapping("/safePost")
+	public String safePost(@Valid ForumentryModel newForumentrymodel, BindingResult bindingResult,
+			Model model, @RequestParam String thread, Authentication authentication) {
+		
+		model.addAttribute("thread", thread);
+		newForumentrymodel.setThread(thread);
+		newForumentrymodel.setCreateDate(new Date());
+		
+		UserModel activeUser = userQueryRepository.findByUserName(authentication.getName());
+		newForumentrymodel.setUser(activeUser);
+				
+		//System.out.print(activeUser);
+		System.out.print(newForumentrymodel);
+		
+		if (newForumentrymodel.getText() == "") {
+			System.out.print("Text empty");
+			model.addAttribute("errorMessage", "Please insert a Text!");
+			return "forward:/newPost";
+		} else if (newForumentrymodel.getTitle() == "" && newForumentrymodel.getText() != "") {
+			newForumentrymodel.setTitle("<no title>");
+			
+			forumentryRepository.save(newForumentrymodel);
+			return "forward:/blogEntries";		
+		} else {
+			forumentryRepository.save(newForumentrymodel);
+			return "forward:/blogEntries";		
+		}
+		
+		
+	}
+	
+	// @Secured("ROLE_ADMIN")
+	@RequestMapping("/deletePost")
+	public String deletePost(Model model, @RequestParam int forumentryId) {//, 
+			//@RequestParam String thread) { -->, thread=${thread}
+		
+		System.out.print("HALLO ICH BIN EIN ADMIN UND BERECHTIGT");
+		System.out.print(forumentryId);
+		
+		
+		
+		// model.addAttribute("thread", thread);
+		return "forward:/blogEntries";
+	}
+	
+	
+	
+	// User verspeichern
+	@RequestMapping(value = { "/registration" })
+	public String getRegistration(@Valid UserModel newUserModel, BindingResult bindingResult, Model model) {
+		findCoaches(model);
+		model.addAttribute("user", newUserModel);
+		
+		return "registration";
+	}
+	
+	@Transactional
+	@PostMapping("/addUser")
+	public String addUser(@Valid UserModel newUserModel, BindingResult bindingResult, Model model) {
+	
+		if (bindingResult.hasErrors()) {
+			String errorMessage = "";
+			for (FieldError fieldError : bindingResult.getFieldErrors()) {
+				errorMessage += fieldError.getField() + " is invalid: " + fieldError.getCode() + "<br>";
+			}
+			model.addAttribute("errorMessage", errorMessage);
+			
+			System.out.print(newUserModel);
+			
+			model.addAttribute("user", newUserModel); //
+							
+			findCoaches(model);
+			return "registration";
+				
+		}
+		
+		
+		UserModel user = userQueryRepository.findByUserName(newUserModel.getUserName());
+				
+		if (user != null) {
+			model.addAttribute("errorMessage", "Username already exists!");
+			model.addAttribute("user", newUserModel); //
+			findCoaches(model);
+			return "registration";
+		} 
+			
+		UserModel email = userQueryRepository.findByEMail(newUserModel.geteMail());
+		if (email != null) {
+			model.addAttribute("errorMessage", "E-Mail already exists!");
+			model.addAttribute("user", newUserModel); //
+			findCoaches(model);
+			return "registration";
+		}
+		
+		
+		
+		 
+		 
+		if (( newUserModel.getPassword().equals(newUserModel.getPasswordConfirmed()) ) && 
+				newUserModel.getPassword().length() >= 6 ) {
+			try {		
+				
+				RoleModel userRole = roleRepository.getRole("ROLE_USER");
+								
+				UserModel newUser = new UserModel(newUserModel.getFirstName(), newUserModel.getLastName(), 
+						newUserModel.getUserName(), newUserModel.getBirthDate(), newUserModel.getGender(), 
+						newUserModel.getHeight(), newUserModel.getWeight(), newUserModel.getCoach(), 
+						newUserModel.geteMail(), 0, false, true, newUserModel.getPassword(), null);
+				
+				// newUserModel.setEnabled(true);
+				
+				newUser.encryptPassword();
+				// newUser.addRoleModel(roleQueryRepository.findFirstRoleById(1));
+				newUser.addRoleModel(userRole);
+				
+				System.out.print(newUser);
+				userRepository.persist(newUser);
+				
+				System.out.print("ERFOLGREICH!");
+				model.addAttribute("message", "New User " + newUser.getUserName() + " successfully added!");
+				
+				return "login";
+			} 
+			catch (Exception e) {
+				model.addAttribute("user", newUserModel); //
+				findCoaches(model);
+				return "registration";
+			}
+			
+		} else {
+		
+			System.out.print("LENGTH: " + newUserModel.getPassword().length());
+			System.out.print("1. PASSWORD: " + newUserModel.getPassword());
+			System.out.print("1. PASSWORD CONFIRMED: " + newUserModel.getPasswordConfirmed());
+			
+			
+			model.addAttribute("errorMessage", "Password is not the same or it has to be at least six characters long!");
+			model.addAttribute("user", newUserModel); //
+			findCoaches(model);
+			return "registration";
+		
+		}
+		
+		/*else if (newUserModel.getPassword() != newUserModel.getPasswordConfirmed()) {
+			System.out.print("PASSWORD: " + newUserModel.getPassword());
+			System.out.print("PASSWORD CONFIRMED: " + newUserModel.getPasswordConfirmed());
 
-	@RequestMapping(value = { "/userSettings" }, method = RequestMethod.GET)
+			model.addAttribute("errorMessage", "Password has to be the same!");
+			model.addAttribute("user", newUserModel); //
+			findCoaches(model);
+			return "registration";
+		} */ 
+		
+	} 
+	
+
+
+	
+	
+	//@{/userSettings1(userName=${user.userName})}
+	@RequestMapping(value = { "/userSettings1" }, method = RequestMethod.GET)
 	public String getUserSettings(Model model, @RequestParam String userName) {
 
 		UserModel user = userQueryRepository.findByUserName(userName);
@@ -224,8 +571,12 @@ public class UserController {
 		if (user != null) {
 			model.addAttribute("user", user);
 			return "userSettings";
-		}
-		return "profile";
+		} 
+      /*
+			 * else { model.addAttribute("errorMessage", "Couldn't find user " + userName);
+			 * return "profile"; }
+			 */
+		return "forward:/profile";
 
 	}
 
@@ -234,11 +585,13 @@ public class UserController {
 
 		String[] partUserName = (changedUserModel.userName).split(",");
 
+
 		UserModel user = userQueryRepository.findByUserName(partUserName[0]);
-		// keine schöne lösung, wieso ist aber userName=MaMu,MaMu,??
+		// keine schÃ¶ne lÃ¶sung, wieso ist aber userName=MaMu,MaMu,??
 
 		// * if (user == null) { model.addAttribute("errorMessage",
 		// * "User does not exist!<br>"); }
+
 
 		user.setFirstName(changedUserModel.getFirstName());
 		user.setLastName(changedUserModel.getLastName());
@@ -247,7 +600,11 @@ public class UserController {
 		user.setWeight(changedUserModel.getWeight());
 
 		user = userRepository.merge(user);
-
+		
+		
+		//unser Ansatz um das Problem zu lÃ¯Â¿Â½sen. Jedoch funktioniert die zuweisung zu user nicht.
+		
+	
 		// coach fehlt noch
 
 		// Save a message for the web page
@@ -257,8 +614,8 @@ public class UserController {
 		return "forward:/profile";
 	}
 
-	@ExceptionHandler(Exception.class)
+	/*@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 		return "error";
-	}
+	} */
 }
