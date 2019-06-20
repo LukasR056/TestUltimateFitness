@@ -1,5 +1,7 @@
 package at.fh.swenga.model;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -19,14 +22,16 @@ import javax.persistence.Table;
 public class PictureModel {
 
 	@Id
+	@Column(name = "pictureId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int pictureId;
 	
+
 	// OneToMany
-	@OneToMany(mappedBy = "picture", cascade = CascadeType.ALL, 
-			fetch=FetchType.LAZY, orphanRemoval = true)
-	private Set<UserPicturesModel> userPictures;
-	
+	@OneToMany(mappedBy = "picture",fetch=FetchType.EAGER)
+	@OrderBy("id")
+	private Set<UserPictureModel> userPictures;
+
 	@Column(nullable = false, length = 50)
 	private String name;
 	
@@ -45,35 +50,41 @@ public class PictureModel {
 		// TODO Auto-generated constructor stub
 	}
 
+	// mit this.userPictures = userPictures;??
 	
-	public PictureModel(int id, Set<UserPicturesModel> userPictures, String name, String level, byte[] picture) {
+	/*public PictureModel(int id, String name, String level, byte[] picture) {
 		super();
 		this.id = id;
-		this.userPictures = userPictures;
 		this.name = name;
 		this.level = level;
 		this.picture = picture;
+	}*/
+
+	public PictureModel(int pictureId, String name, String level) {
+		super();
+		this.pictureId = pictureId;
+		this.name = name;
+		this.level = level;
 	}
-
-
-
 
 	// Getter & Setter
-	public int getId() {
-		return id;
+	public int getPictureId() {
+		return pictureId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setPictureId(int pictureId) {
+		this.pictureId = pictureId;
 	}
 
-	public Set<UserPicturesModel> getUserPictures() {
+	
+
+	public Set<UserPictureModel> getUserPictures() {
 		return userPictures;
 	}
 
-	public void setUserPictures(Set<UserPicturesModel> userPictures) {
+	public void setUserPictures(Set<UserPictureModel> userPictures) {
 		this.userPictures = userPictures;
-	}
+	} 
 
 	public String getName() {
 		return name;
@@ -105,7 +116,7 @@ public class PictureModel {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + pictureId;
 		return result;
 	}
 
@@ -118,9 +129,31 @@ public class PictureModel {
 		if (getClass() != obj.getClass())
 			return false;
 		PictureModel other = (PictureModel) obj;
-		if (id != other.id)
+		if (pictureId != other.pictureId)
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "PictureModel [pictureId=" + pictureId + ", name=" + name + ", level=" + level + ", picture="
+				+ Arrays.toString(picture) + "]";
+	}
+
+	
+
+	/*@Override
+	public String toString() {
+		return "PictureModel [id=" + id + ", userPictures=" + userPictures + ", name=" + name + ", level=" + level
+				+ ", picture=" + Arrays.toString(picture) + "]";
+	}*/
+	
+/*	public void addUserPicture(UserPictureModel userPicture) {
+		if (userPictures==null) {
+			userPictures= new HashSet<UserPictureModel>();
+		}
+		userPictures.add(userPicture);
+	}  */
+	
 	
 }

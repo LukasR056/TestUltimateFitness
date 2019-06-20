@@ -21,28 +21,28 @@
       {
         backgroundColor: 'rgba(0, 184, 216, 0.1)',
         borderColor: 'rgb(0, 184, 216)',
-        data: [10, 2, 1, 0, 5, 4, 10],
+        data: heights7//[10, 2, 1, 20, 5, 4, 10,11,11,11,11,11],
       },
       {
         backgroundColor: 'rgba(23,198,113,0.1)',
         borderColor: 'rgb(23,198,113)',
-        data: [1, 2, 3, 3, 3, 4, 4]
+        data: weights7//[1, 2, 3, 3, 3, 4, 4]
       },
       {
         backgroundColor: 'rgba(255,180,0,0.1)',
         borderColor: 'rgb(255,180,0)',
-        data: [2, 3, 3, 3, 4, 3, 3]
+        data: bmi7 //[2, 3, 3, 3, 4, 3, 3]
       },
       {
         backgroundColor: 'rgba(255,65,105,0.1)',
         borderColor: 'rgb(255,65,105)',
-        data: [1, 7, 1, 3, 1, 4, 8]
-      },
+        data: points7 //[1, 7, 1, 3, 1, 4, 8]
+      }/*,
       {
         backgroundColor: 'rgb(0,123,255,0.1)',
         borderColor: 'rgb(0,123,255)',
         data: [3, 2, 3, 2, 4, 5, 4]
-      }
+      }*/
     ];
 
     // Options
@@ -120,14 +120,18 @@
     // Data
     var bouData = {
       // Generate the days labels on the X axis.
-      labels: Array.from(new Array(30), function (_, i) {
+      labels: Array.from(new Array(numbers.length), function (_, i) {
         return i === 0 ? 1 : i;
       }),
       datasets: [{
-        label: 'Hallo',
+        label: 'BMI',
         fill: 'start',
-        data: [500, 800, 320, 180, 240, 0, 230, 650, 590, 1200, 750, 940, 1420, 1200, 960, 1450, 1820, 2800, 2102, 1920, 3920, 3202, 3140, 2800, 3200, 3200, 3400, 2910, 3100, 4250],
-        backgroundColor: 'rgba(0,123,255,0.1)',
+        
+      // Log bmi
+      data: bmis , //[500, 800, 320, 180, 240, 0, 230, 650, 590, 1200, 750, 940, 1420, 1200, 960, 1450, 1820, 2800, 2102, 1920, 3920, 3202, 3140, 2800, 3200, 3200, 3400, 2910, 3100, 4250],
+        
+      
+      backgroundColor: 'rgba(0,123,255,0.1)',
         borderColor: 'rgba(0,123,255,1)',
         pointBackgroundColor: '#ffffff',
         pointHoverBackgroundColor: 'rgb(0,123,255)',
@@ -135,9 +139,12 @@
         pointRadius: 0,
         pointHoverRadius: 3
       }, {
-        label: 'Past Month',
+        label: 'Weight',
         fill: 'start',
-        data: [380, 430, 120, 230, 410, 740, 472, 219, 391, 229, 400, 203, 301, 380, 291, 620, 0, 300, 630, 402, 320, 380, 289, 410, 300, 530, 630, 720, 780, 1200],
+        
+        data: weights,//[60, 430, 120, 230, 410, 740, 472, 219, 391, 229, 400, 203, 301, 380, 291, 620, 0, 300, 630, 402, 320, 380, 289, 410, 300, 530, 630, 720, 780, 1200],
+        
+        	
         backgroundColor: 'rgba(255,65,105,0.1)',
         borderColor: 'rgba(255,65,105,1)',
         pointBackgroundColor: '#ffffff',
@@ -171,7 +178,7 @@
           ticks: {
             callback: function (tick, index) {
               // Jump every 7 values on the X axis labels to avoid clutter.
-              return index % 7 !== 0 ? '' : tick;
+              return index % 3 !== 0 ? '' : tick;
             }
           }
         }],
@@ -227,14 +234,15 @@
     var ubdData = {
       datasets: [{
         hoverBorderColor: '#ffffff',
-        data: [30, 30, 40],
+        data: [10, 30, 40, 20],
         backgroundColor: [
           'rgba(0,123,255,0.9)',
           'rgba(0,123,255,0.5)',
-          'rgba(0,123,255,0.3)'
+          'rgba(0,123,255,0.3)',
+          'rgba(0,123,255,0.1)'
         ]
       }],
-      labels: ["Hi", "Tablet", "Mobile"]
+      labels: ["Stomach", "Leg", "Breast", "Shoulder"]
     };
 
     // Options

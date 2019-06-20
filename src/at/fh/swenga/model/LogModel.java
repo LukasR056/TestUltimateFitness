@@ -139,4 +139,5 @@ public class LogModel implements Serializable {
 				+ date + "]";
 	}
 
+
 }

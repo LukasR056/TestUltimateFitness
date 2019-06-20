@@ -32,8 +32,9 @@ public class UserModel implements java.io.Serializable {
 	@Id
 	@Column(name = "userId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	public int userId;
 	
+
 	@Column(nullable = false, length = 40)
 	private String firstName;
 	
@@ -116,17 +117,19 @@ public class UserModel implements java.io.Serializable {
     private Set<RoleModel> roles;
 
 	
+
 	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
 	@OrderBy("id")
+
 	private Set<LogModel> logs; 
 	
 	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
 	@OrderBy("id")
 	private Set<ForumentryModel> entries;
 	
-	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, 
-			fetch = FetchType.LAZY, orphanRemoval = true)
-	private Set<UserPicturesModel> userPictures;
+	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+	@OrderBy("id")
+	private Set<UserPictureModel> userPicture;
 	
   
   // Luki Exercises
@@ -161,12 +164,12 @@ public class UserModel implements java.io.Serializable {
 
 
 
-	public int getId() {
-		return id;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getFirstName() {
@@ -211,6 +214,29 @@ public class UserModel implements java.io.Serializable {
 	}
 
 
+	
+
+
+	public UserModel(int userId, String firstName, String lastName, String userName, Date birthDate, String gender,
+			double height, double weight, int coach, String eMail, int points, boolean isAdmin, boolean enabled,
+			String password) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userName = userName;
+		this.birthDate = birthDate;
+		this.gender = gender;
+		this.height = height;
+		this.weight = weight;
+		this.coach = coach;
+		this.eMail = eMail;
+		this.points = points;
+		this.isAdmin = isAdmin;
+		this.enabled = enabled;
+		this.password = password;
+	}
+	
 	public UserModel(String firstName, String lastName, String userName, Date birthDate, String gender, double height,
 			double weight, String coach, String eMail, int points, boolean isAdmin, boolean enabled, String password, String passwordConfirmed) {
 		super();
@@ -229,6 +255,8 @@ public class UserModel implements java.io.Serializable {
 		this.password = password;
 		this.passwordConfirmed = passwordConfirmed;
 	}
+	
+	
 
 
 	public Date getBirthDate() {
@@ -266,6 +294,12 @@ public class UserModel implements java.io.Serializable {
 	public String getCoach() {
 		return coach;
 	}
+
+
+	public Set<UserPictureModel> getUserPicture() {
+		return userPicture;
+	}
+
 
 	public void setCoach(String coach) {
 		this.coach = coach;
@@ -316,13 +350,11 @@ public class UserModel implements java.io.Serializable {
 	}
 
 
-	public Set<UserPicturesModel> getUserPictures() {
-		return userPictures;
-	}
+	
 
 
-	public void setUserPictures(Set<UserPicturesModel> userPictures) {
-		this.userPictures = userPictures;
+	public void setUserPicture(Set<UserPictureModel> userPicture) {
+		this.userPicture = userPicture;
 	}
 
 
@@ -332,13 +364,13 @@ public class UserModel implements java.io.Serializable {
 
 	
 	
-	public boolean add(UserPicturesModel e) {
-		return userPictures.add(e);
+	public boolean add(UserPictureModel e) {
+		return userPicture.add(e);
 	}
 
 
 	public boolean remove(Object o) {
-		return userPictures.remove(o);
+		return userPicture.remove(o);
 	}	
 
 	public Set<RoleModel> getRoles() {
@@ -355,6 +387,11 @@ public class UserModel implements java.io.Serializable {
 		roles.add(role);
 	}
 	
+	public void addLogModel(LogModel log) {
+		if (logs == null) logs = new HashSet<LogModel>();
+		logs.add(log);
+	}
+	
 	public void encryptPassword() {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		password = passwordEncoder.encode(password);
@@ -367,7 +404,7 @@ public class UserModel implements java.io.Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((eMail == null) ? 0 : eMail.hashCode());
-		result = prime * result + id;
+		result = prime * result + userId;
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
@@ -386,7 +423,7 @@ public class UserModel implements java.io.Serializable {
 				return false;
 		} else if (!eMail.equals(other.eMail))
 			return false;
-		if (id != other.id)
+		if (userId != other.userId)
 			return false;
 		if (userName == null) {
 			if (other.userName != null)
@@ -403,6 +440,16 @@ public class UserModel implements java.io.Serializable {
 				+ ", coach=" + coach + ", eMail=" + eMail + ", points=" + points + ", isAdmin=" + isAdmin + ", enabled="
 				+ enabled + ", password=" + password + ", passwordConfirmed=" + passwordConfirmed + "]";
 	}
+	
+	//wurde für die UserPicture hinzugefügt!!!!
+	public void addUserPicture(UserPictureModel userPicture) {
+		if (userPicture==null) {
+			userPicture= new HashSet<UserPictureModel>();
+		}
+		userPicture.add(userPicture);
+	}
+	
+	
 
 }
 
