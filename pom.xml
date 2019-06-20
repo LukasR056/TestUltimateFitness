@@ -71,6 +71,13 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>5.1.5.RELEASE</version>
 		</dependency>
+		
+		<!-- Fileupload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.4</version>
+		</dependency>
 
 
 		<!-- SECURITY -->

@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -118,9 +119,8 @@ public class UserModel implements java.io.Serializable {
 
 	
 
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
 	@OrderBy("id")
-
 	private Set<LogModel> logs; 
 	
 	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
@@ -130,6 +130,10 @@ public class UserModel implements java.io.Serializable {
 	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
 	@OrderBy("id")
 	private Set<UserPictureModel> userPicture;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private DocumentModel document;
+	
 	
   
   // Luki Exercises
@@ -213,12 +217,20 @@ public class UserModel implements java.io.Serializable {
 		this.passwordConfirmed = passwordConfirmed;
 	}
 
+	
+	public DocumentModel getDocument() {
+		return document;
+	}
+ 
+public void setDocument(DocumentModel document) {
+	this.document = document;
+	}
 
 	
 
 
 	public UserModel(int userId, String firstName, String lastName, String userName, Date birthDate, String gender,
-			double height, double weight, int coach, String eMail, int points, boolean isAdmin, boolean enabled,
+			double height, double weight, String coach, String eMail, int points, boolean isAdmin, boolean enabled,
 			String password) {
 		super();
 		this.userId = userId;
@@ -442,12 +454,12 @@ public class UserModel implements java.io.Serializable {
 	}
 	
 	//wurde für die UserPicture hinzugefügt!!!!
-	public void addUserPicture(UserPictureModel userPicture) {
+	/*public void addUserPicture(UserPictureModel userPicture) {
 		if (userPicture==null) {
 			userPicture= new HashSet<UserPictureModel>();
 		}
 		userPicture.add(userPicture);
-	}
+	}*/
 	
 	
 

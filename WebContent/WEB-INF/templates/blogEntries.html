@@ -246,26 +246,25 @@
 													style="background-image: url('images/avatars/1.jpg');">Written
 													by James Khan</a>
 												<!-- FÜR PROFILBILD -->
-												
-													<div class="d-flex flex-column justify-content-center ml-3">
-														<span class="card-post__author-name"
-															th:text="${forumentry.user.firstName} + ' ' + ${forumentry.user.lastName}"></span>
-														<small class="text-muted"
-															th:text="${#dates.format(forumentry.createDate, 'dd.MM.yyyy')}">21
-															March 2011</small> 
-															
-															<div class="row">
-															<a th:href="@{/deletePost(forumentryId=${forumentry.id}, thread=${thread})}"><button
-																class="mb-2 btn btn-sm btn-warning mr-2"
-																sec:authorize="hasRole('ROLE_ADMIN')">Edit</button></a> 
-															
-															<!--  <a th:href="@{/deletePost(thread=${thread})}"><button
-																class="mb-2 btn btn-sm btn-danger mr-1"
-																sec:authorize="hasRole('ROLE_ADMIN')">Delete</button> </a>
-															</div> -->
-														<!-- forumentryId = forumentry.id, -->
-													</div>
-												
+
+												<div class="d-flex flex-column justify-content-center ml-3">
+													<span class="card-post__author-name"
+														th:text="${forumentry.user.firstName} + ' ' + ${forumentry.user.lastName}"></span>
+													<small class="text-muted"
+														th:text="${#dates.format(forumentry.createDate, 'dd.MM.yyyy')}">21
+														March 2011</small>
+
+													<!-- WICHTIG FÜR DIE ZUKUNFT -->
+
+													<a th:href="@{/editPost(forumentryId=${forumentry.id}, thread=${thread})}"><button
+															class="mb-2 btn btn-sm btn-warning mr-2"
+															sec:authorize="hasRole('ROLE_ADMIN')">Edit</button></a> 
+													<a th:href="@{/deletePost(forumentryId=${forumentry.id}, thread=${thread})}"><button
+															class="mb-2 btn btn-sm btn-danger mr-1"
+															sec:authorize="hasRole('ROLE_ADMIN')">Delete</button> </a>
+
+												</div>
+
 											</div>
 
 										</div>
