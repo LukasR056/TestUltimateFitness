@@ -1,16 +1,21 @@
 package at.fh.swenga.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 
@@ -20,6 +25,7 @@ public class ForumentryModel {
 
 	@Id
 	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Column()
@@ -28,7 +34,13 @@ public class ForumentryModel {
 	private String title;
 	@Column()
 	private String text;
+	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
+	public Date createDate;
 	
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
 
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private UserModel user;
@@ -44,10 +56,6 @@ public class ForumentryModel {
 
 	public UserModel getUser() {
 		return user;
-	}
-
-	public void setUser(UserModel user) {
-		this.user = user;
 	}
 
 	public String getThread() {
@@ -69,18 +77,37 @@ public class ForumentryModel {
 	public String getText() {
 		return text;
 	}
+	
+	public void setText(String text) {
+		this.text = text;
+	}
+	
+	public Date getCreateDate() {
+		return createDate;
+	}
 
-	public ForumentryModel(int id, String thread, String title, String text, UserModel user) {
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public ForumentryModel(String thread, String title, String text, Date createDate, UserModel user) {
+		super();
+		this.thread = thread;
+		this.title = title;
+		this.text = text;
+		this.createDate = createDate;
+		this.user = user;
+	}
+
+
+	public ForumentryModel(int id, String thread, String title, String text, Date createDate, UserModel user) {
 		super();
 		this.id = id;
 		this.thread = thread;
 		this.title = title;
 		this.text = text;
+		this.createDate = createDate;
 		this.user = user;
-	}
-
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	public ForumentryModel() {
@@ -89,8 +116,8 @@ public class ForumentryModel {
 
 	@Override
 	public String toString() {
-		return "ForumentryModel [id=" + id + ", thread=" + thread + ", title=" + title + ", text=" + text + ", user="
-				+ user + "]";
+		return "ForumentryModel [id=" + id + ", thread=" + thread + ", title=" + title + ", text=" + text
+				+ ", createDate=" + createDate + ", user=" + user + "]";
 	}
 
 	@Override
@@ -116,3 +143,4 @@ public class ForumentryModel {
 	}
 
 }
+

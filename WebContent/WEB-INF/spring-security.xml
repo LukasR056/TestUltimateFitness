@@ -13,10 +13,14 @@
 		<intercept-url pattern="/fillUser" access="permitAll" />
 		<intercept-url pattern="/fillUsers" access="permitAll" />
 		<intercept-url pattern="/registration" access="permitAll" />
+		<intercept-url pattern="/addUser" access="permitAll" />
 		<intercept-url pattern="/login" access="permitAll" />
 		<!--  intercept-url pattern="/fillUsers" access="permitAll" /-->
 		<intercept-url pattern="/images/**" access="permitAll" />
-		
+	
+		<!-- ROLE_ADMIN -->
+		<intercept-url pattern="/deletePost" access="hasRole('ADMIN')" />
+	
 		<intercept-url pattern="/**" access="permitAll" />
 		
 		<!-- intercept-url pattern="/**" access="hasRole('USER')" / -->

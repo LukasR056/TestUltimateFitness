@@ -18,38 +18,29 @@ public class LogModel implements Serializable {
 	@Column(name = "logId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int logId;
-	
-	
+
 	@Column(nullable = false)
 	private double height;
-	
+
 	@Column(nullable = false)
 	private double weight;
-	
+
 	@Column
-	private int points =0;
-	
+	private int points = 0;
+
 	@Column
 	private Date date;
-	
-	@ManyToOne //(cascade = CascadeType.ALL)
+
+	@ManyToOne // (cascade = CascadeType.ALL)
 	UserModel user;
-	
+
 	public LogModel() {
-		
+
 	}
 
-	
-	
-	
-	
 	public void setHeight(double height) {
 		this.height = height;
 	}
-
-
-
-
 
 	public void setWeight(double weight) {
 		this.weight = weight;
@@ -63,7 +54,6 @@ public class LogModel implements Serializable {
 		this.date = date;
 	}
 
-
 	public LogModel(UserModel user, double height, double weight, int points, Date date) {
 		super();
 		this.user = user;
@@ -72,10 +62,7 @@ public class LogModel implements Serializable {
 		this.points = points;
 		this.date = date;
 	}
-	
-	
-	
-	
+
 	public int getPoints() {
 		return points;
 	}
@@ -148,10 +135,9 @@ public class LogModel implements Serializable {
 
 	@Override
 	public String toString() {
-		return "LogModel [user=" + user + ", height=" + height + ", weight=" + weight + ", points=" + points
-				+ ", date=" + date + "]";
+		return "LogModel [user=" + user + ", height=" + height + ", weight=" + weight + ", points=" + points + ", date="
+				+ date + "]";
 	}
-	
-	
-	
+
+
 }

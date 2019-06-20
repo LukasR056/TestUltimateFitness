@@ -26,6 +26,8 @@
 					<div class="form-row">
 					<h2 class="form-signin-heading"><br>Please sign in</h2>
 					
+					<div th:unless="${message} == null" th:utext="${message}" class="alert alert-success" role="warning"></div>
+					
 					<div th:if="${param.error}" class="alert alert-danger">Invalid username and password.</div>
 					
 					<div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
@@ -40,9 +42,10 @@
 							Sign in
 						</button>
 						
-						<a type="button" class="mb-2 btn btn-outline-primary mr-1" 
-							th:href="registration.html">Sign up
-						</a>
+						<a class="mb-2 btn btn-outline-primary mr-1" 
+							href="registration">Sign up
+						</a>	
+						
 					</div>
 					</div>
 				</form>

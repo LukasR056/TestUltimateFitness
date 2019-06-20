@@ -17,7 +17,7 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util 
@@ -25,15 +25,16 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/data/jpa
-	    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-	    http://www.springframework.org/schema/security 
+	  http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+	  http://www.springframework.org/schema/security 
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<context:property-placeholder
 		location="classpath:db.properties" />
 
-	<sec:global-method-security secured-annotations="enabled" />
-	
+	<sec:global-method-security
+		secured-annotations="enabled" />
+
 	<!-- - POJOs labeled with the @Controller and @Service annotations are auto-detected 
 		in this package and all sub packages. -->
 	<context:component-scan
@@ -48,8 +49,9 @@
 
 
 	<mvc:default-servlet-handler />
-	
-	<bean id="conversionService"
+  
+  
+  <bean id="conversionService"
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
 
 	<bean
@@ -77,21 +79,20 @@
 	<bean id="templateEngine"
 		class="org.thymeleaf.spring5.SpringTemplateEngine">
 		<property name="templateResolver" ref="templateResolver" />
-		<!-- Enabling the SpringEL compiler with Spring 4.2.4 or newer can speed 
-			up -->
-		<!-- execution in most scenarios, but might be incompatible with specific -->
-		<!-- cases when expressions in one template are reused across different 
-			data -->
-		<!-- types, so this flag is "false" by default for safer backwards -->
-		<!-- compatibility. -->
 		<property name="enableSpringELCompiler" value="true" /> <!-- wurde von false auf true geändert -->
+		<property name="additionalDialects">
+			<set>
+				<bean
+					class="org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect" />
+			</set>
+		</property>
 	</bean>
 
 	<bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
 		<property name="templateEngine" ref="templateEngine" />
 	</bean>
 
-	
+
 
 	<bean
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
@@ -123,4 +124,5 @@
 
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
 </beans>

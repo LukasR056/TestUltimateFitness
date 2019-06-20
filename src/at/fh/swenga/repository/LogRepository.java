@@ -14,3 +14,4 @@ public interface LogRepository extends JpaRepository<LogModel, Integer> {
 
 	
 }
+
