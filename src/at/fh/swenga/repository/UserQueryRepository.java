@@ -16,14 +16,14 @@ import at.fh.swenga.model.UserModel;
 public interface UserQueryRepository extends JpaRepository<UserModel, Integer> {
 
 	UserModel findByUserName(String searchString);
+	
+	UserModel findByEMail(String searchString);
 
 	UserModel getUserByUserName(String userName);
 	
 	@Query("SELECT u FROM UserModel u WHERE u.coach = null")
 	public List<UserModel> findCoach();
-
-	
-	
+		
 
 
 

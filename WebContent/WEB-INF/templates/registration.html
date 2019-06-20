@@ -44,11 +44,13 @@
 							<div class="row">
 								<div class="col">
 									<form method="post"
-										th:action="${user} ?: @{/addUser}"> <!-- @{/userSettings(userName=${user.userName})}  : -->
+										th:action="${user} ? @{/addUser} : @{/registration}"> <!-- @{/userSettings(userName=${user.userName})}  : -->
 										<div class="form-row">
 											<div class="form-group col-md-12">
 												<div th:unless="${errorMessage} == null" th:utext="${errorMessage}" class="alert alert-danger" role="alert"></div>
 											</div>
+											
+											<div th:text="${user}" ></div>
 											
 											<div class="form-group col-md-6">
 												<label for="inputFirstName">First Name</label> <input
@@ -69,8 +71,8 @@
 											</div>
 
 											<div class="form-group col-md-4">
-												<label for="inputBirthDate">Day of Birth</label> <input
-													type="number" class="form-control" id="inputBirthDate"
+												<label for="inputBirthDate">Day of Birth (yyyy-MM-dd)</label> <input
+													type="text" class="form-control" id="inputBirthDate"
 													name="birthDate" placeholder="1990-01-01" th:value="${user} ? ${#dates.format(user.birthDate, 'yyyy-MM-dd')}">
 											</div>
 					
@@ -78,9 +80,9 @@
 												<label for="inputGender">Gender</label> <select
 													id="inputGender" class="form-control" name="gender" 
 													th:value="${user} ? ${user.gender}">
-													<option selected>Choose...</option>
-													<option value="m">male</option> <!-- value="m" -->
-													<option value="f">female</option> <!-- value="f" -->
+													<option selected th:value="${user} ? ${user.gender}">Choose...</option>
+													<option value="m">male</option> 	<!-- value="m" -->
+													<option value="f">female</option> 	<!-- value="f" -->
 												</select>
 											</div>
 											<div class="form-group col-md-6">
@@ -93,13 +95,14 @@
 											<div class="form-group col-md-6">
 												<label for="inputPassword">Password</label> <input
 													type="password" class="form-control" id="inputPassword" name="password"
-													placeholder="Password" th:value="${user} ? ${user.password}">
+													placeholder="Password" >
 											</div>
 											<div class="form-group col-md-6">
 												<label for="inputPassword2">Confirm Password</label> <input
-													type="password" class="form-control" id="inputPassword2"
+													type="password" class="form-control" id="inputPassword2" name="passwordConfirmed"
 													placeholder="Password">		<!-- den 2er nach Password whs entfernen! -->
 											</div>	
+											
 										</div>
 			
 										<div class="form-row">
@@ -107,23 +110,27 @@
 											<div class="form-group col-md-4">
 												<label for="inputHeight">Height (m)</label> <input type="text"
 													class="form-control" id="inputHeight" name="height"
-													placeholder="1.75" th:value="${user} ? ${user.height}">
+													placeholder=1.75
+													th:value="${user.height} != 0.0 ? ${user.height}">
+													
+													<!--  th:if="${user.height} == 0.0"--> 
+													 
 											</div>
 
 
 											<div class="form-group col-md-4">
 												<label for="inputWeight">Weight (kg)</label> <input type="text"
 													class="form-control" id="inputWeight" name="weight"
-													placeholder="75" th:value="${user} ? ${user.weight}">
+													placeholder="75" 
+													th:value="${user.weight} != 0.0 ? ${user.weight}">
 											</div>
 
 											<div class="form-group col-md-4">
 												<label for="inputCoach">Coach</label> <select
-													id="inputCoach" class="form-control" name="coach"
-													th:value="${user} ? ${user.coach}">
+													id="inputCoach" class="form-control" name="coach">
 													<tr th:each="coach : ${coaches}">
 														<option th:value="${coach.userName}" th:text= "${coach.firstName} + ' ' + ${coach.lastName}"> test </option>
-													</tr> <!-- VALUE wird nicht mitübergben!!!-->
+													</tr>
 													
 											  	</select>
 												

@@ -33,8 +33,7 @@ public class UserModel implements java.io.Serializable {
 	@Id
 	@Column(name = "userId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
-	public int id;
+	private int id;
 	
 	
 
@@ -49,7 +48,6 @@ public class UserModel implements java.io.Serializable {
 	
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
-	// @DateTimeFormat(pattern = "dd.MM.yyyy")
 	public Date birthDate;
 	
 	@Column(nullable = false, length = 1)
@@ -66,7 +64,7 @@ public class UserModel implements java.io.Serializable {
 	// AUF USERNAME umgeändert damit dieser zugewiesen werden kann
 	// ist td eindeutig! DEFAULT ist man selber Coach -> null
 	
-	@Column(unique = true)
+	@Column(nullable = false, unique = true)
 	private String eMail;
 	
  /*	@Column(nullable = true)
@@ -92,6 +90,9 @@ public class UserModel implements java.io.Serializable {
 	
 	@Column(nullable=false)
 	private String password;
+	
+	@Column
+	private String passwordConfirmed;
 	
 	@Version
 	long version;
@@ -120,7 +121,7 @@ public class UserModel implements java.io.Serializable {
 	@OrderBy("id")
 	private Set<LogModel> logs; 
 	
-	@OneToMany(mappedBy="userId",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
 	@OrderBy("id")
 	private Set<ForumentryModel> entries;
 	
@@ -175,12 +176,19 @@ public class UserModel implements java.io.Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	
+
+	public String getPasswordConfirmed() {
+		return passwordConfirmed;
+	}
+
+	public void setPasswordConfirmed(String passwordConfirmed) {
+		this.passwordConfirmed = passwordConfirmed;
+	}
 
 
 	public UserModel(String firstName, String lastName, String userName, Date birthDate, String gender, double height,
-			double weight, String coach, String eMail, int points, boolean isAdmin, boolean enabled, String password) {
+			double weight, String coach, String eMail, int points, boolean isAdmin, boolean enabled, String password, String passwordConfirmed) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -195,6 +203,7 @@ public class UserModel implements java.io.Serializable {
 		this.isAdmin = isAdmin;
 		this.enabled = enabled;
 		this.password = password;
+		this.passwordConfirmed = passwordConfirmed;
 	}
 
 
@@ -377,7 +386,7 @@ public class UserModel implements java.io.Serializable {
 		return "UserModel [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
 				+ ", birthDate=" + birthDate + ", gender=" + gender + ", height=" + height + ", weight=" + weight
 				+ ", coach=" + coach + ", eMail=" + eMail + ", points=" + points + ", isAdmin=" + isAdmin + ", enabled="
-				+ enabled + ", password=" + password + "]";
+				+ enabled + ", password=" + password + ", passwordConfirmed=" + passwordConfirmed + "]";
 	}
 
 }
