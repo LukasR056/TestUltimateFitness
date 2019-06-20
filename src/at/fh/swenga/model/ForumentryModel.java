@@ -29,12 +29,9 @@ public class ForumentryModel {
 	@Column()
 	private String text;
 	
-	public void setUserId(UserModel userId) {
-		this.userId = userId;
-	}
 
 	@ManyToOne (cascade = CascadeType.PERSIST)
-	private UserModel userId;
+	private UserModel user;
 
 	public int getId() {
 		return id;
@@ -45,8 +42,12 @@ public class ForumentryModel {
 	}
 
 
-	public UserModel getUserId() {
-		return userId;
+	public UserModel getUser() {
+		return user;
+	}
+
+	public void setUser(UserModel user) {
+		this.user = user;
 	}
 
 	public String getThread() {
@@ -69,13 +70,13 @@ public class ForumentryModel {
 		return text;
 	}
 
-	public ForumentryModel(int id, String thread, String title, String text, UserModel userId) {
+	public ForumentryModel(int id, String thread, String title, String text, UserModel user) {
 		super();
 		this.id = id;
 		this.thread = thread;
 		this.title = title;
 		this.text = text;
-		this.userId = userId;
+		this.user = user;
 	}
 
 	public void setText(String text) {
@@ -88,8 +89,8 @@ public class ForumentryModel {
 
 	@Override
 	public String toString() {
-		return "ForumentryModel [id=" + id + ", thread=" + thread + ", title=" + title + ", text=" + text + ", userId="
-				+ userId + "]";
+		return "ForumentryModel [id=" + id + ", thread=" + thread + ", title=" + title + ", text=" + text + ", user="
+				+ user + "]";
 	}
 
 	@Override

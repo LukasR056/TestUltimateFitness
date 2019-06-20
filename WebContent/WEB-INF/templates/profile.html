@@ -193,6 +193,15 @@
 				<i class="fa fa-check mx-2"></i> <strong>Success!</strong> Your
 				profile has been updated!
 			</div>
+			
+				<!--  <div th:unless="${logs} == null" th:utext="${logs}">-->
+				<!-- <div th:unless="${weights} == null" th:utext="${weights}">  -->
+				<!-- <div th:unless="${bmis} == null" th:utext="${bmis}"> -->
+				<!-- <div th:unless="${heights7} == null" th:utext="${heights7}"> -->
+				<!-- <div th:unless="${heightproz} == null" th:utext="${heightproz}"> -->
+				
+				
+			
 
 			<!--   message ----------------------------------------------------------- -->
 
@@ -220,8 +229,8 @@
 											th:text="${user.height}">xxx</h6>
 									</div>
 									<div class="stats-small__data">
-										<span
-											class="stats-small_percentage stats-small_percentage--increase">4.7%</span>
+										<!-- <span
+											class="stats-small_percentage stats-small_percentage--increase">4.7%</span> -->
 									</div>
 								</div>
 								<canvas height="120" class="blog-overview-stats-small-1"></canvas>
@@ -238,8 +247,8 @@
 											th:text="${user.weight}">xxx</h6>
 									</div>
 									<div class="stats-small__data">
-										<span
-											class="stats-small_percentage stats-small_percentage--increase">12.4%</span>
+										<!-- <span
+											class="stats-small_percentage stats-small_percentage--increase">12.4%</span> -->
 									</div>
 								</div>
 								<canvas height="120" class="blog-overview-stats-small-2"></canvas>
@@ -256,8 +265,8 @@
 											th:text="${#numbers.formatDecimal(user.weight / (user.height *user.height),2,'COMMA',2,'POINT')}">xxx</h6>
 									</div>
 									<div class="stats-small__data">
-										<span
-											class="stats-small_percentage stats-small_percentage--decrease">3.8%</span>
+										<!-- <span
+											class="stats-small_percentage stats-small_percentage--decrease">3.8%</span> -->
 									</div>
 								</div>
 								<canvas height="120" class="blog-overview-stats-small-3"></canvas>
@@ -274,8 +283,8 @@
 											th:text="${user.points}">2,413</h6>
 									</div>
 									<div class="stats-small__data">
-										<span
-											class="stats-small_percentage stats-small_percentage--increase">12.4%</span>
+										<!-- <span
+											class="stats-small_percentage stats-small_percentage--increase">12.4%</span> -->
 									</div>
 								</div>
 								<canvas height="120" class="blog-overview-stats-small-4"></canvas>
@@ -290,6 +299,7 @@
 						<!-- mr-2 -->
 					</div>
 				</div>
+					
 
 				<div class="row">
 					<div class="col-lg-8 col-md-12 col-sm-12 mb-4">
@@ -311,7 +321,7 @@
 											style="positioan: absolute; width: 200%; height: 200%; left: 0; top: 0"></div>
 									</div>
 								</div>
-								<div class="row border-bottom py-2 bg-light">
+								<!-- <div class="row border-bottom py-2 bg-light">
 									<div class="col-12 col-sm-6">
 										<div id="blog-overview-date-range"
 											class="input-daterange input-group input-group-sm my-auto ml-auto mr-auto ml-sm-auto mr-sm-0"
@@ -331,20 +341,24 @@
 											class="btn btn-sm btn-white ml-auto mr-auto ml-sm-auto mr-sm-0 mt-3 mt-sm-0">View
 											Full Report →</button>
 									</div>
-								</div>
+								</div> -->
 								<canvas height="454"
 									style="max-width: 100% !important; display: block; height: 227px; width: 525px;"
 									class="blog-overview-users chartjs-render-monitor" width="1050"></canvas>
 							</div>
 						</div>
+							
 					</div>
+
+
+	
 
 
 
 					<div class="col-lg-4 col-md-6 col-sm-12 mb-4">
 						<div class="card card-small h-100">
 							<div class="card-header border-bottom">
-								<h6 class="m-0">Users by device</h6>
+								<h6 class="m-0">Training by Muscle Group</h6>
 							</div>
 							<div class="card-body d-flex py-0">
 								<div class="chartjs-size-monitor"
@@ -387,6 +401,40 @@
 						</div>
 					</div>
 				</div>
+				
+				<div class="card-body">
+								<img src="./images/content-management/bmi_chart.jpeg" width="40%">
+							</div>
+				
+				
+				<!-- sollte BMI chart anzeigen, wird nicht ganz angezeigt, später ausbessern -->
+				<!-- <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+						<div class="card card-small card-post card-post--1">
+							<div class="card-post__image"
+								style="background-image: url('images/content-management/bmi_chart.jpeg');">
+								<a href="#"
+									class="card-post__category badge badge-pill badge-secondary"
+									style="background-color: #CBD9DE; color: black;">BMI</a>
+							</div>
+							
+						</div>
+					</div> -->
+					
+				
+					<!--  		<div class="card-body"
+								style="background-image: url('images/content-management/bmi_chart.jpeg');">
+								<a href="#"
+									class="card-post__category badge badge-pill badge-secondary"
+									style="background-color: #CBD9DE; color: black;">BMI</a>
+							</div> -->
+							
+							
+							
+						
+						
+				
+				
+				
 			</div>
 		</div>
 
@@ -430,6 +478,15 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script>
 	<script src="./scripts/extras.1.1.0.min.js"></script>
 	<script src="./scripts/shards-dashboards.1.1.0.min.js"></script>
+	
+	<!-- nächste Zeile für Thymeleaf -->
+	<script> var numbers = [[${logs}]] </script>
+	<script> var weights = [[${weights}]] </script>
+	<script> var bmis = [[${bmis}]] </script>
+	<script> var heights7 = [[${heights7}]] </script>
+	<script> var weights7 = [[${weights7}]] </script>
+	<script> var bmi7 = [[${bmi7}]] </script>
+	<script> var points7 = [[${points7}]] </script>
 	<script src="./scripts/app/app-blog-overview.1.1.0.js"></script>
 </body>
 </html>

@@ -48,6 +48,14 @@
 
 
 	<mvc:default-servlet-handler />
+	
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+
+	<bean
+		class="org.springframework.data.repository.support.DomainClassConverter">
+		<constructor-arg ref="conversionService" />
+	</bean>
 
 
 	<!-- SpringResourceTemplateResolver automatically integrates with Spring's 

@@ -95,7 +95,7 @@
 					<form action="#"
 						class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
 						<div class="input-group input-group-seamless ml-3">
-							<div class="input-group-prepend"> <div style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px; "> <h5 class="card-title"> USER NAME</h5>  </div>
+							<div class="input-group-prepend"> <div style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px; "> <h5 class="card-title" th:text="${user.userName}" > USER NAME</h5>  </div>
 							<!-- Lupe für serach bar	<div class="input-group-text">
 									<i class="fas fa-search"></i>
 								</div> -->
@@ -189,6 +189,7 @@
 				<!-- erste Reihe gleiche -->
 				<div class="row">
 					<!-- start erstes Bilde -->
+					
 					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 						<div class="card card-small card-post card-post--1">
 							<div class="card-post__image"
@@ -198,12 +199,52 @@
 							</div>
 							<div class="card-body">
 								<h5 class="card-title">
-									<a class="text-fiord-blue" href="#">Titel</a>
+									<p class="text-fiord-blue" >Get the ultimate gold Picture!</p>
 								</h5>
+								
+								<table style="width:100%;">
+								<thead>
+								<tr>
+									<td>Name</td>
+									<td>Pic</td>
+									<td style="text-align: right;" >Amount</td>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="pic : ${goldPicOfUser}">
+								<td th:text= "${pic.picture.name}"></td>
+								<td th:text= "${pic.picture.picture}"></td>
+								<td  style="text-align: right;" th:text= "${pic.amount}"></td> 
+								</tr>
+								</tbody>
+							</table>
+							<br>
+							<h6>You still need:</h6>
+							
+								<table style="width:100%;">
+						
+								<tbody>
+								<tr th:each="picmis : ${missingGoldPics}">
+								<td th:text= "${picmis.name}"></td>
+								<td th:text= "${picmis.picture}"></td>
+								 
+								</tr>
+								</tbody>
+							</table>
+							
+								
 
+							</div>
+							<div class = "card-footer border-top">
+							
+							<a type="button" class="mb-2 btn btn-lg"
+							 style="width:100%;  background-color: #EAD679; color:black;">Gold Rewards</a>
+							
+							
 							</div>
 						</div>
 					</div>
+					
 					<!-- start 2 Bilde -->
 					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 						<div class="card card-small card-post card-post--1">
@@ -211,13 +252,51 @@
 								style="background-image: url('images/content-management/1.jpeg');">
 								<a href="#"
 									class="card-post__category badge badge-pill badge-secondary"
-									style="background-color: #CBD9DE; color: black;">SILBER</a>
+									style="background-color: #CBD9DE; color: black;">SILVER</a>
 							</div>
 							<div class="card-body">
 								<h5 class="card-title">
-									<a class="text-fiord-blue" href="#">Titel</a>
+									<p class="text-fiord-blue"   >Get the amazing silver Picture!</p>
 								</h5>
+								
+								<table style="width:100%;">
+								<thead>
+								<tr>
+									<td>Name</td>
+									<td>Pic</td>
+									<td style="text-align: right;" >Amount</td>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="pic : ${silverPicOfUser}">
+								<td th:text= "${pic.picture.name}"></td>
+								<td th:text= "${pic.picture.picture}"></td>
+								<td  style="text-align: right;" th:text= "${pic.amount}"></td> 
+								</tr>
+								</tbody>
+							</table>
+							<br>
+							<h6>You still need:</h6>
+							
+								<table style="width:100%;">
+						
+								<tbody>
+								<tr th:each="picmis : ${missingSilverPics}">
+								<td th:text= "${picmis.name}"></td>
+								<td th:text= "${picmis.picture}"></td>
+								 
+								</tr>
+								</tbody>
+							</table>
+							
 
+							</div>
+							<div class = "card-footer border-top">
+							
+							<a type="button" class="mb-2 btn btn-lg"
+							 style="width:100%;  background-color: #CBD9DE; color:black;">Silver Rewards</a>
+							
+							
 							</div>
 						</div>
 					</div>
@@ -231,28 +310,84 @@
 							</div>
 							<div class="card-body">
 								<h5 class="card-title">
-									<a class="text-fiord-blue" href="#">Titel</a>
+									<p class="text-fiord-blue" >Get your bronze Picture!</p>
 								</h5>
-
+								<table style="width:100%;">
+								<thead>
+								<tr>
+									<td>Name</td>
+									<td>Pic</td>
+									<td style="text-align: right;" >Amount</td>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="pic : ${bronzePicOfUser}">
+								<td th:text= "${pic.picture.name}"></td>
+								<td th:text= "${pic.picture.picture}"></td>
+								<td  style="text-align: right;" th:text= "${pic.amount}"></td> 
+								</tr>
+								</tbody>
+							</table>
+							<br>
+							<h6>You still need:</h6>
+							
+								<table style="width:100%;">
+						
+								<tbody>
+								<tr th:each="picmis : ${missingBronzePics}">
+								<td th:text= "${picmis.name}"></td>
+								<td th:text= "${picmis.picture}"></td>
+								 
+								</tr>
+								</tbody>
+							</table>
+							
+							</div>
+							<div class = "card-footer border-top">
+							
+							<a type="button" class="mb-2 btn btn-lg" th:href="@{/bronzeReward}"
+							 style="width:100%;  background-color: #E5C89E; color:black;">Bronze Rewards</a>
+							
+							
 							</div>
 						</div>
 					</div>
 					<!-- ende 1 Reihe -->
 
+				
+
+
 
 					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+							<h5>300 Points</h5>
+						<a type="button" class="mb-2 btn btn-lg"
+							th:href="@{/goldPack}" style="  background-color: #EAD679; color:black;">Gold Package</a>
+							<br><br>
+							<h5>150 Points</h5>
+						<a type="button" class="mb-2 btn  btn-lg" th:href="@{/silverPack}"
+							style="background-color: #CBD9DE; color:black;">Silber Package</a>
+							<br><br>
 
-						<button type="button" class="mb-2 btn  btn-lg"
-							style="background-color: #EAD679;">Gold Package</button>
-						<button type="button" class="mb-2 btn  btn-lg"
-							style="background-color: #CBD9DE;">Silber Package</button>
-						<button type="button" class="mb-2 btn  bronze btn-lg"
-							style="background-color: #E5C89E;">Bronze Package</button>
+							<h5>100 Points</h5>
+						<a type="button" class="mb-2 btn  bronze btn-lg" th:href="@{/bronzePack}"
+							style="background-color: #E5C89E; color:black;">Bronze Package</a>
 
+							<br><br>
+						<h5>Your Points: </h5><h5 th:text="${user.points}">100 Points</h5>
 					</div>
+					
+					
+		
 			</main>
+			
+			
+			
 		</div>
 	</div>
+	
+	
+	
+	
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
