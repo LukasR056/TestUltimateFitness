@@ -1,7 +1,9 @@
 package at.fh.swenga.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -18,13 +21,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import javax.persistence.JoinColumn; 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; 
 
 @Entity
 @Table(name = "User")
@@ -35,8 +34,6 @@ public class UserModel implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	
-
 	@Column(nullable = false, length = 40)
 	private String firstName;
 	
@@ -107,7 +104,7 @@ public class UserModel implements java.io.Serializable {
 	@JoinTable(
 		      name="User_Exercise",
 		      joinColumns={
-		    		  @JoinColumn(name="User_id", referencedColumnName="id")},
+		    		  @JoinColumn(name="User_id", referencedColumnName="userId")},
 		      inverseJoinColumns={@JoinColumn(name="Exercise_id", referencedColumnName="id")})
 	private List<ExerciseModel> exercises;
 	
@@ -119,7 +116,7 @@ public class UserModel implements java.io.Serializable {
     private Set<RoleModel> roles;
 
 	
-	@OneToMany(mappedBy="userId",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
 	@OrderBy("id")
 	private Set<LogModel> logs; 
 	

@@ -88,104 +88,6 @@ public class UserController {
 	@RequestMapping(value = { "/" })
 	public String index(Model model, String name, String type) {
 
-		// test users erstellen und gespeichert.
-
-		/*Date now = new Date();
-
-		// Rolen erstellen
-		
-		RoleModel adminRole = roleRepository.getRole("ROLE_ADMIN");
-		if (adminRole == null) {
-			adminRole = new RoleModel("ROLE_ADMIN");
-		}
-		
-		RoleModel coachRole = roleRepository.getRole("ROLE_COACH");
-		if (coachRole == null) {
-			coachRole = new RoleModel("ROLE_COACH");
-		}
-		
-		RoleModel userRole = roleRepository.getRole("ROLE_USER");
-		if (userRole == null) {
-			userRole = new RoleModel("ROLE_USER");
-		}
-		
-		// holen der User aus der Datenbank
-
-		List<UserModel> users = userQueryRepository.findAll();
-
-		if (users.isEmpty()) {
-			UserModel u1 = new UserModel("Max", "Schwinger", "MaxSng", now, "w", 1.70, 70.5, 2, "max@schwinger", 100,
-					false, true, "pwd1");
-			userRepository.persist(u1);
-			UserModel u2 = new UserModel("Max", "Musterman", "MaMu", now, "m", 1.80, 80.7, 2, "max@schwinge2r", 100,
-					false, true, "pwd2");
-			userRepository.persist(u2);
-			UserModel u3 = new UserModel("Max", "Musterfrau", "Peter", now, "w", 1.64, 90.9, 2, "max@schwinger3", 100,
-					false, true, "pwd3");
-
-			// hier werden die Daten erstellt
-
-			// Exercises erstellen
-			ExerciseModel exercise1 = new ExerciseModel("Hip Lift", "Stomach", null,
-					"Du legst dich auf den Rücken und stellst deine Beine hüftbreit auf. Deine Arme liegen ganz locker neben deinem Körper, die Handflächen drücken gegen den Boden. Nun hebst du deine Hüfte so weit an, bis Oberschenkel und Rücken eine gerade Linie bilden. Kurz halten (dabei Po und Bauchmuskeln anspannen) und beim Einatmen die Hüfte wieder absenken. Wichtig: Die Hüfte darf nicht den Boden berühren.");
-			ExerciseModel exercise2 = new ExerciseModel("Sit-ups", "Stomach", null,
-					" Leg dich auf den Rücken und winkele die Beine an. Halte deine Hände an den Schläfen oder platziere sie hinter deinem Kopf. Die Ellbogen zeigen nach außen, der Blick ist nach oben gerichtet. Nun hebst du mithilfe der Bauchmuskulatur die obere Rückenpartie inklusive der Schulterblätter an bis Oberkörper und Oberschenkel einen 90-Grad-Winkel bilden. Halte diese Position für einige Sekunden und kehre dann wieder in die Grundposition zurück");
-			ExerciseModel exercise3 = new ExerciseModel("Up Downs", "Schoulders", null,
-					"Starte in der Low Plank Position und drück dich vom Boden weg in die High Plank Position. Achte dabei darauf, dass du den Rumpf anspannst und das Becken so stabil wie möglich hältst. Geh dann wieder zurück in die Low Plank Position und wiederhole die Übung von vorn. Beginne immer abwechselnd mit dem linken bzw. rechten Arm.");
-			ExerciseModel exercise4 = new ExerciseModel(" Frontheben mit einer Kurzhantel", "Schoulders", null,
-					"Im stabilen Stand wird eine Kurzhantel mit den Handflächen verschränkt und vor der Hüfte gehalten Hebe die Hantel mit leicht gebeugten Armen, ohne mit dem Körper zu pendeln, bis auf Augenhöhe.Lasse anschließend das Gewicht behutsam vor die Hüfte zurück, ohne die Hantel abzulegen.");
-
-			u2.addExercise(exercise1);
-			u2.addExercise(exercise4);
-			u2.addExercise(exercise3);
-			u2.addExercise(exercise2);
-			u1.addExercise(exercise1);
-			u3.addExercise(exercise2);
-
-			exerciseRepository.save(exercise1);
-			exerciseRepository.save(exercise2);
-			exerciseRepository.save(exercise3);
-			exerciseRepository.save(exercise4);
-
-			userQueryRepository.save(u2);
-			userQueryRepository.save(u1);
-			userQueryRepository.save(u3);
-		}
-		
-		
-		
-		UserModel u1 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, 2, "test@schwinger", 100,
-				false, true, "password");
-		u1.encryptPassword();
-		userQueryRepository.save(u1);
-		roleRepository.persist(userRole);
-		u1.addRoleModel(userRole);
-		userRole.addUser(u1);
-		//roleRepository.persist(userRole);
-		//userQueryRepository.save(u1);
-		
-		UserModel u2 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, 2, "test@schwinge2r", 100,
-				false, true, "password");
-		u2.encryptPassword();
-		u2.addRoleModel(userRole);
-		u2.addRoleModel(coachRole);
-		u2.addRoleModel(adminRole);
-		userRepository.persist(u2);
-
-		model.addAttribute("users", users);
-		
-		 /*List<RoleModel> roles = roleRepository.getAllRoles();
-         if (roles.isEmpty()) {
-                RoleModel r1 = new RoleModel("ADMIN");
-                roleRepository.persist(r1);
-               
-                RoleModel r2 = new RoleModel("COACH");
-                roleRepository.persist(r2);
-               
-                RoleModel r3 = new RoleModel("USER");
-                roleRepository.persist(r3);
-         } */
-		
 		RoleModel adminRole = roleRepository.getRole("ROLE_ADMIN");
 		if (adminRole == null) {
 			adminRole = new RoleModel("ROLE_ADMIN");
@@ -202,11 +104,11 @@ public class UserController {
 		}
         
 			
-		Date now = new Date();
+	//	Date now = new Date();
 		
-		List<UserModel> users = userRepository.getUsers();
+		//List<UserModel> users = userRepository.getUsers();
 
-		if (users.isEmpty()) {
+	/*	if (users.isEmpty()) {
 			UserModel u1 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, null, "test@schwinger", 100,
 					false, true, "password", null);
 			u1.encryptPassword();
@@ -220,12 +122,36 @@ public class UserController {
 			u2.addRoleModel(coachRole);
 			u2.addRoleModel(adminRole);
 			userRepository.persist(u2);
-		}
+		} */
 		
 		return "login";
 		
 		
 
+	}
+	
+	@RequestMapping(value = "/fillEx")
+	public String fillEx() {
+		
+		
+		
+		ExerciseModel exercise1 = new ExerciseModel("Hip Lift", "Stomach", null,
+				"Du legst dich auf den Rücken und stellst deine Beine hüftbreit auf. Deine Arme liegen ganz locker neben deinem Körper, die Handflächen drücken gegen den Boden. Nun hebst du deine Hüfte so weit an, bis Oberschenkel und Rücken eine gerade Linie bilden. Kurz halten (dabei Po und Bauchmuskeln anspannen) und beim Einatmen die Hüfte wieder absenken. Wichtig: Die Hüfte darf nicht den Boden berühren.");
+		ExerciseModel exercise2 = new ExerciseModel("Sit-ups", "Stomach", null,
+				" Leg dich auf den Rücken und winkele die Beine an. Halte deine Hände an den Schläfen oder platziere sie hinter deinem Kopf. Die Ellbogen zeigen nach außen, der Blick ist nach oben gerichtet. Nun hebst du mithilfe der Bauchmuskulatur die obere Rückenpartie inklusive der Schulterblätter an bis Oberkörper und Oberschenkel einen 90-Grad-Winkel bilden. Halte diese Position für einige Sekunden und kehre dann wieder in die Grundposition zurück");
+		ExerciseModel exercise3 = new ExerciseModel("Up Downs", "Schoulders", null,
+				"Starte in der Low Plank Position und drück dich vom Boden weg in die High Plank Position. Achte dabei darauf, dass du den Rumpf anspannst und das Becken so stabil wie möglich hältst. Geh dann wieder zurück in die Low Plank Position und wiederhole die Übung von vorn. Beginne immer abwechselnd mit dem linken bzw. rechten Arm.");
+		ExerciseModel exercise4 = new ExerciseModel(" Frontheben mit einer Kurzhantel", "Schoulders", null,
+				"Im stabilen Stand wird eine Kurzhantel mit den Handflächen verschränkt und vor der Hüfte gehalten Hebe die Hantel mit leicht gebeugten Armen, ohne mit dem Körper zu pendeln, bis auf Augenhöhe.Lasse anschließend das Gewicht behutsam vor die Hüfte zurück, ohne die Hantel abzulegen.");
+		
+		exerciseRepository.save(exercise1);
+		exerciseRepository.save(exercise2);
+		exerciseRepository.save(exercise3);
+		exerciseRepository.save(exercise4); 
+		
+		
+		
+		return "profile";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -262,12 +188,12 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = { "/exercise" })
-	public String getExercise(Model model) {
+	public String getExercise(Model model, Authentication authentication) {
 
 		// ALLE Exercises von einem User
 		UserModel user = null;
 
-		String searchString = "MaMu";
+		String searchString = authentication.getName();
 
 		user = userQueryRepository.findByUserName(searchString);
 
@@ -277,13 +203,12 @@ public class UserController {
 	}
 
 	@RequestMapping(value = { "/showexercise" })
-	public String showexercise(Model model, @RequestParam String searchString) {
-		//
-		// @RequestParam String name
+	public String showexercise(Model model, @RequestParam String searchString, Authentication authentication) {
+
 		List<ExerciseModel> exercises = null;
 		UserModel user = null;
 
-		String searchStringname = "MaMu";
+		String searchStringname = authentication.getName();
 
 		user = userQueryRepository.findByUserName(searchStringname);
 
@@ -300,9 +225,7 @@ public class UserController {
 
 		System.out.print(searchString);
 
-		// user.addExercise(newExercise);
-		// userQueryRepository.updateUser(user);
-		// List<ExerciseModel> typeExercise = exerciseRepository.findByType(type);
+		
 		model.addAttribute("exercises", user.getExercises());
 		model.addAttribute("allexercises", exercises);
 
@@ -310,11 +233,11 @@ public class UserController {
 	}
 	//----------------------Exercise dem User hinzufügen
 	@RequestMapping(value = {"/addexercise"})
-	public String addExercise(Model model, @RequestParam int id)
+	public String addExercise(Model model, @RequestParam int id, Authentication authentication)
 	{
 		UserModel user = null;
 
-		String searchStringname = "MaMu";
+		String searchStringname =authentication.getName();
 		
 		user = userQueryRepository.findByUserName(searchStringname);
 		
@@ -333,17 +256,22 @@ public class UserController {
 	
 	//--------Exercise löschen
 	@RequestMapping(value = {"deleteexercise"})
-	public String deleteExercise(Model model, @RequestParam int id)
+	public String deleteExercise(Model model, @RequestParam int id , Authentication authentication)
 	{
 		UserModel user = null;
-		String searchStringname = "MaMu";
+		String searchStringname =authentication.getName();
 		user = userQueryRepository.findByUserName(searchStringname);
+		
+		
 		
 		ExerciseModel newExercise = new ExerciseModel();
 		newExercise = exerciseRepository.findById(id);
 		
+		
+		
 		user.remove(newExercise.getId());
 		userRepository.merge(user);
+		
 		model.addAttribute("exercises", user.getExercises());
 		
 		
