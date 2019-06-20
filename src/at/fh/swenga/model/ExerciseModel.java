@@ -1,6 +1,7 @@
 package at.fh.swenga.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -20,45 +21,40 @@ import javax.persistence.Table;
 @Table(name = "Exercise")
 public class ExerciseModel {
 
+	//hier fehlt nur mehr die Videos der rest passt so für die Beziehungen.
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	// ManyToMany
-	@ManyToMany(mappedBy = "exercises")
-	private Set<UserModel> users = new HashSet<>(); // = new HashSet<>(); NOTWENDIG?
+	@ManyToMany(mappedBy = "exercises",fetch=FetchType.EAGER)
+	private List<UserModel> users ; 
 	
-		
 	@Column(nullable = false, length = 50)
 	private String name;
 	
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 10)
 	private String type;
 	/* Auswahl aus vorgegebener Liste z.B.
-	 * public String[] typesList = {"Brust", "Schulter", "Bizeps", "Trizeps", "Bauch", "Beine", "Po"};
+	 * public String[] typesList = {"Brust", "Schulter", "Bauch", "Beine"};
 	 */
 	
 	@Lob // noch genauer betrachten! Lob ist für Large Objects in einer Datenbank
 	@Basic(fetch = FetchType.LAZY) // Lob sollte mit Basic kombiniert werden
 	// whs um Daten nur zu fetchen, wenn diese tatsächlich benötigt werden
+	@Column(nullable = true)
 	private byte[] video;
 	
 	@Column(nullable = false, length = 500)
 	private String description;
 	
 	public ExerciseModel() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	
-	public ExerciseModel(int id, String name, String type, byte[] video, String description) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.type = type;
-		this.video = video;
-		this.description = description;
-	}
+	
 
 
 	public int getId() {
@@ -102,6 +98,41 @@ public class ExerciseModel {
 	}
 
 
+	public List<UserModel> getUsers() {
+		return users;
+	}
+
+
+
+
+
+	public ExerciseModel(String name, String type, byte[] video, String description) {
+		super();
+		this.name = name;
+		this.type = type;
+		this.video = video;
+		this.description = description;
+	} 
+	
+	public ExerciseModel(int id, List<UserModel> users, String name, String type, byte[] video, String description) {
+		super();
+		this.id = id;
+		this.users = users;
+		this.name = name;
+		this.type = type;
+		this.video = video;
+		this.description = description;
+	}
+
+
+
+
+
+	public void setUsers(List<UserModel> users) {
+		this.users = users;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -124,6 +155,12 @@ public class ExerciseModel {
 			return false;
 		return true;
 	}
+
+
+
+
+
+	
 	
 	
 }

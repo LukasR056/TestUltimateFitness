@@ -24,6 +24,12 @@
 <body class="h-100">
 
 
+	<!-- dieses HTML file für die Exercises, es funktioniert zum Teil. filter und hinzufügen fehlt noch. -->
+
+
+
+
+
 	<div class="container-fluid">
 		<div class="row">
 
@@ -35,11 +41,12 @@
 						<a class="navbar-brand w-100 mr-0" href="#"
 							style="line-height: 25px;">
 							<div class="d-table m-auto">
-							<!-- Website Logo	<img id="main-logo" class="d-inline-block align-top mr-1"
+								<!-- Website Logo	<img id="main-logo" class="d-inline-block align-top mr-1"
 									style="max-width: 25px;"
 									src="./images/shards-dashboards-logo.svg"
-									alt="Shards Dashboard">  --> <span
-									class="d-none d-md-inline ml-1" style= "font-size: 20px;">  Ultimate Fitness </span>
+									alt="Shards Dashboard">  -->
+								<span class="d-none d-md-inline ml-1" style="font-size: 20px;">
+									Ultimate Fitness </span>
 							</div>
 						</a> <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none"> <i
 							class="material-icons">&#xE5C4;</i>
@@ -67,9 +74,8 @@
 							href="exercise.html"> <i class="material-icons">table_chart</i>
 								<span>Exercise</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link "
-							href="picture.html"> <i class="material-icons">view_module</i>
-								<span>Picture</span>
+						<li class="nav-item"><a class="nav-link " href="picture.html">
+								<i class="material-icons">view_module</i> <span>Picture</span>
 						</a></li>
 						<li class="nav-item"><a class="nav-link " href="forum.html">
 								<i class="material-icons">vertical_split</i> <span>Forum</span>
@@ -96,12 +102,16 @@
 					<form action="#"
 						class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
 						<div class="input-group input-group-seamless ml-3">
-							<div class="input-group-prepend"> <div style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px; "> <h5 class="card-title"> USER NAME</h5>  </div>
-							<!-- Lupe für serach bar	<div class="input-group-text">
+							<div class="input-group-prepend">
+								<div
+									style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px;">
+									<h5 class="card-title">USER NAME</h5>
+								</div>
+								<!-- Lupe für serach bar	<div class="input-group-text">
 									<i class="fas fa-search"></i>
 								</div> -->
 							</div>
-					<!--  search bar		<input class="navbar-search form-control" type="text"
+							<!--  search bar		<input class="navbar-search form-control" type="text"
 								placeholder="Search for something..." aria-label="Search">  -->
 						</div>
 					</form>
@@ -142,7 +152,7 @@
 								View all Notifications </a>
 						</div>
 						</li>
-				<!--  profil pic		<li class="nav-item dropdown"><a
+						<!--  profil pic		<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle text-nowrap px-3"
 							data-toggle="dropdown" href="#" role="button"
 							aria-haspopup="true" aria-expanded="false"> 
@@ -188,181 +198,130 @@
 				<!-- End Page Header -->
 
 				<!-- End Small Stats Blocks -->
-				<div class="row">
-					<!-- Users Stats -->
-					<div class="col-lg-8 col-md-12 col-sm-12 mb-4">
-						<div class="card card-small">
-							<div class="card-header border-bottom">
-								<h6 class="m-0">Users</h6>
-							</div>
 
-							<!-- hier kommt die Tabelle rein -->
+				<div class="main-content-container container-fluid px-4">
+					<div class="row">
+						<div class="col">
+							<div class="card card-small mb-4">
+								<div class="card-header border-bottom">
+									<h6 class="m-0">Exercises</h6>
+								</div>
+								<div class="card-body p-0 pb-3 text-center">
+									<table class="table mb-0">
+										<thead class="bg-light">
+											<tr>
+												<!-- 	<th scope="col" class="border-0">#</th>  -->
+												<th scope="col" class="border-bottom-0">Name</th>
+												<th scope="col" class="border-bottom-0">Muscle Group</th>
+												<th scope="col" class="border-bottom-0">Video</th>
+												<th scope="col" class="border-bottom-0">Description</th>
+												<th scope="col" class="border-bottom-0"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="exercise :  ${exercises}">
 
-							<table>
-								<!--  list all items ----------------------------------------------------------- -->
-								<tr th:each="user : ${users}">
-									<td th:text="${user.firstName}">...aaaaaaaaaaaaaaaaa</td>
-									<td th:text="${user.lastName}">....bbbbbb</td>
-									<td th:text="${user.weight}">....cccc</td>
-									<td th:text="${user.height}">....dddddd</td>
-
-								</tr>
-								<!--  list all items ----------------------------------------------------------- -->
-							</table>
-
-							<!-- eine push e -->
-
-						</div>
-					</div>
-					<!-- End Users Stats -->
-				</div>
-			</div>
-
-			<div class="main-content-container container-fluid px-4">
-				<div class="row">
-					<div class="col">
-						<div class="card card-small mb-4">
-							<div class="card-header border-bottom">
-								<h6 class="m-0">Exercises</h6>
-							</div>
-							<div class="card-body p-0 pb-3 text-center">
-								<table class="table mb-0">
-									<thead class="bg-light">
-										<tr>
-											<th scope="col" class="border-0">#</th>
-											<th scope="col" class="border-bottom-0">Name</th>
-											<th scope="col" class="border-bottom-0">Muscle Group</th>
-											<th scope="col" class="border-bottom-0">Video</th>
-											<th scope="col" class="border-bottom-0">Description</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Ali</td>
-											<td>Kerry</td>
-											<td>Russian Federation</td>
-											<td>Gdańsk</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Clark</td>
-											<td>Angela</td>
-											<td>Estonia</td>
-											<td>Borghetto di Vara</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Jerry</td>
-											<td>Nathan</td>
-											<td>Cyprus</td>
-											<td>Braunau am Inn</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>Colt</td>
-											<td>Angela</td>
-											<td>Liberia</td>
-											<td>Bad Hersfeld</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- End Default Light Table -->
-				<!-- Default Dark Table -->
-				<div class="row">
-					<div class="col">
-						<div class="card card-small overflow-hidden mb-4">
-							<div class="card-header bg-dark">
-								<div class="row">
-									<div class="col">
-										<h6 class="m-0 text-white">Get new Exercise</h6>
-									</div>
-									<div class="col">
-										<select class="custom-select custom-select-sm">
-											<option selected=""><h6 class="m-0 text-white">Get
-													new Exercise</h6>
-											</option>
-											<option value="1">Today</option>
-											<option value="2">Last Month</option>
-											<option value="3">Last Year</option>
-										</select>
-									</div>
-									<div class="col">
-										<button class="btn btn-white" type="button">FILTER</button>
-									</div>
+												<td th:text="${exercise.name}">...aaaaaaaaaaaaaaaaa</td>
+												<td th:text="${exercise.type}">....bbbbbb</td>
+												<td th:text="${exercise.video}">....cccc</td>
+												<td th:text="${exercise.description}">....dddddd</td>
+												<td><a
+													th:href="@{/deleteexercise(id=${exercise.id})}"
+													class="btn btn-danger">Delete</a></td>
+													
+													
+													
+										</tbody>
+									</table>
 								</div>
 							</div>
-							<div class="card-body p-0 pb-3 bg-dark text-center">
-								<table class="table table-dark mb-0">
-									<thead class="thead-dark">
-										<tr>
-											<th scope="col" class="border-bottom-0">#</th>
-											<th scope="col" class="border-bottom-0">Name</th>
-											<th scope="col" class="border-bottom-0">Muscle Group</th>
-											<th scope="col" class="border-bottom-0">Video</th>
-											<th scope="col" class="border-bottom-0">Description</th>
+						</div>
+					</div>
+					<!-- End Default Light Table -->
+					<!-- Default Dark Table -->
+					<form method="post" action="showexercise">
+					<div class="row">
+						<div class="col">
+							<div class="card card-small overflow-hidden mb-4">
+								<div class="card-header bg-dark">
+									<div class="row">
+										<div class="col">
+											<h6 class="m-0 text-white">Get new Exercise</h6>
+										</div>
+										
+										<div class="col">
+											<label for="searchString">Search:</label>
+											<select  id="searchString" class="form-control" name="searchString">
+											
+												<option value="AllExercises" selected="selected">All Exercises</option>
+												<option value="Bauch">Stomach</option>
+																								<!-- ENGLISCH BEZEICHNUNG AUCH NOCH ÄNDERN -->
+												<option value="Brust">Chest</option>
+												<option value="Beine">Legs</option>
+												<option value="Schulter">Shoulders</option>
+												
+											</select>
+											
+										</div>
+										
+										
+										<div class="col">
+											<input class="btn btn-white"  type="submit" value="FILTER">
+										</div>
+										
+									</div>
+								</div>
+								
+								</form>
+								
+								<div class="card-body p-0 pb-3 bg-dark text-center">
+									<table class="table table-dark mb-0">
+										<thead class="thead-dark">
+											<tr>
 
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Graham</td>
-											<td>Brent</td>
-											<td>Benin</td>
-											<td>Ripabottoni</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Clark</td>
-											<td>Angela</td>
-											<td>Estonia</td>
-											<td>Borghetto di Vara</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Wylie</td>
-											<td>Joseph</td>
-											<td>Korea, North</td>
-											<td>Guelph</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>Garth</td>
-											<td>Clementine</td>
-											<td>Indonesia</td>
-											<td>Narcao</td>
-										</tr>
-									</tbody>
-								</table>
+												<th scope="col" class="border-bottom-0">Name</th>
+												<th scope="col" class="border-bottom-0">Muscle Group</th>
+												<th scope="col" class="border-bottom-0">Video</th>
+												<th scope="col" class="border-bottom-0">Description</th>
+												<th scope="col" class="border-bottom-0"></th>
+
+
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="allexercise :  ${allexercises}">
+
+												<td th:text="${allexercise.name}">...aaaaaaaaaaaaaaaaa</td>
+												<td th:text="${allexercise.type}">....bbbbbb</td>
+												<td th:text="${allexercise.video}">....cccc</td>
+												<td th:text="${allexercise.description}">....dddddd</td>
+												<td><a th:href="@{/addexercise(id=${allexercise.id})}"
+													class="btn btn-success">Add</a></td>  
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
+					<!-- End Default Dark Table -->
 				</div>
-				<!-- End Default Dark Table -->
-			</div>
 
-			<footer class="main-footer d-flex p-2 px-3 bg-white border-top">
-				<ul class="nav">
-					<li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Services</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="#">About</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Products</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-				</ul>
-				<span class="copyright ml-auto my-auto mr-2">Copyright © 2018
-					<a href="https://designrevision.com" rel="nofollow">DesignRevision</a>
-				</span>
+				<footer class="main-footer d-flex p-2 px-3 bg-white border-top">
+					<ul class="nav">
+						<li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="#">Services</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" href="#">About</a></li>
+						<li class="nav-item"><a class="nav-link" href="#">Products</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+					</ul>
+					<span class="copyright ml-auto my-auto mr-2">Copyright ©
+						2018 <a href="https://designrevision.com" rel="nofollow">DesignRevision</a>
+					</span>
+			</div>
+			</footer> </main>
 		</div>
-		</footer>
-		</main>
-	</div>
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"

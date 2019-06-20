@@ -1,7 +1,9 @@
 package at.fh.swenga.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,6 +22,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.JoinColumn; 
 
 @Entity
@@ -64,6 +70,8 @@ public class UserModel implements java.io.Serializable {
  /*	@Column(nullable = true)
 	private double bmi;  wird über thymeleaf berechnet*/
 	
+	
+	
 	public int getPoints() {
 		return points;
 	}
@@ -88,31 +96,47 @@ public class UserModel implements java.io.Serializable {
 	@Version
 	long version;
 	
+	// diese Beziehung wird benöigt für die m:n mit die exercise
+	
+	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
+	@JoinTable(
+		      name="User_Exercise",
+		      joinColumns={
+		    		  @JoinColumn(name="User_id", referencedColumnName="id")},
+		      inverseJoinColumns={@JoinColumn(name="Exercise_id", referencedColumnName="id")})
+	private List<ExerciseModel> exercises;
 	
 	
-	//Relations
-	// ManyToMany
-	// https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
-	@ManyToMany(cascade = {
-	        CascadeType.PERSIST,
-	        CascadeType.MERGE })
-    @JoinTable(name = "user_exercises",
-        joinColumns = @JoinColumn(name = "user_id"), // Table Name + id???
-        inverseJoinColumns = @JoinColumn(name = "exercise_id") )
-	private Set<ExerciseModel> exercises = new HashSet<>(); // = new HashSet<>(); NOTWENDIG? */
-	
-	
-	@OneToMany(mappedBy="userId",fetch=FetchType.LAZY)
+/*	@OneToMany(mappedBy="userId",fetch=FetchType.LAZY)
 	@OrderBy("id")
-	private Set<LogModel> logs; 
+	private Set<LogModel> logs; */
 	
+	public void setExercises(List<ExerciseModel> exercises) {
+		this.exercises = exercises;
+	}
+	
+	public void addExercise(ExerciseModel exercise) {
+		if (exercises== null) {
+			exercises= new ArrayList<ExerciseModel>();
+		}
+		exercises.add(exercise);
+		
+	}
+	
+	
+
+	public ExerciseModel remove(int index) {
+		return exercises.remove(index);
+	}
+
+
 	@OneToMany(mappedBy="userId",fetch=FetchType.LAZY)
 	@OrderBy("id")
 	private Set<ForumentryModel> entries;
 	
-	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, 
+	/*@OneToMany(mappedBy="user", cascade = CascadeType.ALL, 
 			fetch = FetchType.LAZY, orphanRemoval = true)
-	private Set<UserPicturesModel> userPictures;
+	private Set<UserPicturesModel> userPictures; */
 	
 
 	public UserModel ()
@@ -120,6 +144,7 @@ public class UserModel implements java.io.Serializable {
 		
 	}
 
+	
 
 
 	public int getId() {
@@ -181,6 +206,13 @@ public class UserModel implements java.io.Serializable {
 		this.isAdmin = isAdmin;
 		this.enabled = enabled;
 		this.password = password;
+	}
+	
+	
+
+
+	public List<ExerciseModel> getExercises() {
+		return exercises;
 	}
 
 
@@ -248,24 +280,16 @@ public class UserModel implements java.io.Serializable {
 		this.enabled = enabled;
 	}
 	
-	public Set<ExerciseModel> getExercises() {
-		return exercises;
-	}
+	
 
-
-	public void setExercises(Set<ExerciseModel> exercises) {
-		this.exercises = exercises;
-	}
-
-
-	public Set<LogModel> getLogs() {
+/*	public Set<LogModel> getLogs() {
 		return logs;
 	}
 
 
 	public void setLogs(Set<LogModel> logs) {
 		this.logs = logs;
-	}
+	}*/
 
 
 	public Set<ForumentryModel> getEntries() {
@@ -278,14 +302,7 @@ public class UserModel implements java.io.Serializable {
 	}
 
 
-	public Set<UserPicturesModel> getUserPictures() {
-		return userPictures;
-	}
-
-
-	public void setUserPictures(Set<UserPicturesModel> userPictures) {
-		this.userPictures = userPictures;
-	}
+	
 
 
 	public String getGender() {
@@ -294,14 +311,7 @@ public class UserModel implements java.io.Serializable {
 
 	
 	
-	public boolean add(UserPicturesModel e) {
-		return userPictures.add(e);
-	}
-
-
-	public boolean remove(Object o) {
-		return userPictures.remove(o);
-	}
+	
 	 
     /* public void addTag(PictureModel picture) {
         UserPicturesModel userPicture = new UserPicturesModel(this, picture);
@@ -358,12 +368,18 @@ public class UserModel implements java.io.Serializable {
 		return true;
 	}
 
+
 	@Override
 	public String toString() {
 		return "UserModel [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
 				+ ", birthDate=" + birthDate + ", gender=" + gender + ", height=" + height + ", weight=" + weight
 				+ ", coach=" + coach + ", eMail=" + eMail + ", points=" + points + ", isAdmin=" + isAdmin + ", enabled="
-				+ enabled + ", password=" + password + "]";
+				+ enabled + ", password=" + password + ", exercises=" + exercises + "]";
 	}
+
+
+	
+
+	
 
 }
