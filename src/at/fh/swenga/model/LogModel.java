@@ -1,6 +1,8 @@
-package at.fh.swenga.model;
+/*package at.fh.swenga.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Version;
 
 @Entity
 public class LogModel {
@@ -16,32 +21,39 @@ public class LogModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne (cascade = CascadeType.PERSIST)
-	private UserModel userId;
+	private double height;
 	
-	private float height;
-	
-	private float weight;
-	
-	private float bmi;
+	private double weight;
 	
 	private int points =0;
 	
 	private Date date;
 	
+	@OneToMany(mappedBy="department")
+	@OrderBy("UserName")
+    private Set<UserModel> users;
+	
+	@Version
+	long version;
 	
 	public LogModel() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
-	public LogModel( UserModel userId, float height, float weight, float bmi, int points, Date date) {
-		super();
-		this.userId = userId;
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
 		this.height = height;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
 		this.weight = weight;
-		this.bmi = bmi;
-		this.points = points;
-		this.date = date;
 	}
 
 	public int getPoints() {
@@ -52,46 +64,6 @@ public class LogModel {
 		this.points = points;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public UserModel getUserId() {
-		return userId;
-	}
-
-	public void setUserId(UserModel userId) {
-		this.userId = userId;
-	}
-
-	public float getHeight() {
-		return height;
-	}
-
-	public void setHeight(float height) {
-		this.height = height;
-	}
-
-	public float getWeight() {
-		return weight;
-	}
-
-	public void setWeight(float weight) {
-		this.weight = weight;
-	}
-
-	public float getBmi() {
-		return bmi;
-	}
-
-	public void setBmi(float bmi) {
-		this.bmi = bmi;
-	}
-
 	public Date getDate() {
 		return date;
 	}
@@ -100,28 +72,22 @@ public class LogModel {
 		this.date = date;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
+	public Set<UserModel> getUsers() {
+		return users;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		LogModel other = (LogModel) obj;
-		if (id != other.id)
-			return false;
-		return true;
+	public void setUsers(Set<UserModel> users) {
+		this.users = users;
 	}
 	
+	public void addUser(UserModel user) {
+		if (user==null) {
+			user= new HashSet<UserModel>();
+		}
+		user.add(user);
+	}
+	
+
 	
 	
-}
+}*/

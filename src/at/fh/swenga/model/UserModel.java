@@ -61,14 +61,14 @@ public class UserModel implements java.io.Serializable {
 	
 	@Column()
 	private String coach;
-	// AUF USERNAME umge�ndert damit dieser zugewiesen werden kann
+	// AUF USERNAME umgeändert damit dieser zugewiesen werden kann
 	// ist td eindeutig! DEFAULT ist man selber Coach -> null
 	
 	@Column(nullable = false, unique = true)
 	private String eMail;
 	
  /*	@Column(nullable = true)
-	private double bmi;  wird �ber thymeleaf berechnet*/
+	private double bmi;  wird ï¿½ber thymeleaf berechnet*/
 	
 	public int getPoints() {
 		return points;
@@ -101,15 +101,17 @@ public class UserModel implements java.io.Serializable {
 	
 	//Relations
 	// ManyToMany
-	// https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
-	@ManyToMany(cascade = {
-	        CascadeType.PERSIST,
-	        CascadeType.MERGE })
-    @JoinTable(name = "userExercises",
-        joinColumns = @JoinColumn(name = "userId"), // Table Name + id???
-        inverseJoinColumns = @JoinColumn(name = "exerciseId") )
-	private Set<ExerciseModel> exercises = new HashSet<>(); // = new HashSet<>(); NOTWENDIG? */
+  // diese Beziehung wird benöigt für die m:n mit die exercise
 	
+	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
+	@JoinTable(
+		      name="User_Exercise",
+		      joinColumns={
+		    		  @JoinColumn(name="User_id", referencedColumnName="id")},
+		      inverseJoinColumns={@JoinColumn(name="Exercise_id", referencedColumnName="id")})
+	private List<ExerciseModel> exercises;
+	
+  
 	// fuer User Roles!
 	@ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "userRoles", joinColumns = @JoinColumn(name = "userId"),
@@ -129,6 +131,31 @@ public class UserModel implements java.io.Serializable {
 			fetch = FetchType.LAZY, orphanRemoval = true)
 	private Set<UserPicturesModel> userPictures;
 	
+  
+  // Luki Exercises
+	public void setExercises(List<ExerciseModel> exercises) {
+		this.exercises = exercises;
+	}
+	
+	public void addExercise(ExerciseModel exercise) {
+		if (exercises== null) {
+			exercises= new ArrayList<ExerciseModel>();
+		}
+		exercises.add(exercise);
+		
+	}
+	
+
+	public ExerciseModel remove(int index) {
+		return exercises.remove(index);
+	}
+  
+  public List<ExerciseModel> getExercises() {
+		return exercises;
+	}
+  // Luki Exercises
+
+  
 
 	public UserModel ()
 	{
@@ -270,15 +297,6 @@ public class UserModel implements java.io.Serializable {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
-	public Set<ExerciseModel> getExercises() {
-		return exercises;
-	}
-
-
-	public void setExercises(Set<ExerciseModel> exercises) {
-		this.exercises = exercises;
-	}
 
 
 	public Set<LogModel> getLogs() {
@@ -390,3 +408,4 @@ public class UserModel implements java.io.Serializable {
 	}
 
 }
+
