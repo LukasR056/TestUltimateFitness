@@ -26,10 +26,6 @@
 
 	<!-- dieses HTML file für die Exercises, es funktioniert zum Teil. filter und hinzufügen fehlt noch. -->
 
-
-
-
-
 	<div class="container-fluid">
 		<div class="row">
 
@@ -108,7 +104,7 @@
 							<div class="input-group-prepend">
 								<div
 									style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px;">
-									<h5 class="card-title">USER NAME</h5>
+									<h5 class="card-title" th:text="${user.userName}">USER NAME</h5>
 								</div>
 								<!-- Lupe für serach bar	<div class="input-group-text">
 									<i class="fas fa-search"></i>
@@ -190,12 +186,26 @@
 				</nav>
 			</div>
 			<!-- / .main-navbar -->
+			
+			
+			<div th:unless="${message} == null" th:utext="${message}"
+				class="alert alert-primary alert-dismissible fade show mb-0"
+				role="alert">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<i class="fa fa-check mx-2"></i> <strong>Success!</strong> Your
+				profile has been updated!
+			</div>
+			
+			
 			<div class="main-content-container container-fluid px-4">
 				<!-- Page Header -->
 				<div class="page-header row no-gutters py-4">
 					<div class="col-12 col-sm-4 text-center text-sm-left mb-0">
 						<span class="text-uppercase page-subtitle">Dashboard</span>
-						<h3 class="page-title">Exercises</h3>
+						<h3 class="page-title">Your Exercises</h3>
 					</div>
 				</div>
 				<!-- End Page Header -->
@@ -206,9 +216,7 @@
 					<div class="row">
 						<div class="col">
 							<div class="card card-small mb-4">
-								<div class="card-header border-bottom">
-									<h6 class="m-0">Exercises</h6>
-								</div>
+								
 								<div class="card-body p-0 pb-3 text-center">
 									<table class="table mb-0">
 										<thead class="bg-light">
@@ -251,20 +259,17 @@
 										<div class="col">
 											<h6 class="m-0 text-white">Get new Exercise</h6>
 										</div>
-										
+										<label  for="searchString">Search:</label>
 										<div class="col">
-											<label for="searchString">Search:</label>
+											
 											<select  id="searchString" class="form-control" name="searchString">
 											
 												<option value="AllExercises" selected="selected">All Exercises</option>
-												<option value="Bauch">Stomach</option>
-																								<!-- ENGLISCH BEZEICHNUNG AUCH NOCH ÄNDERN -->
-												<option value="Brust">Chest</option>
-												<option value="Beine">Legs</option>
-												<option value="Schulter">Shoulders</option>
-												
+												<option value="Stomach">Stomach</option>	
+												<option value="Chest">Chest</option>
+												<option value="Legs">Legs</option>
+												<option value="Shoulders">Shoulders</option>
 											</select>
-											
 										</div>
 										
 										

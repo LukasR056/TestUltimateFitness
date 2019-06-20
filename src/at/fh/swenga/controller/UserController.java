@@ -87,14 +87,6 @@ public class UserController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
 	}
 
-	/*
-	 * @Autowired LogRepository logRepository;
-	 * 
-	 * @Autowired ForumentryRepository forumentryRepository;
-	 */
-
-	// test fuer branch
-
 	public void findCoaches(Model model) {
 		List<UserModel> coaches = null;
 		coaches = userQueryRepository.findCoach();
@@ -145,6 +137,7 @@ public class UserController {
 
 	}
 
+	//fill Exercise
 	@RequestMapping(value = "/fillEx")
 	public String fillEx() {
 
@@ -152,9 +145,9 @@ public class UserController {
 				"Du legst dich auf den Rücken und stellst deine Beine hüftbreit auf. Deine Arme liegen ganz locker neben deinem Körper, die Handflächen drücken gegen den Boden. Nun hebst du deine Hüfte so weit an, bis Oberschenkel und Rücken eine gerade Linie bilden. Kurz halten (dabei Po und Bauchmuskeln anspannen) und beim Einatmen die Hüfte wieder absenken. Wichtig: Die Hüfte darf nicht den Boden berühren.");
 		ExerciseModel exercise2 = new ExerciseModel("Sit-ups", "Stomach", null,
 				" Leg dich auf den Rücken und winkele die Beine an. Halte deine Hände an den Schläfen oder platziere sie hinter deinem Kopf. Die Ellbogen zeigen nach außen, der Blick ist nach oben gerichtet. Nun hebst du mithilfe der Bauchmuskulatur die obere Rückenpartie inklusive der Schulterblätter an bis Oberkörper und Oberschenkel einen 90-Grad-Winkel bilden. Halte diese Position für einige Sekunden und kehre dann wieder in die Grundposition zurück");
-		ExerciseModel exercise3 = new ExerciseModel("Up Downs", "Schoulders", null,
+		ExerciseModel exercise3 = new ExerciseModel("Up Downs", "Shoulders", null,
 				"Starte in der Low Plank Position und drück dich vom Boden weg in die High Plank Position. Achte dabei darauf, dass du den Rumpf anspannst und das Becken so stabil wie möglich hältst. Geh dann wieder zurück in die Low Plank Position und wiederhole die Übung von vorn. Beginne immer abwechselnd mit dem linken bzw. rechten Arm.");
-		ExerciseModel exercise4 = new ExerciseModel(" Frontheben mit einer Kurzhantel", "Schoulders", null,
+		ExerciseModel exercise4 = new ExerciseModel("Frontheben mit einer Kurzhantel", "Shoulders", null,
 				"Im stabilen Stand wird eine Kurzhantel mit den Handflächen verschränkt und vor der Hüfte gehalten Hebe die Hantel mit leicht gebeugten Armen, ohne mit dem Körper zu pendeln, bis auf Augenhöhe.Lasse anschließend das Gewicht behutsam vor die Hüfte zurück, ohne die Hantel abzulegen.");
 
 		exerciseRepository.save(exercise1);
@@ -252,6 +245,7 @@ public class UserController {
 		return "profile";
 	}
 
+	//first Methode for exercise
 	@RequestMapping(value = { "/exercise" })
 	public String getExercise(Model model, Authentication authentication) {
 
@@ -262,22 +256,25 @@ public class UserController {
 
 		user = userQueryRepository.findByUserName(searchString);
 
+		model.addAttribute("user",user);
 		model.addAttribute("exercises", user.getExercises());
 
 		return "exercise";
 	}
 
+	//show new Exercises
 	@RequestMapping(value = { "/showexercise" })
 	public String showexercise(Model model, @RequestParam String searchString, Authentication authentication) {
 
-		List<ExerciseModel> exercises = null;
-		UserModel user = null;
-
+		List<ExerciseModel> exercises = new ArrayList<ExerciseModel>();
+		UserModel user = new UserModel();
 		String searchStringname = authentication.getName();
-
 		user = userQueryRepository.findByUserName(searchStringname);
 
-		// if-else funktioniert nicht!
+		System.out.print(searchString);
+		
+		
+		
 		switch (searchString) {
 		case "AllExercises":
 			exercises = exerciseRepository.findAll();
@@ -285,18 +282,19 @@ public class UserController {
 
 		default:
 			exercises = exerciseRepository.findByType(searchString);
-			break;
+			
 		}
 
-		System.out.print(searchString);
+		
 
+		model.addAttribute("user",user);
 		model.addAttribute("exercises", user.getExercises());
 		model.addAttribute("allexercises", exercises);
 
 		return "exercise";
 	}
 
-	// ----------------------Exercise dem User hinzufügen
+	// get new exercise for the user
 	@RequestMapping(value = { "/addexercise" })
 	public String addExercise(Model model, @RequestParam int id, Authentication authentication) {
 		UserModel user = null;
@@ -306,35 +304,69 @@ public class UserController {
 		user = userQueryRepository.findByUserName(searchStringname);
 
 		ExerciseModel newExercise = new ExerciseModel();
-
 		newExercise = exerciseRepository.findById(id);
-
-		user.addExercise(newExercise);
-
-		userRepository.merge(user);
+		
+		List<ExerciseModel> exercisesFromUser = new ArrayList<ExerciseModel>();
+		exercisesFromUser=	user.getExercises();
+		String successMessage = "You have a new exercise!";
+		String failMessage = "Exercise is already in your list.";
+		
+				
+		if (exercisesFromUser.contains(newExercise))
+		{
+			
+			model.addAttribute("message",failMessage);
+		}
+		else
+		{
+			user.addExercise(newExercise);
+			userRepository.merge(user); 
+			model.addAttribute("message",successMessage);
+		}
+		
+		
+		
+		model.addAttribute("user",user);
 		model.addAttribute("exercises", user.getExercises());
 
 		return "exercise";
 	}
 
-	// --------Exercise löschen
+	// delete exercise from user
 	@RequestMapping(value = { "deleteexercise" })
 	public String deleteExercise(Model model, @RequestParam int id, Authentication authentication) {
-		UserModel user = null;
+		//Get User
+		UserModel user = new UserModel();
 		String searchStringname = authentication.getName();
 		user = userQueryRepository.findByUserName(searchStringname);
 
-		ExerciseModel newExercise = new ExerciseModel();
-		newExercise = exerciseRepository.findById(id);
+		List<ExerciseModel> exerciseFromUser = new ArrayList<ExerciseModel>();
+		exerciseFromUser = user.getExercises();
+		
+		ExerciseModel deleteExercise = new ExerciseModel();
+		deleteExercise = exerciseRepository.findById(id);
+		
+		
 
-		user.remove(newExercise.getId());
+		if (exerciseFromUser.size() == 1)
+		{
+			user.setExercises(new ArrayList<ExerciseModel>());
+		}
+		else {
+			exerciseFromUser.remove(deleteExercise);
+			user.setExercises(exerciseFromUser);
+		}
+		
+		String successMessage = "You have delete on of your exercises!";
 		userRepository.merge(user);
-
 		model.addAttribute("exercises", user.getExercises());
+		model.addAttribute("user", user);
+		model.addAttribute("message",successMessage);
 
 		return "exercise";
 	}
 
+	//show picture
 	@RequestMapping(value = { "/picture" })
 	public String getPicture(Model model, Authentication authentication) {
 
