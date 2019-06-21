@@ -42,7 +42,7 @@ public class PictureModel {
 	 */
 	
 	@Lob
-	@Basic(fetch = FetchType.LAZY)
+	@Basic(fetch = FetchType.EAGER)
 	private byte[] picture;
 	
 	

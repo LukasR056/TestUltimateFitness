@@ -186,6 +186,17 @@
 					</nav> -->
 				</nav>
 			</div>
+			
+			
+			<div th:unless="${pack} == null" th:utext="${pack}"
+				class="alert alert-success alert-dismissible fade show mb-0"
+				role="alert">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			
 			<!-- / .main-navbar -->
 			<div class="main-content-container px-4">
 				<!-- Page Header -->
@@ -248,7 +259,7 @@
 							</div>
 							<div class = "card-footer border-top">
 							
-							<a type="button" class="mb-2 btn btn-lg"
+							<a type="button" class="mb-2 btn btn-lg" th:href="@{/goldReward}"
 							 style="width:100%;  background-color: #EAD679; color:black;">Gold Rewards</a>
 							
 							
@@ -304,7 +315,7 @@
 							</div>
 							<div class = "card-footer border-top">
 							
-							<a type="button" class="mb-2 btn btn-lg"
+							<a type="button" class="mb-2 btn btn-lg" th:href="@{/silverReward}"
 							 style="width:100%;  background-color: #CBD9DE; color:black;">Silver Rewards</a>
 							
 							
@@ -367,7 +378,7 @@
 
 				
 
-
+			
 
 					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 							<h5>300 Points</h5>

@@ -43,10 +43,10 @@
 	<!-- looks up Spring Data repositories -->
 	<jpa:repositories base-package="at.fh.swenga" />
 
-		<!-- JSR-303/JSR-349 (= databinding and validation) support will be detected 
+	<!-- JSR-303/JSR-349 (= databinding and validation) support will be detected 
 		on classpath and enabled automatically -->
 	<mvc:annotation-driven />
-		<!-- JSR-303/JSR-349 support will be detected on classpath and enabled automatically -->
+	<!-- JSR-303/JSR-349 support will be detected on classpath and enabled automatically -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- one of the several properties available; the maximum file size in 
@@ -56,9 +56,9 @@
 
 
 	<mvc:default-servlet-handler />
-  
-  
-  <bean id="conversionService"
+
+
+	<bean id="conversionService"
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
 
 	<bean
@@ -131,5 +131,42 @@
 
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+	
+ <!--  	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.mailtrap.io" />
+		<property name="port" value="2525" />
+		<property name="username"
+			value="37d08da119e064" />
+		<property name="password" value="fa3f812b01ca3c" />
+
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="customMailMessage"
+		class="org.springframework.mail.SimpleMailMessage">
+
+		<property name="from" value="c969671571-e272d8@inbox.mailtrap.io" />
+		<property name="to" value="c969671571-e272d8@inbox.mailtrap.io" />
+		<property name="subject" value="Testing Subject" />
+		<property name="text">
+			<value><![CDATA[Dear %s,
+ 
+Mail Content: 
+%s
+ 
+Regards				MAIL
+Jane Doe
+		]]>
+			</value>
+		</property>
+	</bean> -->
+
 
 </beans>
