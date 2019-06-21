@@ -54,7 +54,7 @@ public class MessageController {
 	public String sendMessages(Model model, Authentication authentication, @Valid MessageModel newMessage,
 			BindingResult bindingResult) {
 		
-		
+		//username ok?
 		UserModel user = userQueryRepository.findByUserName(authentication.getName());
 		List<UserModel> users = userQueryRepository.findAll();
 		if (users.contains(users)) {
