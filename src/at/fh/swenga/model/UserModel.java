@@ -102,7 +102,7 @@ public class UserModel implements java.io.Serializable {
 	// ManyToMany
   // diese Beziehung wird benöigt für die m:n mit die exercise
 	
-	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY)
+	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
 	@JoinTable(
 		      name="User_Exercise",
 		      joinColumns={

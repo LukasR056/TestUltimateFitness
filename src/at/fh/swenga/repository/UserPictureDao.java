@@ -29,6 +29,18 @@ public class UserPictureDao {
 		
 	}
 	
+	
+	public void deleteUserPicture(int amount)
+	{
+		Query q = entityManager.createNativeQuery("delete from UserPictures where amount = amount");;
+		q.setParameter("amount", amount);
+		q.executeUpdate();
+		
+		
+	}
+	
+	
+	
 /*	public void addUserPicture(int userId, int pictureId, int amount)
 	{
 		Query q = entityManager.createNativeQuery("insert into UserPictures (user_userId,picture_id,amount) values (:userId,:pictureId,:amount)");
