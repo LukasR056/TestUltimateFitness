@@ -16,6 +16,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 //import org.springframework.data.domain.Page;
@@ -58,7 +61,7 @@ import at.fh.swenga.repository.UserRepository;
 
 @Controller
 public class UserController {
-////kjfhgf
+
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
@@ -81,6 +84,10 @@ public class UserController {
 	ForumentryRepository forumentryRepository;
 	@Autowired
 	DocumentRepository documentRepository;
+	/*@Autowired
+	MailSender mailSender;
+	@Autowired
+	SimpleMailMessage templateMessage; */
 
 	@InitBinder
 	public void initDateBinder(final WebDataBinder binder) {
@@ -1086,6 +1093,9 @@ public class UserController {
 				
 				model.addAttribute("pack", rewardMessage);
 
+				
+			//	sendMail(user, "REWARD-GOLD", rewardMessage);
+				
 				return "picture";
 
 
@@ -1401,7 +1411,7 @@ public class UserController {
 			model.addAttribute("user", user);
 			
 			model.addAttribute("pack", rewardMessage);
-
+			//sendMail(user, "REWARD-SILVER", rewardMessage);
 			return "picture";
 
 
@@ -1772,7 +1782,7 @@ public class UserController {
 		model.addAttribute("user", user);
 		
 		model.addAttribute("pack", rewardMessage);
-
+		//sendMail(user, "REWARD-SILVER", rewardMessage);
 		return "picture";
 
 	}
@@ -1856,6 +1866,26 @@ public class UserController {
 		}
 	}
 
+	//Methode for sending Mail; leider noch nicht 
+/*	private void sendMail(UserModel user, String rewardType, String message) {
+	
+		String content = "";
+		// Create a thread safe "copy" of the template message and customize it
+		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+		
+		// You can override default settings from dispatcher-servlet.xml:
+		 msg.setFrom("c969671571-e272d8@inbox.mailtrap.io");
+		 msg.setTo("c969671571-e272d8@inbox.mailtrap.io"); //fürs testen an die gleiche sonst user.getEmail()
+		 msg.setSubject(rewardType);
+		msg.setText(String.format(msg.getText(), "Max Mustermann", content));
+		try {
+			this.mailSender.send(msg);
+		} catch (MailException ex) {
+			ex.printStackTrace();
+		}
+	}*/
+	
+	
 	/*
 	 * @ExceptionHandler(Exception.class) public String handleAllException(Exception
 	 * ex) { return "error"; }
