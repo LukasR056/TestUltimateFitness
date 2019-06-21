@@ -24,6 +24,10 @@ public interface ExerciseRepository  extends JpaRepository<ExerciseModel, Intege
 	List<ExerciseModel> findByType(String searchType);
 
 	ExerciseModel findById (int id);
+
+	
+
+
 	
 	
 }

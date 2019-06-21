@@ -27,5 +27,6 @@ public interface UserQueryRepository extends JpaRepository<UserModel, Integer> {
 
 
 
+
 	
 }
