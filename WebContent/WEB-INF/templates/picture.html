@@ -74,6 +74,17 @@
 						<li class="nav-item"><a class="nav-link " href="forum.html">
 								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
+						
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link " href="editUsers.html"> <i
+								class="material-icons">edit</i> <span>Edit Users</span>
+						</a></li>
+
+						<li class="nav-item"><a
+							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
+								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
+						</a></li>
+						
 						<!-- <li class="nav-item"><a class="nav-link "
 							href="./tables.html"> <i class="material-icons">table_chart</i>
 								<span>Tables</span>
@@ -181,6 +192,17 @@
 					</nav> -->
 				</nav>
 			</div>
+			
+			
+			<div th:unless="${pack} == null" th:utext="${pack}"
+				class="alert alert-success alert-dismissible fade show mb-0"
+				role="alert">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			
 			<!-- / .main-navbar -->
 			<div class="main-content-container px-4">
 				<!-- Page Header -->
@@ -241,13 +263,13 @@
 
 
 							</div>
-							<div class="card-footer border-top">
 
-								<a type="button" class="mb-2 btn btn-lg"
-									style="width: 100%; background-color: #EAD679; color: black;">Gold
-									Rewards</a>
-
-
+							<div class = "card-footer border-top">
+							
+							<a type="button" class="mb-2 btn btn-lg" th:href="@{/goldReward}"
+							 style="width:100%;  background-color: #EAD679; color:black;">Gold Rewards</a>
+							
+							
 							</div>
 						</div>
 					</div>
@@ -298,13 +320,12 @@
 
 
 							</div>
-							<div class="card-footer border-top">
 
-								<a type="button" class="mb-2 btn btn-lg"
-									style="width: 100%; background-color: #CBD9DE; color: black;">Silver
-									Rewards</a>
-
-
+							<div class = "card-footer border-top">
+							
+							<a type="button" class="mb-2 btn btn-lg" th:href="@{/silverReward}"
+							 style="width:100%;  background-color: #CBD9DE; color:black;">Silver Rewards</a>
+							
 							</div>
 						</div>
 					</div>
@@ -366,7 +387,7 @@
 
 
 
-
+			
 
 					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 						<h5>300 Points</h5>

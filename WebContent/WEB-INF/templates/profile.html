@@ -74,7 +74,14 @@
 						<li class="nav-item"><a class="nav-link " href="forum.html">
 								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link dropdown-item text-danger " th:href="@{/logout}">
+						
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link " href="editUsers.html"> <i
+								class="material-icons">edit</i> <span>Edit Users</span>
+						</a></li>
+
+						<li class="nav-item"><a
+							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
 								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
 						</a></li>
 						
@@ -299,7 +306,7 @@
 					<div class="col">
 
 						<a type="button" class="mb-2 btn btn-primary btn-lg"
-							th:href="@{/userSettings1(userName=${user.userName})}">Update
+							th:href="@{/userSettings1}">Update
 							your Stats</a>
 						<!-- mr-2 -->
 					</div>
@@ -388,19 +395,12 @@
 								<div class="row">
 									<div class="col">
 
-										<!-- <select class="custom-select custom-select-sm" style="max-width: 130px;">
-                          <option selected="">Last Week</option>
-                          <option value="1">Today</option>
-                          <option value="2">Last Month</option>
-                          <option value="3">Last Year</option>
-                        </select> -->
-
-										<!-- mdropdown menü, machen wir wenn wir Zeit haben -->
+									
 
 									</div>
-									<div class="col text-right view-report">
-										<a href="#">Full report →</a>
-									</div>
+							<!--  		<div class="col text-right view-report">
+										<a href="#">Full report</a>
+									</div>-->
 								</div>
 							</div>
 						</div>
@@ -492,6 +492,7 @@
 	<script> var weights7 = [[${weights7}]] </script>
 	<script> var bmi7 = [[${bmi7}]] </script>
 	<script> var points7 = [[${points7}]] </script>
+	<script> var counterList = [[${counterList}]] </script>
 	<script src="./scripts/app/app-blog-overview.1.1.0.js"></script>
 </body>
 </html>

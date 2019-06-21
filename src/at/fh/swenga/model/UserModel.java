@@ -123,11 +123,11 @@ public class UserModel implements java.io.Serializable {
 	@OrderBy("id")
 	private Set<LogModel> logs; 
 	
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
 	@OrderBy("id")
 	private Set<ForumentryModel> entries;
 	
-	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="user", fetch = FetchType.EAGER)
 	@OrderBy("id")
 	private Set<UserPictureModel> userPicture;
 	

@@ -26,10 +26,6 @@
 
 	<!-- dieses HTML file für die Exercises, es funktioniert zum Teil. filter und hinzufügen fehlt noch. -->
 
-
-
-
-
 	<div class="container-fluid">
 		<div class="row">
 
@@ -80,7 +76,16 @@
 						<li class="nav-item"><a class="nav-link " href="forum.html">
 								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link dropdown-item text-danger " th:href="@{/logout}">
+
+
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link " href="editUsers.html"> <i
+								class="material-icons">edit</i> <span>Edit Users</span>
+						</a></li>
+
+
+						<li class="nav-item"><a
+							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
 								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
 						</a></li>
 						<!-- <li class="nav-item"><a class="nav-link "
@@ -108,7 +113,8 @@
 							<div class="input-group-prepend">
 								<div
 									style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px;">
-									<h5 class="card-title">USER NAME</h5>
+									<h5 class="card-title" th:text="${user.userName}">USER
+										NAME</h5>
 								</div>
 								<!-- Lupe für serach bar	<div class="input-group-text">
 									<i class="fas fa-search"></i>
@@ -190,12 +196,26 @@
 				</nav>
 			</div>
 			<!-- / .main-navbar -->
+
+
+			<div th:unless="${message} == null" th:utext="${message}"
+				class="alert alert-primary alert-dismissible fade show mb-0"
+				role="alert">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<i class="fa fa-check mx-2"></i> <strong>Success!</strong> Your
+				profile has been updated!
+			</div>
+
+
 			<div class="main-content-container container-fluid px-4">
 				<!-- Page Header -->
 				<div class="page-header row no-gutters py-4">
 					<div class="col-12 col-sm-4 text-center text-sm-left mb-0">
 						<span class="text-uppercase page-subtitle">Dashboard</span>
-						<h3 class="page-title">Exercises</h3>
+						<h3 class="page-title">Your Exercises</h3>
 					</div>
 				</div>
 				<!-- End Page Header -->
@@ -206,9 +226,7 @@
 					<div class="row">
 						<div class="col">
 							<div class="card card-small mb-4">
-								<div class="card-header border-bottom">
-									<h6 class="m-0">Exercises</h6>
-								</div>
+
 								<div class="card-body p-0 pb-3 text-center">
 									<table class="table mb-0">
 										<thead class="bg-light">
@@ -228,12 +246,12 @@
 												<td th:text="${exercise.type}">....bbbbbb</td>
 												<td th:text="${exercise.video}">....cccc</td>
 												<td th:text="${exercise.description}">....dddddd</td>
-												<td><a
-													th:href="@{/deleteexercise(id=${exercise.id})}"
+												<td><a th:href="@{/deleteexercise(id=${exercise.id})}"
 													class="btn btn-danger">Delete</a></td>
-													
-													
-													
+
+											
+											</tr>
+
 										</tbody>
 									</table>
 								</div>
@@ -243,88 +261,85 @@
 					<!-- End Default Light Table -->
 					<!-- Default Dark Table -->
 					<form method="post" action="showexercise">
-					<div class="row">
-						<div class="col">
-							<div class="card card-small overflow-hidden mb-4">
-								<div class="card-header bg-dark">
-									<div class="row">
-										<div class="col">
-											<h6 class="m-0 text-white">Get new Exercise</h6>
-										</div>
-										
-										<div class="col">
+						<div class="row">
+							<div class="col">
+								<div class="card card-small overflow-hidden mb-4">
+									<div class="card-header bg-dark">
+										<div class="row">
+											<div class="col">
+												<h6 class="m-0 text-white">Get new Exercise</h6>
+											</div>
 											<label for="searchString">Search:</label>
-											<select  id="searchString" class="form-control" name="searchString">
-											
-												<option value="AllExercises" selected="selected">All Exercises</option>
-												<option value="Bauch">Stomach</option>
-																								<!-- ENGLISCH BEZEICHNUNG AUCH NOCH ÄNDERN -->
-												<option value="Brust">Chest</option>
-												<option value="Beine">Legs</option>
-												<option value="Schulter">Shoulders</option>
-												
-											</select>
-											
+											<div class="col">
+
+												<select id="searchString" class="form-control"
+													name="searchString">
+
+													<option value="AllExercises" selected="selected">All
+														Exercises</option>
+													<option value="Stomach">Stomach</option>
+													<option value="Chest">Chest</option>
+													<option value="Legs">Legs</option>
+													<option value="Shoulders">Shoulders</option>
+												</select>
+											</div>
+
+
+											<div class="col">
+												<input class="btn btn-white" type="submit" value="FILTER">
+											</div>
+
 										</div>
-										
-										
-										<div class="col">
-											<input class="btn btn-white"  type="submit" value="FILTER">
-										</div>
-										
 									</div>
-								</div>
-								
-								</form>
-								
-								<div class="card-body p-0 pb-3 bg-dark text-center">
-									<table class="table table-dark mb-0">
-										<thead class="thead-dark">
-											<tr>
+					</form>
 
-												<th scope="col" class="border-bottom-0">Name</th>
-												<th scope="col" class="border-bottom-0">Muscle Group</th>
-												<th scope="col" class="border-bottom-0">Video</th>
-												<th scope="col" class="border-bottom-0">Description</th>
-												<th scope="col" class="border-bottom-0"></th>
+					<div class="card-body p-0 pb-3 bg-dark text-center">
+						<table class="table table-dark mb-0">
+							<thead class="thead-dark">
+								<tr>
+
+									<th scope="col" class="border-bottom-0">Name</th>
+									<th scope="col" class="border-bottom-0">Muscle Group</th>
+									<th scope="col" class="border-bottom-0">Video</th>
+									<th scope="col" class="border-bottom-0">Description</th>
+									<th scope="col" class="border-bottom-0"></th>
 
 
-											</tr>
-										</thead>
-										<tbody>
-											<tr th:each="allexercise :  ${allexercises}">
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="allexercise :  ${allexercises}">
 
-												<td th:text="${allexercise.name}">...aaaaaaaaaaaaaaaaa</td>
-												<td th:text="${allexercise.type}">....bbbbbb</td>
-												<td th:text="${allexercise.video}">....cccc</td>
-												<td th:text="${allexercise.description}">....dddddd</td>
-												<td><a th:href="@{/addexercise(id=${allexercise.id})}"
-													class="btn btn-success">Add</a></td>  
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
+									<td th:text="${allexercise.name}">...aaaaaaaaaaaaaaaaa</td>
+									<td th:text="${allexercise.type}">....bbbbbb</td>
+									<td th:text="${allexercise.video}">....cccc</td>
+									<td th:text="${allexercise.description}">....dddddd</td>
+									<td><a th:href="@{/addexercise(id=${allexercise.id})}"
+										class="btn btn-success">Add</a></td>
+							</tbody>
+						</table>
 					</div>
-					<!-- End Default Dark Table -->
 				</div>
-
-				<footer class="main-footer d-flex p-2 px-3 bg-white border-top">
-					<ul class="nav">
-						<li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="#">Services</a>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="#">About</a></li>
-						<li class="nav-item"><a class="nav-link" href="#">Products</a>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-					</ul>
-					<span class="copyright ml-auto my-auto mr-2">Copyright ©
-						2018 <a href="https://designrevision.com" rel="nofollow">DesignRevision</a>
-					</span>
 			</div>
-			</footer> </main>
 		</div>
+		<!-- End Default Dark Table -->
+	</div>
+
+	<footer class="main-footer d-flex p-2 px-3 bg-white border-top">
+		<ul class="nav">
+			<li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+			<li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+			<li class="nav-item"><a class="nav-link" href="#">About</a></li>
+			<li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+			<li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+		</ul>
+		<span class="copyright ml-auto my-auto mr-2">Copyright © 2018 <a
+			href="https://designrevision.com" rel="nofollow">DesignRevision</a>
+		</span>
+		</div>
+	</footer>
+	</main>
+	</div>
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"

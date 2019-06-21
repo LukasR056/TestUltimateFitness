@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -103,6 +104,38 @@ public class SecurityController {
 		
 		return "forward:login";
 	}
+	
+	@RequestMapping("/newPassword")
+	public String newPassword(@Valid UserModel newUserModel, Model model)
+    {
+        String userName = newUserModel.getUserName();
+        String eMail = newUserModel.geteMail();
+        if(userQueryRepository.existingUser(userName, eMail) == 1)
+            model.addAttribute("user", newUserModel);
+        else
+        if(userName != null || eMail != null)
+            model.addAttribute("errorMessage", "Username and Email not matching!");
+        return "newPassword";
+    }
+	
+	@RequestMapping("/changePassword")
+    public String changePassword(@Valid UserModel newUserModel, Model model)
+    {
+        UserModel user = userQueryRepository.findByUserName(newUserModel.getUserName());
+        if(newUserModel.getPassword().equals(newUserModel.getPasswordConfirmed()) && 
+        		newUserModel.getPassword().length() >= 6)
+        {
+            user.setPassword(newUserModel.getPassword());
+            user.encryptPassword();
+            model.addAttribute("message", "Password successfully changed!");
+            return "login";
+        } else
+        {
+            model.addAttribute("errorMessage", "Password is not the same or it has to be at least six characters long!");
+            model.addAttribute("user", newUserModel);
+            return "newPassword";
+        }
+    }
 	
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
