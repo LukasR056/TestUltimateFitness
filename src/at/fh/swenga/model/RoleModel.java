@@ -24,7 +24,7 @@ public class RoleModel implements java.io.Serializable {
                 @Column(nullable = false)
                 private String role;
                 
-                @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+                @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
             	private Set<UserModel> users;
  
                               

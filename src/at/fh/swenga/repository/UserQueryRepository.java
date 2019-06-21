@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import at.fh.swenga.model.ExerciseModel;
 import at.fh.swenga.model.UserModel;
 
 @Repository
@@ -24,7 +24,7 @@ public interface UserQueryRepository extends JpaRepository<UserModel, Integer> {
 	
 	@Query("SELECT u FROM UserModel u WHERE u.coach = null")
 	public List<UserModel> findCoach();
-		
+
 
 
 	

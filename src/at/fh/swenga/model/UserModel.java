@@ -102,7 +102,7 @@ public class UserModel implements java.io.Serializable {
 	// ManyToMany
   // diese Beziehung wird benöigt für die m:n mit die exercise
 	
-	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
+	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY)
 	@JoinTable(
 		      name="User_Exercise",
 		      joinColumns={
@@ -123,11 +123,11 @@ public class UserModel implements java.io.Serializable {
 	@OrderBy("id")
 	private Set<LogModel> logs; 
 	
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
 	@OrderBy("id")
 	private Set<ForumentryModel> entries;
 	
-	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="user", fetch = FetchType.EAGER)
 	@OrderBy("id")
 	private Set<UserPictureModel> userPicture;
 	
