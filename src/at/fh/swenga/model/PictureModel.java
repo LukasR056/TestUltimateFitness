@@ -47,7 +47,7 @@ public class PictureModel {
 	
 	
 	public PictureModel() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	// mit this.userPictures = userPictures;??
@@ -101,7 +101,7 @@ public class PictureModel {
 	public void setLevel(String level) {
 		this.level = level;
 	}
-
+	
 	public byte[] getPicture() {
 		return picture;
 	}
@@ -109,6 +109,8 @@ public class PictureModel {
 	public void setPicture(byte[] picture) {
 		this.picture = picture;
 	}
+
+
 
 	
 	
