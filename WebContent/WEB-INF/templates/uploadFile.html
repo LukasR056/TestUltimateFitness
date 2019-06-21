@@ -12,12 +12,16 @@
 
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<form class="form-horizontal" enctype="multipart/form-data" method="post" action="upload">
+				<form class="form-horizontal"  enctype="multipart/form-data" method="post" action="upload">
 					<fieldset>
-						<legend th:text="'Upload Document for user ' + ${userId}"></legend>
+						<legend th:text="'Upload Picture for PictureModel ' + ${pic.name}"></legend>
 
-						<input type="hidden" name="userId" th:value="${userId}">
-
+						<input  name="pictureId" th:value="${pic.pictureId}">  <!--   type="hidden"  th:href="@{/upload(picModelId=${pic.pictureId})}"  -->
+						<!-- "${pictureId}" -->
+						
+						
+						<input type="hidden" name="id" th:value="${pic.pictureId}">
+						
 						<div class="form-group">
 							<label for="inputFile" class="col-md-2 control-label">File:</label>
 							<div class="col-md-10">
@@ -27,9 +31,14 @@
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-2">
 								<button type="submit" class="btn btn-primary">Upload</button>
-								<a href="list">
-									<button type="button" class="btn btn-default">Cancel</button>
+								
+						
+							
+							<!-- Cancel Button -->
+							<a th:href="picsoverview.html" type="button" class="btn btn-default">Cancel
 								</a>
+									
+								
 							</div>
 						</div>
 

@@ -131,13 +131,12 @@ public class UserModel implements java.io.Serializable {
 	@OrderBy("id")
 	private Set<UserPictureModel> userPicture;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	private DocumentModel document;
-	
+
 	@OneToMany(mappedBy="message",fetch=FetchType.EAGER)
 	@OrderBy("id")
 	private Set<MessageModel> messages; 
 	
+
 	
   
   public Set<MessageModel> getMessages() {
@@ -232,15 +231,7 @@ public class UserModel implements java.io.Serializable {
 	}
 
 	
-	public DocumentModel getDocument() {
-		return document;
-	}
- 
-public void setDocument(DocumentModel document) {
-	this.document = document;
-	}
 
-	
 
 
 	public UserModel(int userId, String firstName, String lastName, String userName, Date birthDate, String gender,

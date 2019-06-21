@@ -18,5 +18,7 @@ public interface PictureRepository extends JpaRepository<PictureModel, Integer> 
 
 	PictureModel findByName(String string);
 
+	PictureModel findByPictureId(int pictureId);
+
 	
 }
