@@ -162,6 +162,16 @@ public class UserController {
 				" Hold two dumbbells just behind your shoulders, palms facing forward. Look up and tilt your body to the left, extending your right arm straight above you. Lower the dumbbell and repeat on the other side to create a see-saw motion. ");
 		ExerciseModel exercise4 = new ExerciseModel("Seated Lateral Raise", "Shoulders", null,
 				"Sit on a bench and hold a dumbbell in each hand by your side. Raise both dumbbells to your side until they're shoulder height. Lower under control and repeat.");
+
+		ExerciseModel exercise5 = new ExerciseModel("Regular push-ups","Chest",null,"This classic bodyweight exercise is excellent to start with as well as for keeping as a training staple in any full-body or upper-body workout. Make sure to use a wide grip, as this will work your chest muscles more than a narrow grip technique.");
+		ExerciseModel exercise6 = new ExerciseModel("Incline push-ups","Chest",null,"If you find a standard push-up too challenging at first, then you can start with an incline push-up. The steeper the incline, the less body weight you will need to work push. This is also a good exercise to target your lower chest.");
+		ExerciseModel exercise7 = new ExerciseModel("Decline push-ups","Chest",null,"What goes up, must come down. These push-ups will help you target your upper chest and deltoid muscles specifically. It will also add more of your body weight to the exercise than a standard push-up, thus making it harder.");
+		ExerciseModel exercise8 = new ExerciseModel("Plyometric push-ups","Chest",null,"Are you ready to explode into action? These push-ups, can be executed in a variety of fun and fantastical way, think clap push-ups. These bursts of powerful plyometric movement will have your muscles firing on all cylinders.");
+		ExerciseModel exercise10 = new ExerciseModel("Squat Jump","Legs",null,"With your feet hip-width apart, squat until your thighs are parallel to the floor, and then jump as high as you can. Allow your knees to bend 45 degrees when you land, pause in deep squat position for one full second, and then jump again.");
+		ExerciseModel exercise11 = new ExerciseModel("Side Lunge","Legs",null,"Stand with your feet about twice shoulder-width apart. Keeping your right leg straight, push your hips back and to the left. Then bend your left knee and lower your body until your left thigh is parallel to the floor. Your feet should remain flat on the floor at all times. Pause for two seconds, and then return to the starting position. Complete all reps and switch sides.");
+		ExerciseModel exercise12 = new ExerciseModel("Scissor Box Jump","Legs",null,"Place your left foot on a box or bench with your right foot on the floor. In one movement, jump up and switch leg positions in midair. At the bottom position, pause for one second before alternating to the other leg.");
+		ExerciseModel exercise13 = new ExerciseModel("Single-Leg Hip Raise","Legs",null,"Lie faceup, arms out to your sides at 45-degree angles, left foot flat on the floor with that knee bent, and your right leg straight. Raise your right leg until it�s in line with your left thigh. Then squeeze your glutes and push your hips up�your lower back will elevate. Pause, and return to the starting position.");
+
 		ExerciseModel exercise5 = new ExerciseModel("Regular push-ups", "Chest", null,
 				"This classic bodyweight exercise is excellent to start with as well as for keeping as a training staple in any full-body or upper-body workout. Make sure to use a wide grip, as this will work your chest muscles more than a narrow grip technique.");
 		ExerciseModel exercise6 = new ExerciseModel("Incline push-ups", "Chest", null,
@@ -178,6 +188,7 @@ public class UserController {
 				"Place your left foot on a box or bench with your right foot on the floor. In one movement, jump up and switch leg positions in midair. At the bottom position, pause for one second before alternating to the other leg.");
 		ExerciseModel exercise13 = new ExerciseModel("Single-Leg Hip Raise", "Legs", null,
 				"Lie faceup, arms out to your sides at 45-degree angles, left foot flat on the floor with that knee bent, and your right leg straight. Raise your right leg until its in line with your left thigh. Then squeeze your glutes and push your hips upyour lower back will elevate. Pause, and return to the starting position.");
+
 
 		exerciseRepository.save(exercise1);
 		exerciseRepository.save(exercise2);
@@ -791,6 +802,87 @@ public class UserController {
 		if(user.getPoints() < 300) {
 			System.out.print("ZU WENIGE PUNKTE");
 			message = "Not enough points";
+			
+			
+			// generate the model for the frontend
+			
+					// get logged User
+			
+					// all Pics of User
+					List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
+					bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+					List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+					silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
+					List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
+					goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
+			
+					// allPics
+					List<PictureModel>bronzePics = new ArrayList<PictureModel>();
+					bronzePics = pictureRepository.findByLevel("bronze");
+					List<PictureModel>silverPics = new ArrayList<PictureModel>();
+					silverPics = pictureRepository.findByLevel("silber");
+					List<PictureModel>goldPics = new ArrayList<PictureModel>();
+					goldPics = pictureRepository.findByLevel("gold");
+			
+					// generate all index List
+					List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
+					for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
+						bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
+					}
+					List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
+					for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
+						silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
+					}
+					List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
+					for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
+						goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
+					}
+			
+					// missing Picture List
+					List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
+					List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
+					List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
+			
+					for (PictureModel bronzePic : bronzePics) {
+						if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
+			
+						} else {
+							missingPicsBronze.add(bronzePic);
+						}
+			
+					}
+					for (PictureModel goldPic : goldPics) {
+						if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
+			
+						} else {
+							missingPicsGold.add(goldPic);
+						}
+			
+					}
+					for (PictureModel silverPic : silverPics) {
+						if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
+			
+						} else {
+							missingPicsSilver.add(silverPic);
+						}
+			
+					}
+			
+					model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
+					model.addAttribute("silverPicOfUser", silverPicsOfUser);
+					model.addAttribute("goldPicOfUser", goldPicsOfUser);
+			
+					System.out.print(missingPicsBronze);
+					System.out.print(missingPicsSilver);
+					System.out.print(missingPicsGold);
+			
+					model.addAttribute("missingBronzePics", missingPicsBronze);
+					model.addAttribute("missingSilverPics", missingPicsSilver);
+					model.addAttribute("missingGoldPics", missingPicsGold);
+					model.addAttribute("user", user);
+				
+			
+			
 		} else {
 			
 			user.setPoints(user.getPoints()-300);
@@ -1121,6 +1213,85 @@ public class UserController {
 		if(user.getPoints() < 150) {
 			System.out.print("ZU WENIGE PUNKTE");
 			message = "Not enough points";
+			
+			// generate the model for the frontend
+			
+			// get logged User
+	
+			// all Pics of User
+			List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
+			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+			List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
+			List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
+			goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
+	
+			// allPics
+			List<PictureModel>bronzePics = new ArrayList<PictureModel>();
+			bronzePics = pictureRepository.findByLevel("bronze");
+			List<PictureModel>silverPics = new ArrayList<PictureModel>();
+			silverPics = pictureRepository.findByLevel("silber");
+			List<PictureModel>goldPics = new ArrayList<PictureModel>();
+			goldPics = pictureRepository.findByLevel("gold");
+	
+			// generate all index List
+			List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
+				bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
+				silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
+				goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
+			}
+	
+			// missing Picture List
+			List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
+	
+			for (PictureModel bronzePic : bronzePics) {
+				if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
+	
+				} else {
+					missingPicsBronze.add(bronzePic);
+				}
+	
+			}
+			for (PictureModel goldPic : goldPics) {
+				if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
+	
+				} else {
+					missingPicsGold.add(goldPic);
+				}
+	
+			}
+			for (PictureModel silverPic : silverPics) {
+				if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
+	
+				} else {
+					missingPicsSilver.add(silverPic);
+				}
+	
+			}
+	
+			model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
+			model.addAttribute("silverPicOfUser", silverPicsOfUser);
+			model.addAttribute("goldPicOfUser", goldPicsOfUser);
+	
+			System.out.print(missingPicsBronze);
+			System.out.print(missingPicsSilver);
+			System.out.print(missingPicsGold);
+	
+			model.addAttribute("missingBronzePics", missingPicsBronze);
+			model.addAttribute("missingSilverPics", missingPicsSilver);
+			model.addAttribute("missingGoldPics", missingPicsGold);
+			model.addAttribute("user", user);
+			
+			
 		} else {
 			
 			user.setPoints(user.getPoints()-150);
@@ -1438,6 +1609,83 @@ public class UserController {
 			System.out.print("ZU WENIGE PUNKTE");
 			message = "Not enough points";
 			
+			// generate the model for the frontend
+			
+			// get logged User
+	
+			// all Pics of User
+			List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
+			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+			List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
+			List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
+			goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
+	
+			// allPics
+			List<PictureModel>bronzePics = new ArrayList<PictureModel>();
+			bronzePics = pictureRepository.findByLevel("bronze");
+			List<PictureModel>silverPics = new ArrayList<PictureModel>();
+			silverPics = pictureRepository.findByLevel("silber");
+			List<PictureModel>goldPics = new ArrayList<PictureModel>();
+			goldPics = pictureRepository.findByLevel("gold");
+	
+			// generate all index List
+			List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
+				bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
+				silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
+				goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
+			}
+	
+			// missing Picture List
+			List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
+	
+			for (PictureModel bronzePic : bronzePics) {
+				if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
+	
+				} else {
+					missingPicsBronze.add(bronzePic);
+				}
+	
+			}
+			for (PictureModel goldPic : goldPics) {
+				if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
+	
+				} else {
+					missingPicsGold.add(goldPic);
+				}
+	
+			}
+			for (PictureModel silverPic : silverPics) {
+				if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
+	
+				} else {
+					missingPicsSilver.add(silverPic);
+				}
+	
+			}
+	
+			model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
+			model.addAttribute("silverPicOfUser", silverPicsOfUser);
+			model.addAttribute("goldPicOfUser", goldPicsOfUser);
+	
+			System.out.print(missingPicsBronze);
+			System.out.print(missingPicsSilver);
+			System.out.print(missingPicsGold);
+	
+			model.addAttribute("missingBronzePics", missingPicsBronze);
+			model.addAttribute("missingSilverPics", missingPicsSilver);
+			model.addAttribute("missingGoldPics", missingPicsGold);
+			model.addAttribute("user", user);
+			
 		} else {
 			
 			user.setPoints(user.getPoints()-100);
@@ -1613,28 +1861,26 @@ public class UserController {
 
 		// Hier werden die Ãnderungen eines Users in den Log eingetragen
 		LogModel log = new LogModel(user, user.getHeight(), user.getWeight(), user.getPoints(), date);
+
+
+
+=======
 		//System.out.println(log);
 		// logRepository.save(log);
 		// log.setUser(user);
 		// user.addLogModel(log);
+
 		logRepository.save(log);
 
 		// unser Ansatz um das Problem zu lï¿½sen. Jedoch funktioniert die zuweisung zu
 		// user nicht.
 
-		// unser Ansatz um das Problem zu lÃ¯Â¿Â½sen. Jedoch funktioniert die zuweisung
-		// zu user nicht.
 
-		// coach fehlt noch
-
-		// Save a message for the web page
-
-		
 		
 		model.addAttribute("message", "Profile has been updated successfully");
 		
 		// model.addAttribute("user", user);
-		return "forward:/profile";
+		return "redirect:/profile";
 	}
 
 	//bronze Reward
@@ -1687,12 +1933,17 @@ public class UserController {
 					} else {
 						i++;
 						rewardMessage = "Not enough pics";
+						//userPictureRepo.remove(eintrag);
 					}
 				}
 				
 				if(i==1) {
 					for( UserPictureModel eintrag : kaufUserBronze)
 					{
+						if (eintrag.getAmount() == 1) {
+							//userPictureRepo.remove(eintrag);
+						}
+						
 						eintrag.setAmount(eintrag.getAmount()-1);
 						userPictureRepo.save(eintrag);
 						
@@ -1702,7 +1953,31 @@ public class UserController {
 					rewardMessage = "Not enough pics";
 				}
 				
+
+				//kaufUserBronze.remove(kaufUserBronze);
+				//userPictureRepo.removeByAmount(0);
+				
+				
+				
+//				userPictureRepo.dele
+				
+				List<UserPictureModel> userUserPicture = userPictureRepo.findAll();
+				
+				for (UserPictureModel pic : userUserPicture) {
+					if (pic.getAmount() == 0) {
+						userUserPicture.remove(pic);
+						System.out.print("IM REMOVE IF");
+//						userPictureRepo.saveAll(userUserPicture);
+					}
+				}
+				
+				
+				
+				
+				System.out.print("GLEICH");
+
 				// System.out.print("GLEICH");
+
 			} else {
 				// System.out.print("NICHT GLEICH");
 				rewardMessage = "Not enough pics";

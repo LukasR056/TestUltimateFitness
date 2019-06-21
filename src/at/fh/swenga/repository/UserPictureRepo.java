@@ -5,6 +5,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import at.fh.swenga.model.PictureModel;
@@ -23,6 +25,15 @@ public interface UserPictureRepo extends JpaRepository<UserPictureModel, Integer
 	List<UserPictureModel> findByUserAndPictureLevel(UserModel user, String string);
 
 	List<UserPictureModel> findByPictureLevel(String string);
+
+	/*@Query("delete from UserPicture where amount = 0")
+	List<UserPictureModel> deleteBymountZero();*/
+
+	void removeByAmount(int i);
+
+//	void removeByAmount(int i);
+
+	//void remove(UserPictureModel eintrag);
 		
 
 }
