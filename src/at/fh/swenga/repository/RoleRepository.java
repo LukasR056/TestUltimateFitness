@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import at.fh.swenga.model.RoleModel;
  
 @Repository
-@Transactional            //extends JpaRepository<UserModel, Integer>
+@Transactional          
 public class RoleRepository  {
       
        @PersistenceContext
@@ -48,22 +48,6 @@ public class RoleRepository  {
             
        }
  
-      
-      
-      
-/*    public List<UserModel> searchUsers(String searchString) {
-             TypedQuery<UserModel> typedQuery = entityManager.createQuery(
-                           "select u from UserModel u where u.firstName like :search or u.lastName like :search",
-                           UserModel.class);
-             typedQuery.setParameter("search", "%" + searchString + "%");
-             List<UserModel> typedResultList = typedQuery.getResultList();
-             return typedResultList;
-       }  weitere Queries von der Übung Woche 5 JPA*/
- 
-      
-      
-      
-      
       
       
  

@@ -34,12 +34,12 @@
 						<a class="navbar-brand w-100 mr-0" href="#"
 							style="line-height: 25px;">
 							<div class="d-table m-auto">
-							
-									<img id="main-logo" class="d-inline-block align-top mr-1"
+
+								<img id="main-logo" class="d-inline-block align-top mr-1"
 									style="max-width: 25px;"
 									src="./images/content-management/UltimateFitness_logo.jpeg"
-									alt="Ultimate Fitness"> 
-								<span class="d-none d-md-inline ml-1" style="font-size: 20px;">
+									alt="Ultimate Fitness"> <span
+									class="d-none d-md-inline ml-1" style="font-size: 20px;">
 									Ultimate Fitness </span>
 							</div>
 						</a> <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none"> <i
@@ -61,21 +61,27 @@
 				</form>
 				<div class="nav-wrapper">
 					<ul class="nav flex-column">
-						<li class="nav-item"><a class="nav-link" href="profile.html">
+						<li class="nav-item"><a class="nav-link " href="profile.html">
 								<i class="material-icons">person</i> <span> Profil</span>
 						</a></li>
 						<li class="nav-item"><a class="nav-link "
 							href="exercise.html"> <i class="material-icons">table_chart</i>
 								<span>Exercise</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link active"
+						<li class="nav-item"><a class="nav-link  active"
 							href="picture.html"> <i class="material-icons">view_module</i>
 								<span>Picture</span>
 						</a></li>
 						<li class="nav-item"><a class="nav-link " href="forum.html">
 								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
-						
+
+						<li class="nav-item"><a class="nav-link "
+							href="messages.html"> <i class="material-icons">note_add</i>
+								<span>Message</span>
+						</a></li>
+
+
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link " href="editUsers.html"> <i
 								class="material-icons">edit</i> <span>Edit Users</span>
@@ -85,7 +91,8 @@
 							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
 								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
 						</a></li>
-						
+
+
 						<!-- <li class="nav-item"><a class="nav-link "
 							href="./tables.html"> <i class="material-icons">table_chart</i>
 								<span>Tables</span>
@@ -193,8 +200,8 @@
 					</nav> -->
 				</nav>
 			</div>
-			
-			
+
+
 			<div th:unless="${pack} == null" th:utext="${pack}"
 				class="alert alert-primary alert-dismissible fade show mb-0"
 				role="alert">
@@ -203,7 +210,7 @@
 					<span aria-hidden="true">×</span>
 				</button>
 			</div>
-			
+
 			<!-- / .main-navbar -->
 			<div class="main-content-container px-4">
 				<!-- Page Header -->
@@ -216,13 +223,46 @@
 				<!-- End Page Header -->
 
 				<!-- erste Reihe gleiche -->
+
 				<div class="row">
+					<div class="col">
+						<h5>300 Points</h5>
+						<a type="button" class="mb-2 btn btn-lg" th:href="@{/goldPack}"
+							style="background-color: #EAD679; color: black;">Gold Package</a>
+						<br> <br>
+					</div>
+					<div class="col">
+						<h5>150 Points</h5>
+						<a type="button" class="mb-2 btn  btn-lg" th:href="@{/silverPack}"
+							style="background-color: #CBD9DE; color: black;">Silber
+							Package</a> <br> <br>
+
+					</div>
+					<div class="col">
+						<h5>100 Points</h5>
+						<a type="button" class="mb-2 btn  bronze btn-lg"
+							th:href="@{/bronzePack}"
+							style="background-color: #E5C89E; color: black;">Bronze
+							Package</a> <br> <br>
+					</div>
+					<div class="col">
+						<h5>Your Points:</h5>
+						<h5 th:text="${user.points}">0 Points</h5>
+						<a href="picsoverview.html"><button
+								class="mb-2 btn btn-sm btn-warning mr-2"
+								sec:authorize="hasRole('ROLE_ADMIN')">EDIT PICTURES</button></a>
+					</div>
+				</div>
+
+				<div class="row">
+
+
 					<!-- start erstes Bilde -->
 
-					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+					<div class="col-lg-4 col-md-6 col-sm-12 mb-4">
 						<div class="card card-small card-post card-post--1">
 							<div class="card-post__image"
-								style="background-image: url('images/content-management/1.jpeg');">
+								style="background-image: url('images/pic_gold.jpeg');">
 								<a href="#" class="card-post__category badge badge-pill "
 									style="background-color: #EAD679; color: black;">GOLD</a>
 							</div>
@@ -242,7 +282,12 @@
 									<tbody>
 										<tr th:each="pic : ${goldPicOfUser}">
 											<td th:text="${pic.picture.name}"></td>
-											<td th:text="${pic.picture.picture}"></td>
+											<td><span th:if="${pic.picture.picture != null}">
+													<a
+													th:href="@{download(pictureId=${pic.picture.pictureId})}"
+													target="_blank" th:text="${pic.picture.name}"></a>
+											</span> <span th:unless="${pic.picture.picture != null}"> --
+													no file --- </span></td>
 											<td style="text-align: right;" th:text="${pic.amount}"></td>
 										</tr>
 									</tbody>
@@ -265,21 +310,23 @@
 
 							</div>
 
-							<div class = "card-footer border-top">
-							
-							<a type="button" class="mb-2 btn btn-lg" th:href="@{/goldReward}"
-							 style="width:100%;  background-color: #EAD679; color:black;">Gold Rewards</a>
-							
-							
+							<div class="card-footer border-top">
+
+								<a type="button" class="mb-2 btn btn-lg"
+									th:href="@{/goldReward}"
+									style="width: 100%; background-color: #EAD679; color: black;">Gold
+									Rewards</a>
+
+
 							</div>
 						</div>
 					</div>
 
 					<!-- start 2 Bilde -->
-					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+					<div class="col-lg-4 col-md-6 col-sm-12 mb-4">
 						<div class="card card-small card-post card-post--1">
 							<div class="card-post__image"
-								style="background-image: url('images/content-management/1.jpeg');">
+								style="background-image: url('images/pic_silver.jpeg');">
 								<a href="#"
 									class="card-post__category badge badge-pill badge-secondary"
 									style="background-color: #CBD9DE; color: black;">SILVER</a>
@@ -300,7 +347,12 @@
 									<tbody>
 										<tr th:each="pic : ${silverPicOfUser}">
 											<td th:text="${pic.picture.name}"></td>
-											<td th:text="${pic.picture.picture}"></td>
+											<td><span th:if="${pic.picture.picture != null}">
+													<a
+													th:href="@{download(pictureId=${pic.picture.pictureId})}"
+													target="_blank" th:text="${pic.picture.name}"></a>
+											</span> <span th:unless="${pic.picture.picture != null}"> --
+													no file --- </span></td>
 											<td style="text-align: right;" th:text="${pic.amount}"></td>
 										</tr>
 									</tbody>
@@ -322,19 +374,21 @@
 
 							</div>
 
-							<div class = "card-footer border-top">
-							
-							<a type="button" class="mb-2 btn btn-lg" th:href="@{/silverReward}"
-							 style="width:100%;  background-color: #CBD9DE; color:black;">Silver Rewards</a>
-							
+							<div class="card-footer border-top">
+
+								<a type="button" class="mb-2 btn btn-lg"
+									th:href="@{/silverReward}"
+									style="width: 100%; background-color: #CBD9DE; color: black;">Silver
+									Rewards</a>
+
 							</div>
 						</div>
 					</div>
 					<!-- start 3 Bilde -->
-					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+					<div class="col-lg-4 col-md-6 col-sm-12 mb-4">
 						<div class="card card-small card-post card-post--1">
 							<div class="card-post__image"
-								style="background-image: url('images/content-management/1.jpeg');">
+								style="background-image: url('images/pic_bronze.jpeg');">
 								<a href="#" class="card-post__category badge badge-pill"
 									style="background-color: #E5C89E; color: black;">BRONZE</a>
 							</div>
@@ -353,7 +407,14 @@
 									<tbody>
 										<tr th:each="pic : ${bronzePicOfUser}">
 											<td th:text="${pic.picture.name}"></td>
-											<td th:text="${pic.picture.picture}"></td>
+
+											<!-- <td th:text="${pic.picture.picture}"></td> -->
+											<td><span th:if="${pic.picture.picture != null}">
+													<a
+													th:href="@{download(pictureId=${pic.picture.pictureId})}"
+													target="_blank" th:text="${pic.picture.name}"></a>
+											</span> <span th:unless="${pic.picture.picture != null}"> --
+													no file --- </span></td> 
 											<td style="text-align: right;" th:text="${pic.amount}"></td>
 										</tr>
 									</tbody>
@@ -385,33 +446,6 @@
 						</div>
 					</div>
 					<!-- ende 1 Reihe -->
-
-
-
-			
-
-					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-						<h5>300 Points</h5>
-						<a type="button" class="mb-2 btn btn-lg" th:href="@{/goldPack}"
-							style="background-color: #EAD679; color: black;">Gold Package</a>
-						<br> <br>
-						<h5>150 Points</h5>
-						<a type="button" class="mb-2 btn  btn-lg" th:href="@{/silverPack}"
-							style="background-color: #CBD9DE; color: black;">Silber
-							Package</a> <br> <br>
-
-						<h5>100 Points</h5>
-						<a type="button" class="mb-2 btn  bronze btn-lg"
-							th:href="@{/bronzePack}"
-							style="background-color: #E5C89E; color: black;">Bronze
-							Package</a> <br> <br>
-						<h5>Your Points:</h5>
-						<h5 th:text="${user.points}">0 Points</h5>
-
-						<a href="picsoverview.html"><button
-								class="mb-2 btn btn-sm btn-warning mr-2"
-								sec:authorize="hasRole('ROLE_ADMIN')">EDIT PICTURES</button></a>
-					</div>
 			</main>
 
 

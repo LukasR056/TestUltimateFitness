@@ -33,7 +33,6 @@
 						<a class="navbar-brand w-100 mr-0" href="#"
 							style="line-height: 25px;">
 							<div class="d-table m-auto">
-							
 									<img id="main-logo" class="d-inline-block align-top mr-1"
 									style="max-width: 25px;"
 									src="./images/content-management/UltimateFitness_logo.jpeg"
@@ -68,33 +67,32 @@
 							href="exercise.html"> <i class="material-icons">table_chart</i>
 								<span>Exercise</span>
 						</a></li>
-
-						<li class="nav-item"><a class="nav-link" href="picture.html">
+						<li class="nav-item"><a class="nav-link " href="picture.html">
 								<i class="material-icons">view_module</i> <span>Picture</span>
 						</a></li>
 						<li class="nav-item"><a class="nav-link " href="forum.html">
 								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
-
 						
+						<li class="nav-item"><a class="nav-link " href="messages.html">
+								<i class="material-icons">note_add</i> <span>Messages</span>
+						</a></li>
+
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link " href="editUsers.html"> <i
 								class="material-icons">edit</i> <span>Edit Users</span>
 						</a></li>
 
+						<li class="nav-item" sec:authorize="hasRole('ROLE_COACH')"><a
+							class="nav-link " href="changeUserPoints.html"> <i
+								class="material-icons">edit</i> <span>User Points</span>
+						</a></li>
 
 						<li class="nav-item"><a
 							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
 								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
 						</a></li>
-						<!-- <li class="nav-item"><a class="nav-link "
-							href="./tables.html"> <i class="material-icons">table_chart</i>
-								<span>Tables</span>
-						</a></li>
-						<li class="nav-item"><a class="nav-link "
-							href="./user-profile-lite.html"> <i class="material-icons">person</i>
-								<span>User Profile</span>
-						</a></li>  -->
+
 
 					</ul>
 				</div>
@@ -153,95 +151,106 @@
 					<div class="col-lg-4"></div>
 					<div class="col-lg-10">
 						<div class="card card-small mb-4">
-							<form action="">
-								<div class="card-header border-bottom">
-									<h6 class="m-0">Account Details</h6>
-								</div>
-								<ul class="list-group list-group-flush">
-									<li class="list-group-item p-3">
-										<div class="row">
-											<div class="col">
-												<form method="post" th:action="${user} ? @{/userSettings1}">
-													<div class="form-row">
-														<div class="form-group col-md-6">
-															<label for="feFirstName">First Name</label> <input
-																type="text" class="form-control" id="inputFirstName"
-																name="firstName" placeholder="First Name"
-																th:value="${user.firstName}">
-														</div>
 
-														<div class="form-group col-md-6">
-															<label for="feLastName">Last Name</label> <input
-																type="text" class="form-control" id="inputLastName"
-																name="lastName" placeholder="Last Name"
-																th:value="${user.lastName}">
-														</div>
-
-														<div class="form-group col-md-6">
-															<label for="feLastName">Username</label> <input
-																type="text" class="form-control" id="inputUserName"
-																name="userName" placeholder="Username"
-																th:value="${user.userName}" readonly>
-														</div>
-													</div>
-													<div class="form-row">
-														<div class="form-group col-md-6">
-															<label for="feEmailAddress">Email</label> <input
-																type="email" class="form-control" id="inputEMail"
-																name="eMail" placeholder="Email"
-																th:value="${user.eMail}">
-														</div>
-														
+							<div class="card-header border-bottom">
+								<h6 class="m-0">Account Details</h6>
+							</div>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item p-3">
+									<div class="row">
+										<div class="col">
+											<form method="post" th:action=" @{/safeUserSettings}">
+												<div class="form-row">
+													<div class="form-group col-md-6">
+														<label for="feFirstName">First Name</label> <input
+															type="text" class="form-control" id="inputFirstName"
+															name="firstName" placeholder="First Name"
+															th:value="${user.firstName}">
 													</div>
 
+													<div class="form-group col-md-6">
+														<label for="feLastName">Last Name</label> <input
+															type="text" class="form-control" id="inputLastName"
+															name="lastName" placeholder="Last Name"
+															th:value="${user.lastName}">
+													</div>
 
-													<div class="form-row">
+													<div class="form-group col-md-6">
+														<label for="feLastName">Username</label> <input
+															type="text" class="form-control" id="inputUserName"
+															name="userName" placeholder="Username"
+															th:value="${user.userName}" readonly>
+													</div>
+												</div>
+												<div class="form-row">
+													<div class="form-group col-md-6">
+														<label for="feEmailAddress">Email</label> <input
+															type="email" class="form-control" id="inputEMail"
+															name="eMail" placeholder="Email" th:value="${user.eMail}">
+													</div>
+												</div>
+												<div class="form-row">
 
-														<div class="form-group col-md-2">
-															<label for="inputZip">Height</label> <input type="text"
-																class="form-control" id="inputHeight" name="height"
-																th:value="${user.height}">
-														</div>
-
-
-														<div class="form-group col-md-2">
-															<label for="inputZip">Weight</label> <input type="text"
-																class="form-control" id="inputWeight" name="weight"
-																th:value="${user.weight}">
-														</div>
-
-
-														<div class="form-group col-md-2">
-															<label for="inputZip">BMI</label> <input type="text"
-																class="form-control"
-																th:value="${#numbers.formatDecimal(user.weight / (user.height *user.height),2,'COMMA',2,'POINT')}"
-																readonly>
-														</div>
-
-
-														<div class="form-group col-md-4">
-															<label for="inputCoach">Coach</label> <select
-																id="inputCoach" class="form-control" name="coach">
-																<tr th:each="coach : ${coaches}">
-																	<option th:value="${coach.userName}" th:text="${coach.firstName} + ' ' + ${coach.lastName}">
-																		test</option>																</tr>
-															</select>
-														</div>
-
-
-
+													<div class="form-group col-md-2">
+														<label for="inputZip">Height</label> <input type="text"
+															class="form-control" id="inputHeight" name="height"
+															th:value="${user.height}">
 													</div>
 
 
-													<button type="submit" class="btn btn-accent">Update
-														Stats</button>
-												</form>
-											</div>
+													<div class="form-group col-md-2">
+														<label for="inputZip">Weight</label> <input type="text"
+															class="form-control" id="inputWeight" name="weight"
+															th:value="${user.weight}">
+													</div>
+
+
+													<div class="form-group col-md-2">
+														<label for="inputZip">BMI</label> <input type="text"
+															class="form-control"
+															th:value="${#numbers.formatDecimal(user.weight / (user.height *user.height),2,'COMMA',2,'POINT')}"
+															readonly>
+													</div>
+
+
+													<div class="form-group col-md-3">
+														<label for="inputCoach">Coach</label> <select
+															id="inputCoach" class="form-control" name="coach">
+															<option selected th:value="${user.coach}">Choose... (Default if nothing is chosen)</option>
+															<tr th:each="coach : ${coaches}">
+																<option th:value="${coach.userName}"
+																	th:text="${coach.firstName} + ' ' + ${coach.lastName}">
+																	test</option>
+															</tr>
+
+														</select>
+													</div>
+													
+													<div class="form-group col-md-6">
+														<label for="inputPassword">In order to change your Password enter a new one in both fields!</label> 
+															<input type="password" class="form-control" id="inputPassword"
+															name="password">
+													</div>
+													
+													<div class="form-group col-md-6">
+														<label for="inputPasswordConfirmed">Confirm Password</label> 
+															<input type="password" class="form-control" id="inputPasswordConfirmed"
+															name="passwordConfirmed">
+													</div>
+													
+
+												</div>
+
+												<button type="submit" class="btn btn-accent">Update
+													Stats</button>
+
+											</form>
 										</div>
-									</li>
-								</ul>
-							</form>
-							s
+									</div>
+								</li>
+							</ul>
+
+
 						</div>
 					</div>
 				</div>

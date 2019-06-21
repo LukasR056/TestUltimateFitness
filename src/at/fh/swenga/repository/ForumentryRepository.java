@@ -17,6 +17,8 @@ public interface ForumentryRepository extends JpaRepository<ForumentryModel, Int
 
 	ForumentryModel findTop1ByThreadOrderByCreateDate(String thread);
 	
+	ForumentryModel findTop1ByThreadOrderByIdDesc(String thread);
+	
 	List<ForumentryModel> findByThreadOrderByIdDesc(String thread);
 	
 	@Query("SELECT COUNT(f) FROM ForumentryModel f WHERE f.thread = :thread")

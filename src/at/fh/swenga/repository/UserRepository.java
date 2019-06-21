@@ -22,7 +22,7 @@ public class UserRepository {
 	
 	List<UserModel> users = new ArrayList<UserModel>();
 
-	// von der Übung raus
+	
 	public  List<UserModel> getUsers() {
 		TypedQuery<UserModel> typedQuery = entityManager.createQuery("select u from UserModel u",
 				UserModel.class);

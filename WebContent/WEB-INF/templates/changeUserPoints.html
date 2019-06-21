@@ -8,8 +8,6 @@
 	content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" type="text/css"
-	href="./styles/forum/animsition.min.css">
 <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
 	rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -26,6 +24,12 @@
 <body class="h-100">
 
 
+	<!-- dieses HTML file für die Exercises, es funktioniert zum Teil. filter und hinzufügen fehlt noch. -->
+
+
+
+
+
 	<div class="container-fluid">
 		<div class="row">
 
@@ -37,8 +41,7 @@
 						<a class="navbar-brand w-100 mr-0" href="#"
 							style="line-height: 25px;">
 							<div class="d-table m-auto">
-							
-									<img id="main-logo" class="d-inline-block align-top mr-1"
+								<img id="main-logo" class="d-inline-block align-top mr-1"
 									style="max-width: 25px;"
 									src="./images/content-management/UltimateFitness_logo.jpeg"
 									alt="Ultimate Fitness"> 
@@ -62,8 +65,7 @@
 							placeholder="Search for something..." aria-label="Search">
 					</div>
 				</form>
-			
-				<!-- NAVIGATIONSLEISTE -->
+			<!-- NAVIGATIONSLEISTE -->
 				<div class="nav-wrapper">
 					<ul class="nav flex-column">
 						<li class="nav-item"><a class="nav-link "
@@ -81,7 +83,7 @@
 								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
 						
-						<li class="nav-item"><a class="nav-link active" href="messages.html">
+						<li class="nav-item"><a class="nav-link " href="messages.html">
 								<i class="material-icons">note_add</i> <span>Messages</span>
 						</a></li>
 
@@ -91,7 +93,7 @@
 						</a></li>
 
 						<li class="nav-item" sec:authorize="hasRole('ROLE_COACH')"><a
-							class="nav-link " href="changeUserPoints.html"> <i
+							class="nav-link active" href="changeUserPoints.html"> <i
 								class="material-icons">edit</i> <span>User Points</span>
 						</a></li>
 
@@ -100,7 +102,6 @@
 								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
 						</a></li>
 <!-- NAVIGATIONSLEISTE -->
-
 
 					</ul>
 				</div>
@@ -118,8 +119,7 @@
 							<div class="input-group-prepend">
 								<div
 									style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px;">
-									<h5 class="card-title" th:text="${user.userName}">USER
-										NAME</h5>
+									<h5 class="card-title" th:text="${user}">USER NAME</h5>
 								</div>
 								<!-- Lupe für serach bar	<div class="input-group-text">
 									<i class="fas fa-search"></i>
@@ -129,67 +129,7 @@
 								placeholder="Search for something..." aria-label="Search">  -->
 						</div>
 					</form>
-					<ul class="navbar-nav border-left flex-row ">
 
-						</a>
-						<div class="dropdown-menu dropdown-menu-small"
-							aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="#">
-								<div class="notification__icon-wrapper">
-									<div class="notification__icon">
-										<i class="material-icons">&#xE6E1;</i>
-									</div>
-								</div>
-								<div class="notification__content">
-									<span class="notification__category">Analytics</span>
-									<p>
-										Your website’s active users count increased by <span
-											class="text-success text-semibold">28%</span> in the last
-										week. Great job!
-									</p>
-								</div>
-							</a> <a class="dropdown-item" href="#">
-								<div class="notification__icon-wrapper">
-									<div class="notification__icon">
-										<i class="material-icons">&#xE8D1;</i>
-									</div>
-								</div>
-								<div class="notification__content">
-									<span class="notification__category">Sales</span>
-									<p>
-										Last week your store’s sales count decreased by <span
-											class="text-danger text-semibold">5.52%</span>. It could have
-										been worse!
-									</p>
-								</div>
-							</a> <a class="dropdown-item notification__all text-center" href="#">
-								View all Notifications </a>
-						</div>
-						</li>
-						<!--  profil pic		<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle text-nowrap px-3"
-							data-toggle="dropdown" href="#" role="button"
-							aria-haspopup="true" aria-expanded="false"> 
-							<img
-								class="user-avatar rounded-circle mr-2"
-								src="images/avatars/0.jpg" alt="User Avatar"> 
-								<span
-								class="d-none d-md-inline-block">Sierra Brooks</span>
-						</a>
-							<div class="dropdown-menu dropdown-menu-small">
-								<a class="dropdown-item" href="user-profile-lite.html"> <i
-									class="material-icons">&#xE7FD;</i> Profile
-								</a> <a class="dropdown-item" href="components-blog-posts.html">
-									<i class="material-icons">vertical_split</i> Blog Posts
-								</a> <a class="dropdown-item" href="add-new-post.html"> <i
-									class="material-icons">note_add</i> Add New Post
-								</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item text-danger" href="#"> <i
-									class="material-icons text-danger">&#xE879;</i> Logout
-								</a>
-							</div></li>  -->
-					</ul>
 					<!-- 		<nav class="nav">
 						<a href="#"
 							class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left"
@@ -204,72 +144,70 @@
 			<div class="main-content-container container-fluid px-4">
 				<!-- Page Header -->
 				<div class="page-header row no-gutters py-4">
-
 					<div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-						<h4>Messages</h4>
-						<a href="newMessage">
-							<button style="width: 50%;" class="btn btn-accent">write
-								a new message!</button>
-						</a>
+						<span class="text-uppercase page-subtitle">Dashboard</span>
+						<h3 class="page-title">User Database</h3>
 					</div>
 				</div>
-				<div class="text-blo4 p-t-33"></div>
 				<!-- End Page Header -->
 
 				<!-- End Small Stats Blocks -->
-				<div class="row">
 
-					<!-- Users Stats -->
-					<div class="col-lg-8 col-md-12 col-sm-12 mb-4">
-
-						<!-- BLOG ENTRIES -->
-
-						<div class="row">
-
-							<tr th:each="message : ${messages}">
-
-
-
-
-
-								<div class="col-lg-10 col-md-5 col-sm-10 mb-4">
-									<div class="card card-small card-post card-post--1">
-
-										<div class="card-body">
-											<p class="card-text text-muted"
-												th:text="${message.fromUser.userName}"></p>
-
-											<h5 class="card-title" th:text="${message.subject}"></h5>
-											<p class="card-text text-muted" th:text="${message.message}"></p>
-										</div>
-											<a align="right" th:href="@{/deleteMessage(id=${message.id})}"><button class="mb-1 btn  btn-danger mr-2">Delete</button>
-									</a>
-
-
-									</div>
-								
+				<div class="main-content-container container-fluid px-4">
+					<div th:unless="${message} == null" th:utext="${message}"
+						class=" alert alert-success" role="warning"></div>
+					<div class="row">
+						<div class="col">
+							<div class="card card-small overflow-hidden mb-4">
+								<div class="card-header bg-dark border-bottom">
+									<h5 class="m-0 text-white">Trainees</h5>
 								</div>
+								<div class="card-body p-0 pb-3 bg-dark text-center">
+									<table class="table-dark border-bottom" style="width: 100%;">
+										<thead class="thead-dark border-bottom p-0">
+											<tr class="border-bottom">
+												<!-- 	<th scope="col" class="border-0">#</th>  -->
+												<th scope="col" class="border-bottom-0">First Name</th>
+												<th scope="col" class="border-bottom-0">Last Name</th>
+												<th scope="col" class="border-bottom-0">Username</th>
+												<th scope="col" class="border-bottom-0">Day of Birth</th>
+												<th scope="col" class="border-bottom-0">Gender</th>
+												<th scope="col" class="border-bottom-0">Height</th>
+												<th scope="col" class="border-bottom-0">Weight</th>
+												<th scope="col" class="border-bottom-0">Points</th>
+												<th scope="col" class="border-bottom-0"></th>
 
-							</tr>
+											</tr>
+										</thead>
+										<div class="border-bottom"></div>
+										<tbody class="border-bottom">
+											<tr th:each="trainee :  ${trainees}">
 
+												<td th:text="${trainee.firstName}"></td>
+												<td th:text="${trainee.lastName}"></td>
+												<td th:text="${trainee.userName}"></td>
+												<td th:text="${trainee.birthDate}"></td>
+												<td th:text="${trainee.gender}"></td>
+												<td th:text="${trainee.height}"></td>
+												<td th:text="${trainee.weight}"></td>
+												<td th:text="${trainee.points}"></td>
+												<td><a
+													th:href="@{/changeSingleUserPoints(userId=${trainee.userId})}"><button
+															class="mb-2 btn btn-sm btn-success mr-1">Edit</button></a></td>
+
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
 						</div>
-
-
-
-
-
 					</div>
+					<!-- End Default Light Table -->
+
+	
 				</div>
-				<!-- End Users Stats -->
-			</div>
+			</main>
 		</div>
-
-
-
-
-	</div>
-	</main>
-	</div>
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"

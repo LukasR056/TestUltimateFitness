@@ -25,7 +25,8 @@ public interface UserQueryRepository extends JpaRepository<UserModel, Integer> {
 	@Query("SELECT u FROM UserModel u WHERE u.coach = null OR u.coach = '' ")
 	public List<UserModel> findCoach();
 
-
+	List<UserModel> findByCoach(String searchString);
+	
 	@Query("SELECT COUNT(u) FROM UserModel u WHERE u.userName = :userName AND u.eMail = :eMail")
 	public int existingUser(@Param ("userName") String userName, @Param ("eMail") String eMail);
 

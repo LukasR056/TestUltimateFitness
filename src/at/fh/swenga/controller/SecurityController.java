@@ -65,8 +65,8 @@ public class SecurityController {
 
 		if (users.isEmpty()) 
 		{
-			UserModel u1 = new UserModel("Max", "Schwinger", "MaxSng", now, "w", 1.70, 70.5, null, "max@schwinger", 100,
-					false, true, "pwd1", null);
+			UserModel u1 = new UserModel("Max", "Reitbauer", "MaxSng", now, "m", 1.70, 70.5, null, "max@reitbauer.at", 100,
+					 true, "pwd1", null);
 			u1.encryptPassword();
 			u1.addRoleModel(userRole);
 			u1.addRoleModel(coachRole);
@@ -75,26 +75,27 @@ public class SecurityController {
 			
 			userRepository.persist(u1);
 			
-			UserModel u2 = new UserModel("Max", "Musterman", "MaMu", now, "m", 1.80, 80.7, "MaxSng", "max@schwinge2r", 100,
-					false, true, "pwd2", null);
+			UserModel u2 = new UserModel("Max", "Musterman", "MaMu", now, "m", 1.80, 80.7, "MaxSng", "max@mustermann.com", 100,
+					 true, "pwd2", null);
 			u2.encryptPassword();
 			u2.addRoleModel(userRole);
 			userRepository.persist(u2);
 			
-			UserModel u3 = new UserModel("Ludi", "Poserfrau", "Ludi", now, "w", 1.64, 90.9, null, "max@schwinger3", 100,
-					false, true, "pwd3", null);
+			UserModel u3 = new UserModel("Ludi", "Poserfrau", "Ludi", now, "w", 1.64, 90.9, null, "ludi@meme.de", 100,
+					 true, "pwd3", null);
 			u3.encryptPassword();
 			u3.addRoleModel(userRole);
+			u3.addRoleModel(coachRole);
 			userRepository.persist(u3);
 			
-			UserModel u4 = new UserModel("person", "test", "user", now, "w", 1.70, 70.5, "MaxSng", "test@schwinger", 100,
-					false, true, "password", null);
+			UserModel u4 = new UserModel("Walter", "Verge", "user", now, "w", 1.70, 70.5, "MaxSng", "test@walter.de", 100,
+					 true, "password", null);
 			u4.encryptPassword();
 			u4.addRoleModel(userRole);
 			userRepository.persist(u4);
 			
-			UserModel u5 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7, "MaxSng", "test@schwinge2r", 100,
-					true, true, "password", null);
+			UserModel u5 = new UserModel("Christoph", "Hopfer", "admin", now, "m", 1.80, 80.7, "MaxSng", "schwarz@sadmw.at", 100,
+					 true, "password", null);
 			u5.encryptPassword();
 			u5.addRoleModel(userRole);
 			u5.addRoleModel(coachRole);

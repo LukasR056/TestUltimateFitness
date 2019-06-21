@@ -14,8 +14,6 @@ import javax.persistence.Table;
 @Table(name = "UserPicture")
 public class UserPictureModel {
 	
-	// NICHT SICHER OB DAS SO RICHTIG IST!!!
-	// https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
 	@Id
 	@Column (name="userPictureId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,13 +36,6 @@ public class UserPictureModel {
 	}
 	
 	
-	/*public UserPicturesModel(int id, UserModel user, PictureModel picture, int amount) {
-		super();
-		this.id = id;
-		this.user = user;
-		this.picture = picture;
-		this.amount = amount;
-	}*/
 	
 	public UserPictureModel(int amount) {
 		super();
@@ -58,9 +49,6 @@ public class UserPictureModel {
 		this.amount = amount;
 	} 
 	
-
-	
-
 
 	// Getter & Setter
 	public int getUserPictureId() {

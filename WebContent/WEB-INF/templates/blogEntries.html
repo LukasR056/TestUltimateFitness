@@ -62,39 +62,43 @@
 							placeholder="Search for something..." aria-label="Search">
 					</div>
 				</form>
+				<!-- NAVIGATIONSLEISTE -->
 				<div class="nav-wrapper">
 					<ul class="nav flex-column">
-						<li class="nav-item"><a class="nav-link" href="profile.html">
-								<i class="material-icons">person</i> <span> Profil</span>
+						<li class="nav-item"><a class="nav-link "
+							href="profile.html"> <i class="material-icons">person</i> <span>
+									Profil</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link" href="exercise.html">
-								<i class="material-icons">table_chart</i> <span>Exercise</span>
+						<li class="nav-item"><a class="nav-link "
+							href="exercise.html"> <i class="material-icons">table_chart</i>
+								<span>Exercise</span>
 						</a></li>
 						<li class="nav-item"><a class="nav-link " href="picture.html">
 								<i class="material-icons">view_module</i> <span>Picture</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link active"
-							href="forum.html"> <i class="material-icons">vertical_split</i>
-								<span>Forum</span>
+						<li class="nav-item"><a class="nav-link active" href="forum.html">
+								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
 						
+						<li class="nav-item"><a class="nav-link " href="messages.html">
+								<i class="material-icons">note_add</i> <span>Messages</span>
+						</a></li>
+
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link " href="editUsers.html"> <i
 								class="material-icons">edit</i> <span>Edit Users</span>
 						</a></li>
-						
+
+						<li class="nav-item" sec:authorize="hasRole('ROLE_COACH')"><a
+							class="nav-link " href="changeUserPoints.html"> <i
+								class="material-icons">edit</i> <span>User Points</span>
+						</a></li>
+
 						<li class="nav-item"><a
 							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
 								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
 						</a></li>
-						<!-- <li class="nav-item"><a class="nav-link "
-							href="./tables.html"> <i class="material-icons">table_chart</i>
-								<span>Tables</span>
-						</a></li>
-						<li class="nav-item"><a class="nav-link "
-							href="./user-profile-lite.html"> <i class="material-icons">person</i>
-								<span>User Profile</span>
-						</a></li>  -->
+<!-- NAVIGATIONSLEISTE -->
 
 					</ul>
 				</div>

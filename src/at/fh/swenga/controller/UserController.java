@@ -17,9 +17,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 //import org.springframework.data.domain.Page;
@@ -30,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import at.fh.swenga.model.DocumentModel;
 import at.fh.swenga.model.ExerciseModel;
 
 //import at.fh.swenga.repository.LogRepository;
@@ -48,7 +45,6 @@ import at.fh.swenga.model.PictureModel;
 import at.fh.swenga.model.RoleModel;
 import at.fh.swenga.model.UserModel;
 import at.fh.swenga.model.UserPictureModel;
-import at.fh.swenga.repository.DocumentRepository;
 import at.fh.swenga.repository.ExerciseRepository;
 import at.fh.swenga.repository.ForumentryRepository;
 import at.fh.swenga.repository.LogRepository;
@@ -84,16 +80,15 @@ public class UserController {
 	RoleQueryRepository roleQueryRepository;
 	@Autowired
 	ForumentryRepository forumentryRepository;
-	@Autowired
-	DocumentRepository documentRepository;
+
 	@Autowired
 	PictureDao pictureDao;
 
-	/*@Autowired
-	MailSender mailSender;
-	@Autowired
-	SimpleMailMessage templateMessage; */
-
+	/*
+	 * @Autowired MailSender mailSender;
+	 * 
+	 * @Autowired SimpleMailMessage templateMessage;
+	 */
 
 	@InitBinder
 	public void initDateBinder(final WebDataBinder binder) {
@@ -124,28 +119,6 @@ public class UserController {
 			userRole = new RoleModel("ROLE_USER");
 		}
 
-		// Date now = new Date();
-
-		// List<UserModel> users = userRepository.getUsers();
-
-		/*
-		 * if (users.isEmpty()) { UserModel u1 = new UserModel("person", "test", "user",
-		 * now, "w", 1.70, 70.5, null, "test@schwinger", 100, false, true, "password",
-		 * null);
-		 * 
-		 * u1.encryptPassword(); u1.addRoleModel(userRole); userRepository.persist(u1);
-		 * logRepository.persist(l1);
-		 * 
-		 * 
-		 * UserModel u2 = new UserModel("person", "test", "admin", now, "m", 1.80, 80.7,
-		 * null, "test@schwinge2r", 100, false, true, "password", null);
-		 * 
-		 * u2.encryptPassword(); u2.addRoleModel(userRole); u2.addRoleModel(coachRole);
-		 * u2.addRoleModel(adminRole); userRepository.persist(u2);
-		 * 
-		 * logRepository.persist(l2); }
-		 */
-
 		return "login";
 
 	}
@@ -163,16 +136,22 @@ public class UserController {
 		ExerciseModel exercise4 = new ExerciseModel("Seated Lateral Raise", "Shoulders", null,
 				"Sit on a bench and hold a dumbbell in each hand by your side. Raise both dumbbells to your side until they're shoulder height. Lower under control and repeat.");
 
-		ExerciseModel exercise5 = new ExerciseModel("Regular push-ups","Chest",null,"This classic bodyweight exercise is excellent to start with as well as for keeping as a training staple in any full-body or upper-body workout. Make sure to use a wide grip, as this will work your chest muscles more than a narrow grip technique.");
-		ExerciseModel exercise6 = new ExerciseModel("Incline push-ups","Chest",null,"If you find a standard push-up too challenging at first, then you can start with an incline push-up. The steeper the incline, the less body weight you will need to work push. This is also a good exercise to target your lower chest.");
-		ExerciseModel exercise7 = new ExerciseModel("Decline push-ups","Chest",null,"What goes up, must come down. These push-ups will help you target your upper chest and deltoid muscles specifically. It will also add more of your body weight to the exercise than a standard push-up, thus making it harder.");
-		ExerciseModel exercise8 = new ExerciseModel("Plyometric push-ups","Chest",null,"Are you ready to explode into action? These push-ups, can be executed in a variety of fun and fantastical way, think clap push-ups. These bursts of powerful plyometric movement will have your muscles firing on all cylinders.");
-		ExerciseModel exercise10 = new ExerciseModel("Squat Jump","Legs",null,"With your feet hip-width apart, squat until your thighs are parallel to the floor, and then jump as high as you can. Allow your knees to bend 45 degrees when you land, pause in deep squat position for one full second, and then jump again.");
-		ExerciseModel exercise11 = new ExerciseModel("Side Lunge","Legs",null,"Stand with your feet about twice shoulder-width apart. Keeping your right leg straight, push your hips back and to the left. Then bend your left knee and lower your body until your left thigh is parallel to the floor. Your feet should remain flat on the floor at all times. Pause for two seconds, and then return to the starting position. Complete all reps and switch sides.");
-		ExerciseModel exercise12 = new ExerciseModel("Scissor Box Jump","Legs",null,"Place your left foot on a box or bench with your right foot on the floor. In one movement, jump up and switch leg positions in midair. At the bottom position, pause for one second before alternating to the other leg.");
-		ExerciseModel exercise13 = new ExerciseModel("Single-Leg Hip Raise","Legs",null,"Lie faceup, arms out to your sides at 45-degree angles, left foot flat on the floor with that knee bent, and your right leg straight. Raise your right leg until it�s in line with your left thigh. Then squeeze your glutes and push your hips up�your lower back will elevate. Pause, and return to the starting position.");
-
-	
+		ExerciseModel exercise5 = new ExerciseModel("Regular push-ups", "Chest", null,
+				"This classic bodyweight exercise is excellent to start with as well as for keeping as a training staple in any full-body or upper-body workout. Make sure to use a wide grip, as this will work your chest muscles more than a narrow grip technique.");
+		ExerciseModel exercise6 = new ExerciseModel("Incline push-ups", "Chest", null,
+				"If you find a standard push-up too challenging at first, then you can start with an incline push-up. The steeper the incline, the less body weight you will need to work push. This is also a good exercise to target your lower chest.");
+		ExerciseModel exercise7 = new ExerciseModel("Decline push-ups", "Chest", null,
+				"What goes up, must come down. These push-ups will help you target your upper chest and deltoid muscles specifically. It will also add more of your body weight to the exercise than a standard push-up, thus making it harder.");
+		ExerciseModel exercise8 = new ExerciseModel("Plyometric push-ups", "Chest", null,
+				"Are you ready to explode into action? These push-ups, can be executed in a variety of fun and fantastical way, think clap push-ups. These bursts of powerful plyometric movement will have your muscles firing on all cylinders.");
+		ExerciseModel exercise10 = new ExerciseModel("Squat Jump", "Legs", null,
+				"With your feet hip-width apart, squat until your thighs are parallel to the floor, and then jump as high as you can. Allow your knees to bend 45 degrees when you land, pause in deep squat position for one full second, and then jump again.");
+		ExerciseModel exercise11 = new ExerciseModel("Side Lunge", "Legs", null,
+				"Stand with your feet about twice shoulder-width apart. Keeping your right leg straight, push your hips back and to the left. Then bend your left knee and lower your body until your left thigh is parallel to the floor. Your feet should remain flat on the floor at all times. Pause for two seconds, and then return to the starting position. Complete all reps and switch sides.");
+		ExerciseModel exercise12 = new ExerciseModel("Scissor Box Jump", "Legs", null,
+				"Place your left foot on a box or bench with your right foot on the floor. In one movement, jump up and switch leg positions in midair. At the bottom position, pause for one second before alternating to the other leg.");
+		ExerciseModel exercise13 = new ExerciseModel("Single-Leg Hip Raise", "Legs", null,
+				"Lie faceup, arms out to your sides at 45-degree angles, left foot flat on the floor with that knee bent, and your right leg straight. Raise your right leg until it�s in line with your left thigh. Then squeeze your glutes and push your hips up�your lower back will elevate. Pause, and return to the starting position.");
 
 		exerciseRepository.save(exercise1);
 		exerciseRepository.save(exercise2);
@@ -251,7 +230,7 @@ public class UserController {
 		for (LogModel log : logs) {
 			pointnumbers.add(log.getPoints());
 		}
-	
+
 		List<Double> heights7 = heigtnumbers.subList(Math.max(heigtnumbers.size() - 7, 0), heigtnumbers.size());
 		List<Double> weights7 = weightnumbers.subList(Math.max(weightnumbers.size() - 7, 0), weightnumbers.size());
 		List<Double> bmi7 = bminumbers.subList(Math.max(bminumbers.size() - 7, 0), bminumbers.size());
@@ -327,7 +306,7 @@ public class UserController {
 		String searchStringname = authentication.getName();
 		user = userQueryRepository.findByUserName(searchStringname);
 
-		System.out.print(searchString);
+		//System.out.print(searchString);
 
 		switch (searchString) {
 		case "AllExercises":
@@ -480,9 +459,9 @@ public class UserController {
 		model.addAttribute("silverPicOfUser", silverPicsOfUser);
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-		////System.out.print(missingPicsBronze);
-		////System.out.print(missingPicsSilver);
-		////System.out.print(missingPicsGold);
+		//// //System.out.print(missingPicsBronze);
+		//// //System.out.print(missingPicsSilver);
+		//// //System.out.print(missingPicsGold);
 
 		model.addAttribute("missingBronzePics", missingPicsBronze);
 		model.addAttribute("missingSilverPics", missingPicsSilver);
@@ -495,10 +474,28 @@ public class UserController {
 
 	@RequestMapping(value = { "/forum" })
 	public String getForum(Model model) {
+		
+		/* ForumentryModel exerciseForumentry = forumentryRepository.findTop1ByThreadOrderByIdDesc("Exercise");
+		ForumentryModel nutritionForumentry = forumentryRepository.findTop1ByThreadOrderByIdDesc("Nutrition");
+		ForumentryModel faqForumentry = forumentryRepository.findTop1ByThreadOrderByIdDesc("FAQ");
+		
+		model.addAttribute("exerciseForumentry", exerciseForumentry);
+		model.addAttribute("nutritionForumentry", nutritionForumentry);
+		model.addAttribute("faqForumentry", faqForumentry);
+		
+		UserModel exerciseUser = exerciseForumentry.getUser();
+		UserModel nutritionUser = nutritionForumentry.getUser();
+		UserModel faqUser = faqForumentry.getUser();
+		
+		model.addAttribute("exerciseUser", exerciseUser);
+		model.addAttribute("nutritionUser", nutritionUser);
+		model.addAttribute("faqUser", faqUser); */
+		
 		return "forum";
 	}
 
-	// Param thread wird im HTML abhÃ¤ngig vom tatsÃ¤chlichen Thread Ã¼bergeben!
+	// Param thread wird im HTML abhÃ¤ngig vom tatsÃ¤chlichen Thread
+	// Ã¼bergeben!
 	@RequestMapping(value = { "/blogEntries" })
 	public String getBlogEntries(Model model, @RequestParam String thread, Authentication authentication) {
 		UserModel user = null;
@@ -515,7 +512,6 @@ public class UserController {
 			model.addAttribute("lastForumentry", lastForumentry);
 			model.addAttribute("forumentries", forumentries);
 
-			////System.out.print(forumentries);
 		}
 
 		model.addAttribute("user", user);
@@ -539,13 +535,6 @@ public class UserController {
 
 	}
 
-	@RequestMapping(value = { "/settings" })
-	public String getSettings(Model model) {
-		List<UserModel> userId = userQueryRepository.findAll();
-		model.addAttribute("users", userId);
-		return "settings";
-	}
-
 	// @{/safePost(thread=${thread})}
 	@Transactional
 	@PostMapping("/safePost")
@@ -559,11 +548,11 @@ public class UserController {
 		UserModel activeUser = userQueryRepository.findByUserName(authentication.getName());
 		newForumentrymodel.setUser(activeUser);
 
-		// //System.out.print(activeUser);
-		//System.out.print(newForumentrymodel);
+		// ////System.out.print(activeUser);
+		// //System.out.print(newForumentrymodel);
 
 		if (newForumentrymodel.getText() == "") {
-			//System.out.print("Text empty");
+			// //System.out.print("Text empty");
 			model.addAttribute("errorMessage", "Please insert a Text!");
 			return "forward:/newPost";
 		} else if (newForumentrymodel.getTitle() == "" && newForumentrymodel.getText() != "") {
@@ -593,9 +582,6 @@ public class UserController {
 	public String deletePost(Model model, @RequestParam int forumentryId) {// ,
 		// @RequestParam String thread) { -->, thread=${thread}
 
-		//System.out.print("HALLO ICH BIN EIN ADMIN UND BERECHTIGT");
-		////System.out.print(forumentryId);
-
 		forumentryRepository.deleteById(forumentryId);
 
 		// model.addAttribute("thread", thread);
@@ -621,8 +607,6 @@ public class UserController {
 				errorMessage += fieldError.getField() + " is invalid: " + fieldError.getCode() + "<br>";
 			}
 			model.addAttribute("errorMessage", errorMessage);
-
-			////System.out.print(newUserModel);
 
 			model.addAttribute("user", newUserModel); //
 
@@ -657,7 +641,7 @@ public class UserController {
 				UserModel newUser = new UserModel(newUserModel.getFirstName(), newUserModel.getLastName(),
 						newUserModel.getUserName(), newUserModel.getBirthDate(), newUserModel.getGender(),
 						newUserModel.getHeight(), newUserModel.getWeight(), newUserModel.getCoach(),
-						newUserModel.geteMail(), 0, false, true, newUserModel.getPassword(), null);
+						newUserModel.geteMail(), 0, true, newUserModel.getPassword(), null);
 
 				// newUserModel.setEnabled(true);
 
@@ -665,16 +649,16 @@ public class UserController {
 				// newUser.addRoleModel(roleQueryRepository.findFirstRoleById(1));
 				newUser.addRoleModel(userRole);
 
-				//System.out.print(newUser);
+				// //System.out.print(newUser);
 				userRepository.persist(newUser);
-				
-				//Log
-				Date date = new Date();
-				LogModel log = new LogModel(newUser, newUser.getHeight(), newUser.getWeight(), newUser.getPoints(), date);
-				logRepository.save(log);
-				
 
-				//System.out.print("ERFOLGREICH!");
+				// Log
+				Date date = new Date();
+				LogModel log = new LogModel(newUser, newUser.getHeight(), newUser.getWeight(), newUser.getPoints(),
+						date);
+				logRepository.save(log);
+
+				// //System.out.print("ERFOLGREICH!");
 				model.addAttribute("message", "New User " + newUser.getUserName() + " successfully added!");
 
 				return "login";
@@ -686,10 +670,6 @@ public class UserController {
 
 		} else {
 
-			//System.out.print("LENGTH: " + newUserModel.getPassword().length());
-			//System.out.print("1. PASSWORD: " + newUserModel.getPassword());
-			//System.out.print("1. PASSWORD CONFIRMED: " + newUserModel.getPasswordConfirmed());
-
 			model.addAttribute("errorMessage",
 					"Password is not the same or it has to be at least six characters long!");
 			model.addAttribute("user", newUserModel); //
@@ -698,76 +678,105 @@ public class UserController {
 
 		}
 
-		/*
-		 * else if (newUserModel.getPassword() != newUserModel.getPasswordConfirmed()) {
-		 * //System.out.print("PASSWORD: " + newUserModel.getPassword());
-		 * //System.out.print("PASSWORD CONFIRMED: " +
-		 * newUserModel.getPasswordConfirmed());
-		 * 
-		 * model.addAttribute("errorMessage", "Password has to be the same!");
-		 * model.addAttribute("user", newUserModel); // findCoaches(model); return
-		 * "registration"; }
-		 */
-
 	}
 
 	// @{/userSettings1(userName=${user.userName})}
 	@Transactional
-	@RequestMapping(value = { "/userSettings1"})
-	public String getUserSettings(Model model,Authentication authentication) {
+	@RequestMapping(value = { "/userSettings" })
+	public String getUserSettings(Model model, Authentication authentication) {
 
 		UserModel user = userQueryRepository.findByUserName(authentication.getName());
 
-		List<UserModel> coaches = new ArrayList<UserModel>();
-		coaches = userQueryRepository.findCoach();
-		
-		System.out.print("COOOOOOOOOOOOOOOOOOOOOOOACHEEEES" + coaches);
-		
-		model.addAttribute("coaches", coaches);
+		findCoaches(model);
 
-		if (user != null) {
-			model.addAttribute("user", user);
+		model.addAttribute("user", user);
+		return "userSettings";
+
+	}
+
+	@RequestMapping(value = { "/safeUserSettings" })
+	public String safeUserSettings(@Valid UserModel changedUserModel, BindingResult bindingResult, Model model) {
+
+		if (bindingResult.hasErrors()) {
+			String errorMessage = "";
+			for (FieldError fieldError : bindingResult.getFieldErrors()) {
+				errorMessage += fieldError.getField() + " is invalid: " + fieldError.getCode() + "<br>";
+			}
+			model.addAttribute("errorMessage", errorMessage);
+
+			//System.out.print(changedUserModel);
+
+			model.addAttribute("user", changedUserModel); //
+
+			findCoaches(model);
 			return "userSettings";
-		}
-		
-		/*
-		 * else { model.addAttribute("errorMessage", "Couldn't find user " + userName);
-		 * return "profile"; }
-		 */
-		return "forward:/profile";
 
+		}
+
+		// Neue Usersettings mergen
+		UserModel user = userQueryRepository.findByUserName(changedUserModel.getUserName());
+
+		user.setFirstName(changedUserModel.getFirstName());
+		user.setLastName(changedUserModel.getLastName());
+		user.seteMail(changedUserModel.geteMail());
+		user.setHeight(changedUserModel.getHeight());
+		user.setWeight(changedUserModel.getWeight());
+		user.setCoach(changedUserModel.getCoach());
+
+		if ((changedUserModel.getPassword().equals(changedUserModel.getPasswordConfirmed()))
+				&& changedUserModel.getPassword().length() >= 6) {
+
+			user.setPassword(changedUserModel.getPassword());
+			user.encryptPassword();
+
+			model.addAttribute("passwordMessage", "Your Password has been updated");
+		}
+
+		user = userRepository.merge(user);
+
+		// Logs
+		// Hier werden die Aenderungen eines Users in den Log eingetragen
+		Date date = new Date();
+
+		LogModel log = new LogModel(user, user.getHeight(), user.getWeight(), user.getPoints(), date);
+		logRepository.save(log);
+
+		model.addAttribute("message", "Profile has been updated successfully");
+
+		// model.addAttribute("user", user);
+		return "forward:/profile";
 	}
 
 	@RequestMapping(value = "/fillPics")
 	public String fillPics(Model model) {
-		PictureModel p1 = new PictureModel(1, "bild1_part1", "bronze");
+		PictureModel p1 = new PictureModel(1, "pic1_part1", "bronze");
 		pictureRepository.save(p1);
 
-		PictureModel p2 = new PictureModel(2, "bild1_part2", "bronze");
+		PictureModel p2 = new PictureModel(2, "pic1_part2", "bronze");
 		pictureRepository.save(p2);
 
-		PictureModel p3 = new PictureModel(3, "bild1_part3", "bronze");
+		PictureModel p3 = new PictureModel(3, "pic1_part3", "bronze");
 		pictureRepository.save(p3);
 
-		PictureModel p4 = new PictureModel(4, "bild1_part4", "bronze");
+		PictureModel p4 = new PictureModel(4, "pic1_part4", "bronze");
 		pictureRepository.save(p4);
 
-		PictureModel p5 = new PictureModel(5, "bild1_part5", "bronze");
+		PictureModel p5 = new PictureModel(5, "pic1_part5", "bronze");
 		pictureRepository.save(p5);
 
-		PictureModel p6 = new PictureModel(6, "bild2_part1", "silber");
+		PictureModel p6 = new PictureModel(6, "pic2_part1", "silber");
 		pictureRepository.save(p6);
 
-		PictureModel p7 = new PictureModel(7, "bild2_part2", "silber");
+		PictureModel p7 = new PictureModel(7, "pic2_part2", "silber");
 		pictureRepository.save(p7);
 
-		PictureModel p8 = new PictureModel(8, "bild2_part3", "silber");
+		PictureModel p8 = new PictureModel(8, "pic2_part3", "silber");
 		pictureRepository.save(p8);
 
-		PictureModel p9 = new PictureModel(9, "bild3_part1", "gold");
+		PictureModel p9 = new PictureModel(9, "pic3_part1", "gold");
 		pictureRepository.save(p9);
 
-		PictureModel p10 = new PictureModel(10, "bild3_part2", "gold");
+		PictureModel p10 = new PictureModel(10, "pic3_part2", "gold");
 		pictureRepository.save(p10);
 
 		return "picture";
@@ -780,174 +789,17 @@ public class UserController {
 		// getting User
 		String searchString = authentication.getName();
 		UserModel user = userQueryRepository.findByUserName(searchString);
-		
+
 		String message;
-		
-		if(user.getPoints() < 300) {
-			System.out.print("ZU WENIGE PUNKTE");
+
+		if (user.getPoints() < 300) {
+			
 			message = "Not enough points";
-			
-			
-			// generate the model for the frontend
-			
-					// get logged User
-			
-					// all Pics of User
-					List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
-					bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
-					List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
-					silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
-					List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
-					goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
-			
-					// allPics
-					List<PictureModel>bronzePics = new ArrayList<PictureModel>();
-					bronzePics = pictureRepository.findByLevel("bronze");
-					List<PictureModel>silverPics = new ArrayList<PictureModel>();
-					silverPics = pictureRepository.findByLevel("silber");
-					List<PictureModel>goldPics = new ArrayList<PictureModel>();
-					goldPics = pictureRepository.findByLevel("gold");
-			
-					// generate all index List
-					List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
-					for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
-						bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
-					}
-					List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
-					for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
-						silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
-					}
-					List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
-					for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
-						goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
-					}
-			
-					// missing Picture List
-					List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
-					List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
-					List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
-			
-					for (PictureModel bronzePic : bronzePics) {
-						if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
-			
-						} else {
-							missingPicsBronze.add(bronzePic);
-						}
-			
-					}
-					for (PictureModel goldPic : goldPics) {
-						if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
-			
-						} else {
-							missingPicsGold.add(goldPic);
-						}
-			
-					}
-					for (PictureModel silverPic : silverPics) {
-						if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
-			
-						} else {
-							missingPicsSilver.add(silverPic);
-						}
-			
-					}
-			
-					model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
-					model.addAttribute("silverPicOfUser", silverPicsOfUser);
-					model.addAttribute("goldPicOfUser", goldPicsOfUser);
-			
-					System.out.print(missingPicsBronze);
-					System.out.print(missingPicsSilver);
-					System.out.print(missingPicsGold);
-			
-					model.addAttribute("missingBronzePics", missingPicsBronze);
-					model.addAttribute("missingSilverPics", missingPicsSilver);
-					model.addAttribute("missingGoldPics", missingPicsGold);
-					model.addAttribute("user", user);
-				
-			
-			
-		} else {
-			
-			user.setPoints(user.getPoints()-300);
-			message = "Gold Pack bought successfully";
 
-			// getting all pics of one level
-			List<PictureModel> goldPics = new ArrayList<PictureModel>();
-			goldPics = pictureRepository.findByLevel("gold");
-			List<PictureModel> silverPics = new ArrayList<PictureModel>();
-			silverPics = pictureRepository.findByLevel("silber");
-			List<PictureModel> bronzePics = new ArrayList<PictureModel>();
-			bronzePics = pictureRepository.findByLevel("bronze");
-	
-			// get the size for the id
-			List<UserPictureModel> allModels = userPictureRepo.findAll();
-	
-			// get random numbers
-			Random randGold = new Random();
-			int randomGoldPic = randGold.nextInt(goldPics.size());
-	
-			Random randSilver = new Random();
-			int randomSilverPic = randSilver.nextInt(silverPics.size());
-	
-			Random randBronze1 = new Random();
-			int randomBronzePic1 = randBronze1.nextInt(bronzePics.size());
-	
-			Random randBronze2 = new Random();
-			int randomBronzePic2 = randBronze2.nextInt(bronzePics.size());
-	
-			// get Pac
-			ArrayList<PictureModel> picPack = new ArrayList<PictureModel>();
-			picPack.add(goldPics.get(randomGoldPic));
-			picPack.add(silverPics.get(randomSilverPic));
-			picPack.add(bronzePics.get(randomBronzePic1));
-			picPack.add(bronzePics.get(randomBronzePic2));
-	
-			// all Pictures from the logged user
-			// List<UserPictureModel> ownedPictures = new ArrayList<UserPictureModel>();
-			List<UserPictureModel> ownedPictures = userPictureRepo.findByUser(user);
-	
-			// List of ownedPictureIds
-			List<Integer> ownedPictureIndexList = new ArrayList<Integer>();
-
-			for (UserPictureModel ownedPicture : ownedPictures) {
-				ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
-			}
-	
-			// compare ownedPics with new pics of Pac
-			for (PictureModel pic : picPack) {
-	
-				// get the size for the id
-				allModels = userPictureRepo.findAll();
-				// if fÃ¼rs update
-				if (ownedPictureIndexList.contains(pic.getPictureId())) {
-					UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
-					updateModel.setAmount(updateModel.getAmount() + 1);
-					userPictureDao.merge(updateModel);
-					System.out.print("in update");
-				} else {
-					UserPictureModel newPicForUser = new UserPictureModel();
-					newPicForUser.setId(allModels.size() + 1);
-					newPicForUser.setUser(user);
-					newPicForUser.setPicture(pic);
-					newPicForUser.setAmount(1);
-					userPictureRepo.save(newPicForUser);
-	
-	
-				}
-	
-				ownedPictures = userPictureRepo.findByUser(user);
-				// List of ownedPictureIds update
-				ownedPictureIndexList = new ArrayList<Integer>();
-				for (UserPictureModel ownedPicture : ownedPictures) {
-					ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
-				}
-			}
-	
 			// generate the model for the frontend
-	
+
 			// get logged User
-	
+
 			// all Pics of User
 			List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
 			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
@@ -955,15 +807,15 @@ public class UserController {
 			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
 			List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
 			goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
-	
+
 			// allPics
-			bronzePics = new ArrayList<PictureModel>();
+			List<PictureModel> bronzePics = new ArrayList<PictureModel>();
 			bronzePics = pictureRepository.findByLevel("bronze");
-			silverPics = new ArrayList<PictureModel>();
+			List<PictureModel> silverPics = new ArrayList<PictureModel>();
 			silverPics = pictureRepository.findByLevel("silber");
-			goldPics = new ArrayList<PictureModel>();
+			List<PictureModel> goldPics = new ArrayList<PictureModel>();
 			goldPics = pictureRepository.findByLevel("gold");
-	
+
 			// generate all index List
 			List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
 			for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
@@ -977,58 +829,208 @@ public class UserController {
 			for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
 				goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
 			}
-	
+
 			// missing Picture List
 			List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
 			List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
 			List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
-	
+
 			for (PictureModel bronzePic : bronzePics) {
 				if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
-	
+
 				} else {
 					missingPicsBronze.add(bronzePic);
 				}
-	
+
 			}
 			for (PictureModel goldPic : goldPics) {
 				if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
-	
+
 				} else {
 					missingPicsGold.add(goldPic);
 				}
-	
+
 			}
 			for (PictureModel silverPic : silverPics) {
 				if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
-	
+
 				} else {
 					missingPicsSilver.add(silverPic);
 				}
-	
+
 			}
-	
+
 			model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
 			model.addAttribute("silverPicOfUser", silverPicsOfUser);
 			model.addAttribute("goldPicOfUser", goldPicsOfUser);
-	
-			System.out.print(missingPicsBronze);
-			System.out.print(missingPicsSilver);
-			System.out.print(missingPicsGold);
-	
+
+			//System.out.print(missingPicsBronze);
+			//System.out.print(missingPicsSilver);
+			//System.out.print(missingPicsGold);
+
 			model.addAttribute("missingBronzePics", missingPicsBronze);
 			model.addAttribute("missingSilverPics", missingPicsSilver);
 			model.addAttribute("missingGoldPics", missingPicsGold);
 			model.addAttribute("user", user);
+
+		} else {
+
+			user.setPoints(user.getPoints() - 300);
+			message = "Gold Pack bought successfully";
+
+			// getting all pics of one level
+			List<PictureModel> goldPics = new ArrayList<PictureModel>();
+			goldPics = pictureRepository.findByLevel("gold");
+			List<PictureModel> silverPics = new ArrayList<PictureModel>();
+			silverPics = pictureRepository.findByLevel("silber");
+			List<PictureModel> bronzePics = new ArrayList<PictureModel>();
+			bronzePics = pictureRepository.findByLevel("bronze");
+
+			// get the size for the id
+			List<UserPictureModel> allModels = userPictureRepo.findAll();
+
+			// get random numbers
+			Random randGold = new Random();
+			int randomGoldPic = randGold.nextInt(goldPics.size());
+
+			Random randSilver = new Random();
+			int randomSilverPic = randSilver.nextInt(silverPics.size());
+
+			Random randBronze1 = new Random();
+			int randomBronzePic1 = randBronze1.nextInt(bronzePics.size());
+
+			Random randBronze2 = new Random();
+			int randomBronzePic2 = randBronze2.nextInt(bronzePics.size());
+
+			// get Pac
+			ArrayList<PictureModel> picPack = new ArrayList<PictureModel>();
+			picPack.add(goldPics.get(randomGoldPic));
+			picPack.add(silverPics.get(randomSilverPic));
+			picPack.add(bronzePics.get(randomBronzePic1));
+			picPack.add(bronzePics.get(randomBronzePic2));
+
+			// all Pictures from the logged user
+			// List<UserPictureModel> ownedPictures = new ArrayList<UserPictureModel>();
+			List<UserPictureModel> ownedPictures = userPictureRepo.findByUser(user);
+
+			// List of ownedPictureIds
+			List<Integer> ownedPictureIndexList = new ArrayList<Integer>();
+
+			for (UserPictureModel ownedPicture : ownedPictures) {
+				ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
+			}
+
+			// compare ownedPics with new pics of Pac
+			for (PictureModel pic : picPack) {
+
+				// get the size for the id
+				allModels = userPictureRepo.findAll();
+				// if fÃ¼rs update
+				if (ownedPictureIndexList.contains(pic.getPictureId())) {
+					UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
+					updateModel.setAmount(updateModel.getAmount() + 1);
+					userPictureDao.merge(updateModel);
+					
+				} else {
+					UserPictureModel newPicForUser = new UserPictureModel();
+					newPicForUser.setId(allModels.size() + 1);
+					newPicForUser.setUser(user);
+					newPicForUser.setPicture(pic);
+					newPicForUser.setAmount(1);
+					userPictureRepo.save(newPicForUser);
+
+				}
+
+				ownedPictures = userPictureRepo.findByUser(user);
+				// List of ownedPictureIds update
+				ownedPictureIndexList = new ArrayList<Integer>();
+				for (UserPictureModel ownedPicture : ownedPictures) {
+					ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
+				}
+			}
+
+			// generate the model for the frontend
+
+			// get logged User
+
+			// all Pics of User
+			List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
+			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+			List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
+			List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
+			goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
+
+			// allPics
+			bronzePics = new ArrayList<PictureModel>();
+			bronzePics = pictureRepository.findByLevel("bronze");
+			silverPics = new ArrayList<PictureModel>();
+			silverPics = pictureRepository.findByLevel("silber");
+			goldPics = new ArrayList<PictureModel>();
+			goldPics = pictureRepository.findByLevel("gold");
+
+			// generate all index List
+			List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
+				bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
+				silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
+				goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
+			}
+
+			// missing Picture List
+			List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
+
+			for (PictureModel bronzePic : bronzePics) {
+				if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
+
+				} else {
+					missingPicsBronze.add(bronzePic);
+				}
+
+			}
+			for (PictureModel goldPic : goldPics) {
+				if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
+
+				} else {
+					missingPicsGold.add(goldPic);
+				}
+
+			}
+			for (PictureModel silverPic : silverPics) {
+				if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
+
+				} else {
+					missingPicsSilver.add(silverPic);
+				}
+
+			}
+
+			model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
+			model.addAttribute("silverPicOfUser", silverPicsOfUser);
+			model.addAttribute("goldPicOfUser", goldPicsOfUser);
+
 		
+
+			model.addAttribute("missingBronzePics", missingPicsBronze);
+			model.addAttribute("missingSilverPics", missingPicsSilver);
+			model.addAttribute("missingGoldPics", missingPicsGold);
+			model.addAttribute("user", user);
+
 		}
-		
+
 		model.addAttribute("pack", message);
 
 		return "picture";
 
 	}
-	
 
 	// for the gold Reward
 	@RequestMapping(value = "/goldReward")
@@ -1037,150 +1039,142 @@ public class UserController {
 		// getting User
 		String searchString = authentication.getName();
 		UserModel user = userQueryRepository.findByUserName(searchString);
-		
+
 		String rewardMessage = null;
-		
-		//get his goldPics
+
+		// get his goldPics
 		List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
-		goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user,"gold");
-		
-		List<PictureModel>goldPics1 = new ArrayList<PictureModel>();
+		goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
+
+		List<PictureModel> goldPics1 = new ArrayList<PictureModel>();
 		goldPics1 = pictureRepository.findByLevel("gold");
-		
+
 		List<Integer> goldPicsIndexList1 = new ArrayList<Integer>();
-		for (PictureModel goldPic: goldPics1)
-		{
+		for (PictureModel goldPic : goldPics1) {
 			goldPicsIndexList1.add(goldPic.getPictureId());
 		}
-		
+
 		Collections.sort(goldPicsIndexList1);
-		
+
 		List<Integer> goldPicsOfUserIndexList1 = new ArrayList<Integer>();
-		for (UserPictureModel goldPicOfUser: goldPicsOfUser)
-		{
+		for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
 			goldPicsOfUserIndexList1.add(goldPicOfUser.getPicture().getPictureId());
 		}
-		
+
 		Collections.sort(goldPicsOfUserIndexList1);
-		
-		//vergleicht 2 Listen (List of PictureIds)
+
+		// vergleicht 2 Listen (List of PictureIds)
 		if (goldPicsIndexList1.equals(goldPicsOfUserIndexList1)) {
-			
-			
-			
+
 			List<UserPictureModel> kaufUsergold = new ArrayList<UserPictureModel>();
 			kaufUsergold = userPictureRepo.findByUserAndPictureLevel(user, "gold");
-			
+
 			int i = 1;
-			
-			for( UserPictureModel eintrag : kaufUsergold)
-			{
-				if (eintrag.getAmount()>0) {
-					
+
+			for (UserPictureModel eintrag : kaufUsergold) {
+				if (eintrag.getAmount() > 0) {
+
 				} else {
 					i++;
 					rewardMessage = "Not enough pics";
 				}
 			}
-			
-			if(i==1) {
-				for( UserPictureModel eintrag : kaufUsergold)
-				{
-					eintrag.setAmount(eintrag.getAmount()-1);
+
+			if (i == 1) {
+				for (UserPictureModel eintrag : kaufUsergold) {
+					eintrag.setAmount(eintrag.getAmount() - 1);
 					userPictureRepo.save(eintrag);
 					rewardMessage = "Succesfully got gold reward";
 				}
 			}
-			
-			System.out.print("GLEICH");
+
+			//System.out.print("GLEICH");
 		} else {
-			System.out.print("NICHT GLEICH");
+			//System.out.print("NICHT GLEICH");
 			rewardMessage = "Not enough pics";
 		}
-		
-		
-		//generate the model for the frontend
 
-				// all Pics of User
-				List<UserPictureModel>bronzePicsOfUser = new ArrayList<UserPictureModel>();
-				bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
-				List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
-				silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
-				
-				goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
+		// generate the model for the frontend
 
-				// allPics
-				List<PictureModel> bronzePics = new ArrayList<PictureModel>();
-				bronzePics = pictureRepository.findByLevel("bronze");
-				List<PictureModel> silverPics = new ArrayList<PictureModel>();
-				silverPics = pictureRepository.findByLevel("silber");
-				List<PictureModel> goldPics = new ArrayList<PictureModel>();
-				goldPics = pictureRepository.findByLevel("gold");
+		// all Pics of User
+		List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
+		bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+		List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+		silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
 
-				// generate all index List
-				List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
-				for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
-					bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
-				}
-				List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
-				for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
-					silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
-				}
-				List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
-				for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
-					goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
-				}
+		goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
 
-				// missing Picture List
-				List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
-				List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
-				List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
+		// allPics
+		List<PictureModel> bronzePics = new ArrayList<PictureModel>();
+		bronzePics = pictureRepository.findByLevel("bronze");
+		List<PictureModel> silverPics = new ArrayList<PictureModel>();
+		silverPics = pictureRepository.findByLevel("silber");
+		List<PictureModel> goldPics = new ArrayList<PictureModel>();
+		goldPics = pictureRepository.findByLevel("gold");
 
-				for (PictureModel bronzePic : bronzePics) {
-					if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
+		// generate all index List
+		List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
+		for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
+			bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
+		}
+		List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
+		for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
+			silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
+		}
+		List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
+		for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
+			goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
+		}
 
-					} else {
-						missingPicsBronze.add(bronzePic);
-					}
+		// missing Picture List
+		List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
+		List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
+		List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
 
-				}
-				for (PictureModel goldPic : goldPics) {
-					if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
+		for (PictureModel bronzePic : bronzePics) {
+			if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
 
-					} else {
-						missingPicsGold.add(goldPic);
-					}
+			} else {
+				missingPicsBronze.add(bronzePic);
+			}
 
-				}
-				for (PictureModel silverPic : silverPics) {
-					if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
+		}
+		for (PictureModel goldPic : goldPics) {
+			if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
 
-					} else {
-						missingPicsSilver.add(silverPic);
-					}
+			} else {
+				missingPicsGold.add(goldPic);
+			}
 
-				}
+		}
+		for (PictureModel silverPic : silverPics) {
+			if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
 
-				model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
-				model.addAttribute("silverPicOfUser", silverPicsOfUser);
-				model.addAttribute("goldPicOfUser", goldPicsOfUser);
+			} else {
+				missingPicsSilver.add(silverPic);
+			}
 
-				/*
-				 * System.out.print(missingPicsBronze); System.out.print(missingPicsSilver);
-				 * System.out.print(missingPicsGold);
-				 */
+		}
 
-				model.addAttribute("missingBronzePics", missingPicsBronze);
-				model.addAttribute("missingSilverPics", missingPicsSilver);
-				model.addAttribute("missingGoldPics", missingPicsGold);
-				model.addAttribute("user", user);
-				
-				model.addAttribute("pack", rewardMessage);
+		model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
+		model.addAttribute("silverPicOfUser", silverPicsOfUser);
+		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-				
-			//	sendMail(user, "REWARD-GOLD", rewardMessage);
-				
-				return "picture";
+		/*
+		 * //System.out.print(missingPicsBronze); //System.out.print(missingPicsSilver);
+		 * //System.out.print(missingPicsGold);
+		 */
+
+		model.addAttribute("missingBronzePics", missingPicsBronze);
+		model.addAttribute("missingSilverPics", missingPicsSilver);
+		model.addAttribute("missingGoldPics", missingPicsGold);
+		model.addAttribute("user", user);
+
+		model.addAttribute("pack", rewardMessage);
+
+		// sendMail(user, "REWARD-GOLD", rewardMessage);
+
+		return "picture";
 
 	}
 
@@ -1191,317 +1185,21 @@ public class UserController {
 		// getting User
 		String searchString = authentication.getName();
 		UserModel user = userQueryRepository.findByUserName(searchString);
-		
+
 		String message;
-		
-		if(user.getPoints() < 150) {
-			System.out.print("ZU WENIGE PUNKTE");
+
+		if (user.getPoints() < 150) {
+			//System.out.print("ZU WENIGE PUNKTE");
 			message = "Not enough points";
-			
+
 			// generate the model for the frontend
-			
+
 			// get logged User
-	
+
 			// all Pics of User
 			List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
 			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
 			List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
-			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
-			List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
-			goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
-	
-			// allPics
-			List<PictureModel>bronzePics = new ArrayList<PictureModel>();
-			bronzePics = pictureRepository.findByLevel("bronze");
-			List<PictureModel>silverPics = new ArrayList<PictureModel>();
-			silverPics = pictureRepository.findByLevel("silber");
-			List<PictureModel>goldPics = new ArrayList<PictureModel>();
-			goldPics = pictureRepository.findByLevel("gold");
-	
-			// generate all index List
-			List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
-			for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
-				bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
-			}
-			List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
-			for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
-				silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
-			}
-			List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
-			for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
-				goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
-			}
-	
-			// missing Picture List
-			List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
-			List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
-			List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
-	
-			for (PictureModel bronzePic : bronzePics) {
-				if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
-	
-				} else {
-					missingPicsBronze.add(bronzePic);
-				}
-	
-			}
-			for (PictureModel goldPic : goldPics) {
-				if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
-	
-				} else {
-					missingPicsGold.add(goldPic);
-				}
-	
-			}
-			for (PictureModel silverPic : silverPics) {
-				if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
-	
-				} else {
-					missingPicsSilver.add(silverPic);
-				}
-	
-			}
-	
-			model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
-			model.addAttribute("silverPicOfUser", silverPicsOfUser);
-			model.addAttribute("goldPicOfUser", goldPicsOfUser);
-	
-			System.out.print(missingPicsBronze);
-			System.out.print(missingPicsSilver);
-			System.out.print(missingPicsGold);
-	
-			model.addAttribute("missingBronzePics", missingPicsBronze);
-			model.addAttribute("missingSilverPics", missingPicsSilver);
-			model.addAttribute("missingGoldPics", missingPicsGold);
-			model.addAttribute("user", user);
-			
-			
-		} else {
-			
-			user.setPoints(user.getPoints()-150);
-			message = "Silver Pack bought successfully";
-
-		// getting all pics of one level
-		List<PictureModel> silverPics = new ArrayList<PictureModel>();
-		silverPics = pictureRepository.findByLevel("silber");
-		List<PictureModel> bronzePics = new ArrayList<PictureModel>();
-		bronzePics = pictureRepository.findByLevel("bronze");
-
-		// get the size for the id
-		List<UserPictureModel> allModels = userPictureRepo.findAll();
-
-		// get random numbers
-		Random randSilver = new Random();
-		int randomSilverPic = randSilver.nextInt(silverPics.size());
-
-		Random randBronze1 = new Random();
-		int randomBronzePic1 = randBronze1.nextInt(bronzePics.size());
-
-		Random randBronze2 = new Random();
-		int randomBronzePic2 = randBronze2.nextInt(bronzePics.size());
-
-		// get Pac
-		ArrayList<PictureModel> picPack = new ArrayList<PictureModel>();
-		picPack.add(silverPics.get(randomSilverPic));
-		picPack.add(bronzePics.get(randomBronzePic1));
-		picPack.add(bronzePics.get(randomBronzePic2));
-
-		// all Pictures from the logged user
-		// List<UserPictureModel> ownedPictures = new ArrayList<UserPictureModel>();
-		List<UserPictureModel> ownedPictures = userPictureRepo.findByUser(user);
-
-		// List of ownedPictureIds
-		List<Integer> ownedPictureIndexList = new ArrayList<Integer>();
-		for (UserPictureModel ownedPicture : ownedPictures) {
-			ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
-		}
-
-		// compare ownedPics with new pics of Pac
-		for (PictureModel pic : picPack) {
-
-			// get the size for the id
-			allModels = userPictureRepo.findAll();
-			// if fÃ¼rs update
-			if (ownedPictureIndexList.contains(pic.getPictureId())) {
-				UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
-				updateModel.setAmount(updateModel.getAmount() + 1);
-				userPictureDao.merge(updateModel);
-				//System.out.print("in update");
-			} else {
-				UserPictureModel newPicForUser = new UserPictureModel();
-				newPicForUser.setId(allModels.size() + 1);
-				newPicForUser.setUser(user);
-				newPicForUser.setPicture(pic);
-				newPicForUser.setAmount(1);
-				userPictureRepo.save(newPicForUser);
-
-				//System.out.print("in save");
-
-			}
-			ownedPictures = userPictureRepo.findByUser(user);
-			// List of ownedPictureIds update
-			ownedPictureIndexList = new ArrayList<Integer>();
-			for (UserPictureModel ownedPicture : ownedPictures) {
-				ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
-			}
-		}
-
-		// generate the model for the frontend
-
-		// get logged User
-
-		// all Pics of User
-		List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
-		bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
-		List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
-		silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
-		List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
-		goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
-
-		// allPics
-		bronzePics = new ArrayList<PictureModel>();
-		bronzePics = pictureRepository.findByLevel("bronze");
-		silverPics = new ArrayList<PictureModel>();
-		silverPics = pictureRepository.findByLevel("silber");
-		List<PictureModel> goldPics = new ArrayList<PictureModel>();
-		goldPics = pictureRepository.findByLevel("gold");
-
-		// generate all index List
-		List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
-		for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
-			bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
-		}
-		List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
-		for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
-			silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
-		}
-		List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
-		for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
-			goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
-		}
-
-		// missing Picture List
-		List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
-		List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
-		List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
-
-		for (PictureModel bronzePic : bronzePics) {
-			if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
-
-			} else {
-				missingPicsBronze.add(bronzePic);
-			}
-
-		}
-		for (PictureModel goldPic : goldPics) {
-			if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
-
-			} else {
-				missingPicsGold.add(goldPic);
-			}
-
-		}
-		for (PictureModel silverPic : silverPics) {
-			if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
-
-			} else {
-				missingPicsSilver.add(silverPic);
-			}
-
-		}
-
-		model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
-		model.addAttribute("silverPicOfUser", silverPicsOfUser);
-		model.addAttribute("goldPicOfUser", goldPicsOfUser);
-
-		////System.out.print(missingPicsBronze);
-		////System.out.print(missingPicsSilver);
-		////System.out.print(missingPicsGold);
-
-		model.addAttribute("missingBronzePics", missingPicsBronze);
-		model.addAttribute("missingSilverPics", missingPicsSilver);
-		model.addAttribute("missingGoldPics", missingPicsGold);
-		model.addAttribute("user", user);
-
-		}
-		
-		model.addAttribute("pack", message);
-		
-		return "picture";
-
-	}
-	
-	// for the silver Reward
-		@RequestMapping(value = "/silverReward")
-		public String silverReward(Model model, Authentication authentication) {
-
-			// getting User
-			String searchString = authentication.getName();
-			UserModel user = userQueryRepository.findByUserName(searchString);
-			
-			String rewardMessage = null;
-			
-			//get his silverPics
-			List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
-			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user,"silber");
-			
-			List<PictureModel>silverPics1 = new ArrayList<PictureModel>();
-			silverPics1 = pictureRepository.findByLevel("silber");
-			
-			List<Integer> silverPicsIndexList1 = new ArrayList<Integer>();
-			for (PictureModel silverPic: silverPics1)
-			{
-				silverPicsIndexList1.add(silverPic.getPictureId());
-			}
-			
-			Collections.sort(silverPicsIndexList1);
-			
-			List<Integer> silverPicsOfUserIndexList1 = new ArrayList<Integer>();
-			for (UserPictureModel silverPicOfUser: silverPicsOfUser)
-			{
-				silverPicsOfUserIndexList1.add(silverPicOfUser.getPicture().getPictureId());
-			}
-			
-			Collections.sort(silverPicsOfUserIndexList1);
-			
-			//Vergleih funktioniert, kaufUserBronze funktioniert auch, aber das Speichern der Models in die DB funktioniert noch nicht
-			if (silverPicsIndexList1.equals(silverPicsOfUserIndexList1)) {
-				
-				List<UserPictureModel> kaufUserSilver = new ArrayList<UserPictureModel>();
-				kaufUserSilver = userPictureRepo.findByUserAndPictureLevel(user, "silber");
-				
-				int i = 1;
-				
-				for( UserPictureModel eintrag : kaufUserSilver)
-				{
-					if (eintrag.getAmount()>0) {
-						
-					} else {
-						i++;
-						rewardMessage = "Not enough pics";
-					}
-				}
-				
-				if(i==1) {
-					for( UserPictureModel eintrag : kaufUserSilver)
-					{
-						eintrag.setAmount(eintrag.getAmount()-1);
-						userPictureRepo.save(eintrag);
-						rewardMessage = "Succesfully got silver reward";
-					}
-				}
-				System.out.print("GLEICH");
-			} else {
-				System.out.print("NICHT GLEICH");
-				rewardMessage = "Not enough pics";
-			}
-			
-			//generate the model for the frontend
-
-			// all Pics of User
-			List<UserPictureModel>bronzePicsOfUser = new ArrayList<UserPictureModel>();
-			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
-			
 			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
 			List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
 			goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
@@ -1562,40 +1260,89 @@ public class UserController {
 			model.addAttribute("silverPicOfUser", silverPicsOfUser);
 			model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-			/*
-			 * System.out.print(missingPicsBronze); System.out.print(missingPicsSilver);
-			 * System.out.print(missingPicsGold);
-			 */
+			//System.out.print(missingPicsBronze);
+			//System.out.print(missingPicsSilver);
+			//System.out.print(missingPicsGold);
 
 			model.addAttribute("missingBronzePics", missingPicsBronze);
 			model.addAttribute("missingSilverPics", missingPicsSilver);
 			model.addAttribute("missingGoldPics", missingPicsGold);
 			model.addAttribute("user", user);
-			
-			model.addAttribute("pack", rewardMessage);
-			//sendMail(user, "REWARD-SILVER", rewardMessage);
-			return "picture";
 
+		} else {
 
-		}
+			user.setPoints(user.getPoints() - 150);
+			message = "Silver Pack bought successfully";
 
-	// for the bronze pac
-	@RequestMapping(value = "/bronzePack")
-	public String bronzePack(Model model, Authentication authentication) {
+			// getting all pics of one level
+			List<PictureModel> silverPics = new ArrayList<PictureModel>();
+			silverPics = pictureRepository.findByLevel("silber");
+			List<PictureModel> bronzePics = new ArrayList<PictureModel>();
+			bronzePics = pictureRepository.findByLevel("bronze");
 
-		// getting User
-		String searchString = authentication.getName();
-		UserModel user = userQueryRepository.findByUserName(searchString);
-		
-		String message;
+			// get the size for the id
+			List<UserPictureModel> allModels = userPictureRepo.findAll();
 
-		if(user.getPoints() < 100) {
-			
-			message = "Not enough points";
-			
+			// get random numbers
+			Random randSilver = new Random();
+			int randomSilverPic = randSilver.nextInt(silverPics.size());
+
+			Random randBronze1 = new Random();
+			int randomBronzePic1 = randBronze1.nextInt(bronzePics.size());
+
+			Random randBronze2 = new Random();
+			int randomBronzePic2 = randBronze2.nextInt(bronzePics.size());
+
+			// get Pac
+			ArrayList<PictureModel> picPack = new ArrayList<PictureModel>();
+			picPack.add(silverPics.get(randomSilverPic));
+			picPack.add(bronzePics.get(randomBronzePic1));
+			picPack.add(bronzePics.get(randomBronzePic2));
+
+			// all Pictures from the logged user
+			// List<UserPictureModel> ownedPictures = new ArrayList<UserPictureModel>();
+			List<UserPictureModel> ownedPictures = userPictureRepo.findByUser(user);
+
+			// List of ownedPictureIds
+			List<Integer> ownedPictureIndexList = new ArrayList<Integer>();
+			for (UserPictureModel ownedPicture : ownedPictures) {
+				ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
+			}
+
+			// compare ownedPics with new pics of Pac
+			for (PictureModel pic : picPack) {
+
+				// get the size for the id
+				allModels = userPictureRepo.findAll();
+				// if fÃ¼rs update
+				if (ownedPictureIndexList.contains(pic.getPictureId())) {
+					UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
+					updateModel.setAmount(updateModel.getAmount() + 1);
+					userPictureDao.merge(updateModel);
+					// //System.out.print("in update");
+				} else {
+					UserPictureModel newPicForUser = new UserPictureModel();
+					newPicForUser.setId(allModels.size() + 1);
+					newPicForUser.setUser(user);
+					newPicForUser.setPicture(pic);
+					newPicForUser.setAmount(1);
+					userPictureRepo.save(newPicForUser);
+
+					// //System.out.print("in save");
+
+				}
+				ownedPictures = userPictureRepo.findByUser(user);
+				// List of ownedPictureIds update
+				ownedPictureIndexList = new ArrayList<Integer>();
+				for (UserPictureModel ownedPicture : ownedPictures) {
+					ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
+				}
+			}
+
 			// generate the model for the frontend
-			
-			
+
+			// get logged User
+
 			// all Pics of User
 			List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
 			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
@@ -1603,15 +1350,15 @@ public class UserController {
 			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
 			List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
 			goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
-	
+
 			// allPics
-			List<PictureModel>bronzePics = new ArrayList<PictureModel>();
+			bronzePics = new ArrayList<PictureModel>();
 			bronzePics = pictureRepository.findByLevel("bronze");
-			List<PictureModel>silverPics = new ArrayList<PictureModel>();
+			silverPics = new ArrayList<PictureModel>();
 			silverPics = pictureRepository.findByLevel("silber");
-			List<PictureModel>goldPics = new ArrayList<PictureModel>();
+			List<PictureModel> goldPics = new ArrayList<PictureModel>();
 			goldPics = pictureRepository.findByLevel("gold");
-	
+
 			// generate all index List
 			List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
 			for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
@@ -1625,354 +1372,126 @@ public class UserController {
 			for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
 				goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
 			}
-	
+
 			// missing Picture List
 			List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
 			List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
 			List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
-	
+
 			for (PictureModel bronzePic : bronzePics) {
 				if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
-	
+
 				} else {
 					missingPicsBronze.add(bronzePic);
 				}
-	
+
 			}
 			for (PictureModel goldPic : goldPics) {
 				if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
-	
+
 				} else {
 					missingPicsGold.add(goldPic);
 				}
-	
+
 			}
 			for (PictureModel silverPic : silverPics) {
 				if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
-	
+
 				} else {
 					missingPicsSilver.add(silverPic);
 				}
-	
+
 			}
-	
+
 			model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
 			model.addAttribute("silverPicOfUser", silverPicsOfUser);
 			model.addAttribute("goldPicOfUser", goldPicsOfUser);
-	
-			System.out.print(missingPicsBronze);
-			System.out.print(missingPicsSilver);
-			System.out.print(missingPicsGold);
-	
+
+			//// //System.out.print(missingPicsBronze);
+			//// //System.out.print(missingPicsSilver);
+			//// //System.out.print(missingPicsGold);
+
 			model.addAttribute("missingBronzePics", missingPicsBronze);
 			model.addAttribute("missingSilverPics", missingPicsSilver);
 			model.addAttribute("missingGoldPics", missingPicsGold);
 			model.addAttribute("user", user);
-			
-		} else {
-			
-			user.setPoints(user.getPoints()-100);
-			message = "Bronze Pack bought successfully";
-		
-		// getting all pics of one level
-		List<PictureModel> bronzePics = new ArrayList<PictureModel>();
-		bronzePics = pictureRepository.findByLevel("bronze");
 
-		// get the size for the id
-		List<UserPictureModel> allModels = userPictureRepo.findAll();
-
-		// get random numbers
-		Random randBronze1 = new Random();
-		int randomBronzePic1 = randBronze1.nextInt(bronzePics.size());
-
-		Random randBronze2 = new Random();
-		int randomBronzePic2 = randBronze2.nextInt(bronzePics.size());
-
-		// get Pac
-		ArrayList<PictureModel> picPack = new ArrayList<PictureModel>();
-		picPack.add(bronzePics.get(randomBronzePic1));
-		picPack.add(bronzePics.get(randomBronzePic2));
-
-		// all Pictures from the logged user
-		// List<UserPictureModel> ownedPictures = new ArrayList<UserPictureModel>();
-		List<UserPictureModel> ownedPictures = userPictureRepo.findByUser(user);
-
-		// List of ownedPictureIds
-		List<Integer> ownedPictureIndexList = new ArrayList<Integer>();
-		for (UserPictureModel ownedPicture : ownedPictures) {
-			ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
-		}
-
-		// compare ownedPics with new pics of Pac
-		for (PictureModel pic : picPack) {
-
-			// get the size for the id
-			allModels = userPictureRepo.findAll();
-			// if fÃ¼rs update
-			if (ownedPictureIndexList.contains(pic.getPictureId())) {
-				UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
-				updateModel.setAmount(updateModel.getAmount() + 1);
-				userPictureDao.merge(updateModel);
-				//System.out.print("in update");
-			} else {
-				UserPictureModel newPicForUser = new UserPictureModel();
-				newPicForUser.setId(allModels.size() + 1);
-				newPicForUser.setUser(user);
-				newPicForUser.setPicture(pic);
-				newPicForUser.setAmount(1);
-				userPictureRepo.save(newPicForUser);
-
-				//System.out.print("in save");
-
-			}
-			ownedPictures = userPictureRepo.findByUser(user);
-			// List of ownedPictureIds update
-			ownedPictureIndexList = new ArrayList<Integer>();
-			for (UserPictureModel ownedPicture : ownedPictures) {
-				ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
-			}
-		}
-
-		// generate the model for the frontend
-
-		// get logged User
-
-		// all Pics of User
-		List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
-		bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
-		List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
-		silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
-		List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
-		goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
-
-		// allPics
-		bronzePics = new ArrayList<PictureModel>();
-		bronzePics = pictureRepository.findByLevel("bronze");
-		List<PictureModel> silverPics = new ArrayList<PictureModel>();
-		silverPics = pictureRepository.findByLevel("silber");
-		List<PictureModel> goldPics = new ArrayList<PictureModel>();
-		goldPics = pictureRepository.findByLevel("gold");
-
-		// generate all index List
-		List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
-		for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
-			bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
-		}
-		List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
-		for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
-			silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
-		}
-		List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
-		for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
-			goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
-		}
-
-		// missing Picture List
-		List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
-		List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
-		List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
-
-		for (PictureModel bronzePic : bronzePics) {
-			if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
-
-			} else {
-				missingPicsBronze.add(bronzePic);
-			}
-
-		}
-		for (PictureModel goldPic : goldPics) {
-			if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
-
-			} else {
-				missingPicsGold.add(goldPic);
-			}
-
-		}
-		for (PictureModel silverPic : silverPics) {
-			if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
-
-			} else {
-				missingPicsSilver.add(silverPic);
-			}
-
-		}
-		
-		model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
-		model.addAttribute("silverPicOfUser", silverPicsOfUser);
-		model.addAttribute("goldPicOfUser", goldPicsOfUser);
-
-
-		////System.out.print(missingPicsBronze);
-		////System.out.print(missingPicsSilver);
-		////System.out.print(missingPicsGold);
-
-
-		model.addAttribute("missingBronzePics", missingPicsBronze);
-		model.addAttribute("missingSilverPics", missingPicsSilver);
-		model.addAttribute("missingGoldPics", missingPicsGold);
-		model.addAttribute("user", user);
-		
 		}
 
 		model.addAttribute("pack", message);
-		
-	
+
 		return "picture";
 
 	}
 
-	@RequestMapping(value = { "/userSettings" }, method = RequestMethod.POST)
-	public String editUser(@Valid UserModel changedUserModel, BindingResult bindingResult, Model model) {
+	// for the silver Reward
+	@RequestMapping(value = "/silverReward")
+	public String silverReward(Model model, Authentication authentication) {
 
-		String[] partUserName = (changedUserModel.userName).split(",");
+		// getting User
+		String searchString = authentication.getName();
+		UserModel user = userQueryRepository.findByUserName(searchString);
 
-		UserModel user = userQueryRepository.findByUserName(partUserName[0]);
-		// keine schÃ¶ne lÃ¶sung, wieso ist aber userName=MaMu,MaMu,??
+		String rewardMessage = null;
 
-		// * if (user == null) { model.addAttribute("errorMessage",
-		// * "User does not exist!<br>"); }
+		// get his silverPics
+		List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+		silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
 
-		user.setFirstName(changedUserModel.getFirstName());
-		user.setLastName(changedUserModel.getLastName());
-		user.seteMail(changedUserModel.geteMail());
-		user.setHeight(changedUserModel.getHeight());
-		user.setWeight(changedUserModel.getWeight());
+		List<PictureModel> silverPics1 = new ArrayList<PictureModel>();
+		silverPics1 = pictureRepository.findByLevel("silber");
 
-		user = userRepository.merge(user);
+		List<Integer> silverPicsIndexList1 = new ArrayList<Integer>();
+		for (PictureModel silverPic : silverPics1) {
+			silverPicsIndexList1.add(silverPic.getPictureId());
+		}
 
-		Date date = new Date();
+		Collections.sort(silverPicsIndexList1);
 
-		// Hier werden die Ãnderungen eines Users in den Log eingetragen
-		LogModel log = new LogModel(user, user.getHeight(), user.getWeight(), user.getPoints(), date);
+		List<Integer> silverPicsOfUserIndexList1 = new ArrayList<Integer>();
+		for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
+			silverPicsOfUserIndexList1.add(silverPicOfUser.getPicture().getPictureId());
+		}
 
+		Collections.sort(silverPicsOfUserIndexList1);
 
+		// Vergleih funktioniert, kaufUserBronze funktioniert auch, aber das Speichern
+		// der Models in die DB funktioniert noch nicht
+		if (silverPicsIndexList1.equals(silverPicsOfUserIndexList1)) {
 
+			List<UserPictureModel> kaufUserSilver = new ArrayList<UserPictureModel>();
+			kaufUserSilver = userPictureRepo.findByUserAndPictureLevel(user, "silber");
 
-		//System.out.println(log);
-		// logRepository.save(log);
-		// log.setUser(user);
-		// user.addLogModel(log);
+			int i = 1;
 
-		logRepository.save(log);
+			for (UserPictureModel eintrag : kaufUserSilver) {
+				if (eintrag.getAmount() > 0) {
 
-		// unser Ansatz um das Problem zu lï¿½sen. Jedoch funktioniert die zuweisung zu
-		// user nicht.
-
-
-		
-		model.addAttribute("message", "Profile has been updated successfully");
-		
-		// model.addAttribute("user", user);
-		return "redirect:/profile";
-	}
-
-	//bronze Reward
-		@RequestMapping(value = {"/bronzeReward"})
-		public String bronzeReward(Model model, Authentication authentication) {
-			
-			String authenname = authentication.getName();
-			UserModel user = userQueryRepository.findByUserName(authenname);
-			
-			String rewardMessage = null;
-			
-			//get his bronzePics
-			List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
-			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user,"bronze");
-			
-			List<PictureModel>bronzePics1 = new ArrayList<PictureModel>();
-			bronzePics1 = pictureRepository.findByLevel("bronze");
-			
-			List<Integer> bronzePicsIndexList1 = new ArrayList<Integer>();
-			for (PictureModel bronzePic: bronzePics1)
-			{
-				bronzePicsIndexList1.add(bronzePic.getPictureId());
-			}
-			
-			Collections.sort(bronzePicsIndexList1);
-			
-			List<Integer> bronzePicsOfUserIndexList1 = new ArrayList<Integer>();
-			for (UserPictureModel bronzePicOfUser: bronzePicsOfUser)
-			{
-				bronzePicsOfUserIndexList1.add(bronzePicOfUser.getPicture().getPictureId());
-			}
-			
-			Collections.sort(bronzePicsOfUserIndexList1);
-			
-			
-			
-			
-			//Vergleih funktioniert, kaufUserBronze funktioniert auch, aber das Speichern der Models in die DB funktioniert noch nicht
-			if (bronzePicsIndexList1.equals(bronzePicsOfUserIndexList1)) {
-				
-				List<UserPictureModel> kaufUserBronze = new ArrayList<UserPictureModel>();
-				kaufUserBronze = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
-				
-				int i = 1;
-				
-				for( UserPictureModel eintrag : kaufUserBronze)
-				{
-					if (eintrag.getAmount()>0) {
-						
-					} else {
-						i++;
-						rewardMessage = "Not enough pics";
-						//userPictureRepo.remove(eintrag);
-					}
-				}
-				
-				if(i==1) {
-					for( UserPictureModel eintrag : kaufUserBronze)
-					{
-						if (eintrag.getAmount() == 1) {
-							//userPictureRepo.remove(eintrag);
-						}
-						
-						eintrag.setAmount(eintrag.getAmount()-1);
-						userPictureRepo.save(eintrag);
-						
-						rewardMessage = "Succesfully got bronze reward";
-					}
 				} else {
+					i++;
 					rewardMessage = "Not enough pics";
 				}
-				
-
-				//kaufUserBronze.remove(kaufUserBronze);
-				//userPictureRepo.removeByAmount(0);
-				
-				
-				
-//				userPictureRepo.dele
-				
-				List<UserPictureModel> userUserPicture = userPictureRepo.findAll();
-				
-				for (UserPictureModel pic : userUserPicture) {
-					if (pic.getAmount() == 0) {
-						userUserPicture.remove(pic);
-						System.out.print("IM REMOVE IF");
-//						userPictureRepo.saveAll(userUserPicture);
-					}
-				}
-				
-				System.out.print("GLEICH");
-
-				// System.out.print("GLEICH");
-
-			} else {
-				// System.out.print("NICHT GLEICH");
-				rewardMessage = "Not enough pics";
 			}
-			
-			//System.out.print("BRONZE von User: " + bronzePicsOfUserIndexList1.toString());
-			//System.out.print("BRONZE: " + bronzePicsIndexList1.toString());
 
-			
-			//generate the model for the frontend
+			if (i == 1) {
+				for (UserPictureModel eintrag : kaufUserSilver) {
+					eintrag.setAmount(eintrag.getAmount() - 1);
+					userPictureRepo.save(eintrag);
+					rewardMessage = "Succesfully got silver reward";
+				}
+			}
+			//System.out.print("GLEICH");
+		} else {
+			//System.out.print("NICHT GLEICH");
+			rewardMessage = "Not enough pics";
+		}
+
+		// generate the model for the frontend
 
 		// all Pics of User
-		bronzePicsOfUser = new ArrayList<UserPictureModel>();
+		List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
 		bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
-		List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+
 		silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
 		List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
 		goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
@@ -2042,20 +1561,427 @@ public class UserController {
 		model.addAttribute("missingSilverPics", missingPicsSilver);
 		model.addAttribute("missingGoldPics", missingPicsGold);
 		model.addAttribute("user", user);
-		
+
 		model.addAttribute("pack", rewardMessage);
-		//sendMail(user, "REWARD-SILVER", rewardMessage);
+		// sendMail(user, "REWARD-SILVER", rewardMessage);
 		return "picture";
 
 	}
 
-	/**
-	 * Display the upload form
-	 * 
-	 * @param model
-	 * @param userId
-	 * @return
-	 */
+	// for the bronze pac
+	@RequestMapping(value = "/bronzePack")
+	public String bronzePack(Model model, Authentication authentication) {
+
+		// getting User
+		String searchString = authentication.getName();
+		UserModel user = userQueryRepository.findByUserName(searchString);
+
+		String message;
+
+		if (user.getPoints() < 100) {
+
+			message = "Not enough points";
+
+			// generate the model for the frontend
+
+			// all Pics of User
+			List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
+			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+			List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
+			List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
+			goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
+
+			// allPics
+			List<PictureModel> bronzePics = new ArrayList<PictureModel>();
+			bronzePics = pictureRepository.findByLevel("bronze");
+			List<PictureModel> silverPics = new ArrayList<PictureModel>();
+			silverPics = pictureRepository.findByLevel("silber");
+			List<PictureModel> goldPics = new ArrayList<PictureModel>();
+			goldPics = pictureRepository.findByLevel("gold");
+
+			// generate all index List
+			List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
+				bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
+				silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
+				goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
+			}
+
+			// missing Picture List
+			List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
+
+			for (PictureModel bronzePic : bronzePics) {
+				if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
+
+				} else {
+					missingPicsBronze.add(bronzePic);
+				}
+
+			}
+			for (PictureModel goldPic : goldPics) {
+				if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
+
+				} else {
+					missingPicsGold.add(goldPic);
+				}
+
+			}
+			for (PictureModel silverPic : silverPics) {
+				if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
+
+				} else {
+					missingPicsSilver.add(silverPic);
+				}
+
+			}
+
+			model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
+			model.addAttribute("silverPicOfUser", silverPicsOfUser);
+			model.addAttribute("goldPicOfUser", goldPicsOfUser);
+
+			//System.out.print(missingPicsBronze);
+			//System.out.print(missingPicsSilver);
+			//System.out.print(missingPicsGold);
+
+			model.addAttribute("missingBronzePics", missingPicsBronze);
+			model.addAttribute("missingSilverPics", missingPicsSilver);
+			model.addAttribute("missingGoldPics", missingPicsGold);
+			model.addAttribute("user", user);
+
+		} else {
+
+			user.setPoints(user.getPoints() - 100);
+			message = "Bronze Pack bought successfully";
+
+			// getting all pics of one level
+			List<PictureModel> bronzePics = new ArrayList<PictureModel>();
+			bronzePics = pictureRepository.findByLevel("bronze");
+
+			// get the size for the id
+			List<UserPictureModel> allModels = userPictureRepo.findAll();
+
+			// get random numbers
+			Random randBronze1 = new Random();
+			int randomBronzePic1 = randBronze1.nextInt(bronzePics.size());
+
+			Random randBronze2 = new Random();
+			int randomBronzePic2 = randBronze2.nextInt(bronzePics.size());
+
+			// get Pac
+			ArrayList<PictureModel> picPack = new ArrayList<PictureModel>();
+			picPack.add(bronzePics.get(randomBronzePic1));
+			picPack.add(bronzePics.get(randomBronzePic2));
+
+			// all Pictures from the logged user
+			// List<UserPictureModel> ownedPictures = new ArrayList<UserPictureModel>();
+			List<UserPictureModel> ownedPictures = userPictureRepo.findByUser(user);
+
+			// List of ownedPictureIds
+			List<Integer> ownedPictureIndexList = new ArrayList<Integer>();
+			for (UserPictureModel ownedPicture : ownedPictures) {
+				ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
+			}
+
+			// compare ownedPics with new pics of Pac
+			for (PictureModel pic : picPack) {
+
+				// get the size for the id
+				allModels = userPictureRepo.findAll();
+				// if fÃ¼rs update
+				if (ownedPictureIndexList.contains(pic.getPictureId())) {
+					UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
+					updateModel.setAmount(updateModel.getAmount() + 1);
+					userPictureDao.merge(updateModel);
+					// //System.out.print("in update");
+				} else {
+					UserPictureModel newPicForUser = new UserPictureModel();
+					newPicForUser.setId(allModels.size() + 1);
+					newPicForUser.setUser(user);
+					newPicForUser.setPicture(pic);
+					newPicForUser.setAmount(1);
+					userPictureRepo.save(newPicForUser);
+
+					// //System.out.print("in save");
+
+				}
+				ownedPictures = userPictureRepo.findByUser(user);
+				// List of ownedPictureIds update
+				ownedPictureIndexList = new ArrayList<Integer>();
+				for (UserPictureModel ownedPicture : ownedPictures) {
+					ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
+				}
+			}
+
+			// generate the model for the frontend
+
+			// get logged User
+
+			// all Pics of User
+			List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
+			bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+			List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+			silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
+			List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
+			goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
+
+			// allPics
+			bronzePics = new ArrayList<PictureModel>();
+			bronzePics = pictureRepository.findByLevel("bronze");
+			List<PictureModel> silverPics = new ArrayList<PictureModel>();
+			silverPics = pictureRepository.findByLevel("silber");
+			List<PictureModel> goldPics = new ArrayList<PictureModel>();
+			goldPics = pictureRepository.findByLevel("gold");
+
+			// generate all index List
+			List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
+				bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
+				silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
+			}
+			List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
+			for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
+				goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
+			}
+
+			// missing Picture List
+			List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
+			List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
+
+			for (PictureModel bronzePic : bronzePics) {
+				if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
+
+				} else {
+					missingPicsBronze.add(bronzePic);
+				}
+
+			}
+			for (PictureModel goldPic : goldPics) {
+				if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
+
+				} else {
+					missingPicsGold.add(goldPic);
+				}
+
+			}
+			for (PictureModel silverPic : silverPics) {
+				if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
+
+				} else {
+					missingPicsSilver.add(silverPic);
+				}
+
+			}
+
+			model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
+			model.addAttribute("silverPicOfUser", silverPicsOfUser);
+			model.addAttribute("goldPicOfUser", goldPicsOfUser);
+
+			//// //System.out.print(missingPicsBronze);
+			//// //System.out.print(missingPicsSilver);
+			//// //System.out.print(missingPicsGold);
+
+			model.addAttribute("missingBronzePics", missingPicsBronze);
+			model.addAttribute("missingSilverPics", missingPicsSilver);
+			model.addAttribute("missingGoldPics", missingPicsGold);
+			model.addAttribute("user", user);
+
+		}
+
+		model.addAttribute("pack", message);
+
+		return "picture";
+
+	}
+
+
+	// bronze Reward
+	@RequestMapping(value = { "/bronzeReward" })
+	public String bronzeReward(Model model, Authentication authentication) {
+
+		String authenname = authentication.getName();
+		UserModel user = userQueryRepository.findByUserName(authenname);
+
+		String rewardMessage = null;
+
+		// get his bronzePics
+		List<UserPictureModel> bronzePicsOfUser = new ArrayList<UserPictureModel>();
+		bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+
+		List<PictureModel> bronzePics1 = new ArrayList<PictureModel>();
+		bronzePics1 = pictureRepository.findByLevel("bronze");
+
+		List<Integer> bronzePicsIndexList1 = new ArrayList<Integer>();
+		for (PictureModel bronzePic : bronzePics1) {
+			bronzePicsIndexList1.add(bronzePic.getPictureId());
+		}
+
+		Collections.sort(bronzePicsIndexList1);
+
+		List<Integer> bronzePicsOfUserIndexList1 = new ArrayList<Integer>();
+		for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
+			bronzePicsOfUserIndexList1.add(bronzePicOfUser.getPicture().getPictureId());
+		}
+
+		Collections.sort(bronzePicsOfUserIndexList1);
+
+		// Vergleih funktioniert, kaufUserBronze funktioniert auch, aber das Speichern
+		// der Models in die DB funktioniert noch nicht
+		if (bronzePicsIndexList1.equals(bronzePicsOfUserIndexList1)) {
+
+			List<UserPictureModel> kaufUserBronze = new ArrayList<UserPictureModel>();
+			kaufUserBronze = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+
+			int i = 1;
+
+			for (UserPictureModel eintrag : kaufUserBronze) {
+				if (eintrag.getAmount() > 0) {
+
+				} else {
+					i++;
+					rewardMessage = "Not enough pics";
+					// userPictureRepo.remove(eintrag);
+				}
+			}
+
+			if (i == 1) {
+				for (UserPictureModel eintrag : kaufUserBronze) {
+					if (eintrag.getAmount() == 1) {
+						// userPictureRepo.remove(eintrag);
+					}
+
+					eintrag.setAmount(eintrag.getAmount() - 1);
+					userPictureRepo.save(eintrag);
+
+					rewardMessage = "Succesfully got bronze reward";
+				}
+			} else {
+				rewardMessage = "Not enough pics";
+			}
+
+			// kaufUserBronze.remove(kaufUserBronze);
+			// userPictureRepo.removeByAmount(0);
+
+//				userPictureRepo.dele
+
+			List<UserPictureModel> userUserPicture = userPictureRepo.findAll();
+
+			for (UserPictureModel pic : userUserPicture) {
+				if (pic.getAmount() == 0) {
+					userUserPicture.remove(pic);
+					//System.out.print("IM REMOVE IF");
+//						userPictureRepo.saveAll(userUserPicture);
+				}
+			}
+
+			//System.out.print("GLEICH");
+
+			// //System.out.print("GLEICH");
+
+		} else {
+			// //System.out.print("NICHT GLEICH");
+			rewardMessage = "Not enough pics";
+		}
+
+		// //System.out.print("BRONZE von User: " +
+		// bronzePicsOfUserIndexList1.toString());
+		// //System.out.print("BRONZE: " + bronzePicsIndexList1.toString());
+
+		// generate the model for the frontend
+
+		// all Pics of User
+		bronzePicsOfUser = new ArrayList<UserPictureModel>();
+		bronzePicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "bronze");
+		List<UserPictureModel> silverPicsOfUser = new ArrayList<UserPictureModel>();
+		silverPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "silber");
+		List<UserPictureModel> goldPicsOfUser = new ArrayList<UserPictureModel>();
+		goldPicsOfUser = userPictureRepo.findByUserAndPictureLevel(user, "gold");
+
+		// allPics
+		List<PictureModel> bronzePics = new ArrayList<PictureModel>();
+		bronzePics = pictureRepository.findByLevel("bronze");
+		List<PictureModel> silverPics = new ArrayList<PictureModel>();
+		silverPics = pictureRepository.findByLevel("silber");
+		List<PictureModel> goldPics = new ArrayList<PictureModel>();
+		goldPics = pictureRepository.findByLevel("gold");
+
+		// generate all index List
+		List<Integer> bronzePicsOfUserIndexList = new ArrayList<Integer>();
+		for (UserPictureModel bronzePicOfUser : bronzePicsOfUser) {
+			bronzePicsOfUserIndexList.add(bronzePicOfUser.getPicture().getPictureId());
+		}
+		List<Integer> silverPicsOfUserIndexList = new ArrayList<Integer>();
+		for (UserPictureModel silverPicOfUser : silverPicsOfUser) {
+			silverPicsOfUserIndexList.add(silverPicOfUser.getPicture().getPictureId());
+		}
+		List<Integer> goldPicsOfUserIndexList = new ArrayList<Integer>();
+		for (UserPictureModel goldPicOfUser : goldPicsOfUser) {
+			goldPicsOfUserIndexList.add(goldPicOfUser.getPicture().getPictureId());
+		}
+
+		// missing Picture List
+		List<PictureModel> missingPicsBronze = new ArrayList<PictureModel>();
+		List<PictureModel> missingPicsSilver = new ArrayList<PictureModel>();
+		List<PictureModel> missingPicsGold = new ArrayList<PictureModel>();
+
+		for (PictureModel bronzePic : bronzePics) {
+			if (bronzePicsOfUserIndexList.contains(bronzePic.getPictureId())) {
+
+			} else {
+				missingPicsBronze.add(bronzePic);
+			}
+
+		}
+		for (PictureModel goldPic : goldPics) {
+			if (goldPicsOfUserIndexList.contains(goldPic.getPictureId())) {
+
+			} else {
+				missingPicsGold.add(goldPic);
+			}
+
+		}
+		for (PictureModel silverPic : silverPics) {
+			if (silverPicsOfUserIndexList.contains(silverPic.getPictureId())) {
+
+			} else {
+				missingPicsSilver.add(silverPic);
+			}
+
+		}
+
+		model.addAttribute("bronzePicOfUser", bronzePicsOfUser);
+		model.addAttribute("silverPicOfUser", silverPicsOfUser);
+		model.addAttribute("goldPicOfUser", goldPicsOfUser);
+
+		/*
+		 * ////System.out.print(missingPicsBronze); ////System.out.print(missingPicsSilver);
+		 * ////System.out.print(missingPicsGold);
+		 */
+
+		model.addAttribute("missingBronzePics", missingPicsBronze);
+		model.addAttribute("missingSilverPics", missingPicsSilver);
+		model.addAttribute("missingGoldPics", missingPicsGold);
+		model.addAttribute("user", user);
+
+		model.addAttribute("pack", rewardMessage);
+		// sendMail(user, "REWARD-SILVER", rewardMessage);
+		return "picture";
+
+	}
+
+	
 	@RequestMapping(value = "/uploadform", method = RequestMethod.GET)
 	public String showUploadForm(Model model, Authentication authentication, @RequestParam int pictureId) {
 		PictureModel pic = pictureRepository.findByPictureId(pictureId);
@@ -2064,23 +1990,7 @@ public class UserController {
 		return "uploadFile";
 	}
 
-	/**
-	 * Save uploaded file to the database (as 1:1 relationship to user)
-	 * 
-	 * @param model
-	 * @param userId
-	 * @param file
-	 * @return
-	 */
-/*	@RequestMapping(value = "/upload", method = RequestMethod.POST) // FALSCH !!!!!!!!!!!!!!!!!!!!!
-	public String uploadDocument(Model model, Authentication authentication) {
-
-		List<PictureModel> allPics = new ArrayList<PictureModel>();
-		allPics = pictureRepository.findAll();
-		//System.out.print(allPics);
-		model.addAttribute("allPics", allPics);
-		return "picsoverview";
-	} */
+	
 
 	@RequestMapping("/download")
 	public void download(@RequestParam("pictureId") int pictureId, HttpServletResponse response) {
@@ -2094,8 +2004,9 @@ public class UserController {
 		try {
 			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getName() + "\"");
 			OutputStream out = response.getOutputStream();
-			// application/octet-stream
-			//response.setContentType("image/jpg");
+			
+			response.setContentType("image/jpg");
+			
 			out.write(doc.getPicture());
 			out.flush();
 		} catch (Exception e) {
@@ -2103,43 +2014,24 @@ public class UserController {
 		}
 	}
 
-	
-	
 	// Pic added
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String addpic(Model model, @RequestParam("id") int pictureId,
-			@RequestParam("myFile") MultipartFile file) {
+	public String addpic(Model model, @RequestParam("id") int pictureId, @RequestParam("myFile") MultipartFile file) {
 
 		PictureModel upgradePic = pictureRepository.findByPictureId(pictureId);
-		 ////System.out.print(upgradePic.getName()); 
-		
-		
-		
-		//System.out.print("Button geht");
-		
 	
-			try {
-				upgradePic.setPicture(file.getBytes());
-				pictureRepository.save(upgradePic);
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			/*pictureDao.merge(upgradePic);
 
-		} catch (Exception e) {
+		try {
+			upgradePic.setPicture(file.getBytes());
+			pictureRepository.save(upgradePic);
 
-			model.addAttribute("errorMessage", "Error:" + e.getMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		List<PictureModel> allPics = new ArrayList<PictureModel>();
-		allPics = pictureRepository.findAll();
-		//System.out.print(allPics);
-		model.addAttribute("allPics", allPics);*/ 
+		
 		return "forward:/picsoverview";
 	}
-
 
 	// Pics Overview
 	@RequestMapping("/picsoverview")
@@ -2147,15 +2039,14 @@ public class UserController {
 
 		List<PictureModel> allPics = new ArrayList<PictureModel>();
 		allPics = pictureRepository.findAll();
-		//System.out.print(allPics);
+		// //System.out.print(allPics);
 		model.addAttribute("allPics", allPics);
 		return "picsoverview";
 	}
 
-
-	/*
-	 * @ExceptionHandler(Exception.class) public String handleAllException(Exception
-	 * ex) { return "error"; }
-	 */
+	
+	 @ExceptionHandler(Exception.class) public String handleAllException(Exception
+	  ex) { return "error"; }
+	 
 
 }

@@ -29,7 +29,7 @@ public class RoleModel implements java.io.Serializable {
  
                               
                 public RoleModel() {
-                       // TODO Auto-generated constructor stub
+                       
                 }
  
                 public RoleModel(String role) {

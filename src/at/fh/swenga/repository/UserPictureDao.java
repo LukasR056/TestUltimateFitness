@@ -38,18 +38,5 @@ public class UserPictureDao {
 		
 		
 	}
-	
-	
-	
-/*	public void addUserPicture(int userId, int pictureId, int amount)
-	{
-		Query q = entityManager.createNativeQuery("insert into UserPictures (user_userId,picture_id,amount) values (:userId,:pictureId,:amount)");
-		q.setParameter("userId", userId);
-		q.setParameter("pictureId", pictureId);
-		q.setParameter("amount", amount);
-		q.executeUpdate();
-		
-		
-	}*/
 
 }

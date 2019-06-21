@@ -81,8 +81,7 @@ public class UserModel implements java.io.Serializable {
 	@Column()
 	private int points = 0;
 	
-	@Column()
-	private boolean isAdmin;
+
 	
 	@Column(nullable=false)
 	private boolean enabled;
@@ -112,7 +111,7 @@ public class UserModel implements java.io.Serializable {
 	
   
 	// fuer User Roles!
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
     @JoinTable(name = "userRoles", joinColumns = @JoinColumn(name = "userId"),
        inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<RoleModel> roles;
@@ -235,7 +234,7 @@ public class UserModel implements java.io.Serializable {
 
 
 	public UserModel(int userId, String firstName, String lastName, String userName, Date birthDate, String gender,
-			double height, double weight, String coach, String eMail, int points, boolean isAdmin, boolean enabled,
+			double height, double weight, String coach, String eMail, int points, boolean enabled,
 			String password) {
 		super();
 		this.userId = userId;
@@ -249,13 +248,12 @@ public class UserModel implements java.io.Serializable {
 		this.coach = coach;
 		this.eMail = eMail;
 		this.points = points;
-		this.isAdmin = isAdmin;
 		this.enabled = enabled;
 		this.password = password;
 	}
 	
 	public UserModel(String firstName, String lastName, String userName, Date birthDate, String gender, double height,
-			double weight, String coach, String eMail, int points, boolean isAdmin, boolean enabled, String password, String passwordConfirmed) {
+			double weight, String coach, String eMail, int points, boolean enabled, String password, String passwordConfirmed) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -267,7 +265,6 @@ public class UserModel implements java.io.Serializable {
 		this.coach = coach;
 		this.eMail = eMail;
 		this.points = points;
-		this.isAdmin = isAdmin;
 		this.enabled = enabled;
 		this.password = password;
 		this.passwordConfirmed = passwordConfirmed;
@@ -330,13 +327,7 @@ public class UserModel implements java.io.Serializable {
 		this.eMail = eMail;
 	}
 	
-	public boolean isAdmin() {
-		return isAdmin;
-	}
 
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
 
 	public boolean isEnabled() {
 		return enabled;
@@ -404,6 +395,10 @@ public class UserModel implements java.io.Serializable {
 		roles.add(role);
 	}
 	
+	public void removeRoleModel(RoleModel role) {
+		roles.remove(role);
+	}
+	
 	public void addLogModel(LogModel log) {
 		if (logs == null) logs = new HashSet<LogModel>();
 		logs.add(log);
@@ -454,7 +449,7 @@ public class UserModel implements java.io.Serializable {
 	public String toString() {
 		return "UserModel [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
 				+ ", birthDate=" + birthDate + ", gender=" + gender + ", height=" + height + ", weight=" + weight
-				+ ", coach=" + coach + ", eMail=" + eMail + ", points=" + points + ", isAdmin=" + isAdmin + ", enabled="
+				+ ", coach=" + coach + ", eMail=" + eMail + ", points=" + points  + ", enabled="
 				+ enabled + ", password=" + password + ", passwordConfirmed=" + passwordConfirmed + "]";
 	}
 	

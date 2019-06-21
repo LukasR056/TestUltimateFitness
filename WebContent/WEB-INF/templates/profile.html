@@ -34,11 +34,11 @@
 						<a class="navbar-brand w-100 mr-0" href="#"
 							style="line-height: 25px;">
 							<div class="d-table m-auto">
-							
-									<img id="main-logo" class="d-inline-block align-top mr-1"
+							<img id="main-logo" class="d-inline-block align-top mr-1"
 									style="max-width: 25px;"
 									src="./images/content-management/UltimateFitness_logo.jpeg"
 									alt="Ultimate Fitness"> 
+							
 								<span class="d-none d-md-inline ml-1" style="font-size: 20px;">
 									Ultimate Fitness </span>
 							</div>
@@ -59,6 +59,8 @@
 							placeholder="Search for something..." aria-label="Search">
 					</div>
 				</form>
+				
+				<!-- NAVIGATIONSLEISTE -->
 				<div class="nav-wrapper">
 					<ul class="nav flex-column">
 						<li class="nav-item"><a class="nav-link active"
@@ -77,29 +79,25 @@
 						</a></li>
 						
 						<li class="nav-item"><a class="nav-link " href="messages.html">
-								<i class="material-icons">note_add</i> <span>Message</span>
+								<i class="material-icons">note_add</i> <span>Messages</span>
 						</a></li>
-						
-						
+
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link " href="editUsers.html"> <i
 								class="material-icons">edit</i> <span>Edit Users</span>
+						</a></li>
+
+						<li class="nav-item" sec:authorize="hasRole('ROLE_COACH')"><a
+							class="nav-link " href="changeUserPoints.html"> <i
+								class="material-icons">edit</i> <span>User Points</span>
 						</a></li>
 
 						<li class="nav-item"><a
 							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
 								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
 						</a></li>
-						
-												
-						<!-- <li class="nav-item"><a class="nav-link "
-							href="./tables.html"> <i class="material-icons">table_chart</i>
-								<span>Tables</span>
-						</a></li>
-						<li class="nav-item"><a class="nav-link "
-							href="./user-profile-lite.html"> <i class="material-icons">person</i>
-								<span>User Profile</span>
-						</a></li>  -->
+<!-- NAVIGATIONSLEISTE -->
+
 
 					</ul>
 				</div>
@@ -211,15 +209,16 @@
 				<i class="fa fa-check mx-2"></i> <strong>Success!</strong> Your
 				profile has been updated!
 			</div>
-			
-				<!--  <div th:unless="${logs} == null" th:utext="${logs}">-->
-				<!-- <div th:unless="${weights} == null" th:utext="${weights}">  -->
-				<!-- <div th:unless="${bmis} == null" th:utext="${bmis}"> -->
-				<!-- <div th:unless="${heights7} == null" th:utext="${heights7}"> -->
-				<!-- <div th:unless="${heightproz} == null" th:utext="${heightproz}"> -->
-				
-				
-			
+			<div th:unless="${passwordMessage} == null" th:utext="${passwordMessage}"
+				class="alert alert-success alert-dismissible fade show mb-0"
+				role="alert"> </div>
+
+			<!--  <div th:unless="${logs} == null" th:utext="${logs}">--> <!-- <div th:unless="${weights} == null" th:utext="${weights}">  -->
+			<!-- <div th:unless="${bmis} == null" th:utext="${bmis}"> --> <!-- <div th:unless="${heights7} == null" th:utext="${heights7}"> -->
+			<!-- <div th:unless="${heightproz} == null" th:utext="${heightproz}"> -->
+
+
+
 
 			<!--   message ----------------------------------------------------------- -->
 
@@ -312,12 +311,11 @@
 					<div class="col">
 
 						<a type="button" class="mb-2 btn btn-primary btn-lg"
-							th:href="@{/userSettings1}">Update
-							your Stats</a>
+							th:href="@{/userSettings}">Update your Stats</a>
 						<!-- mr-2 -->
 					</div>
 				</div>
-					
+
 
 				<div class="row">
 					<div class="col-lg-8 col-md-12 col-sm-12 mb-4">
@@ -365,11 +363,11 @@
 									class="blog-overview-users chartjs-render-monitor" width="1050"></canvas>
 							</div>
 						</div>
-							
+
 					</div>
 
 
-	
+
 
 
 
@@ -399,12 +397,8 @@
 							</div>
 							<div class="card-footer border-top">
 								<div class="row">
-									<div class="col">
-
-									
-
-									</div>
-							<!--  		<div class="col text-right view-report">
+									<div class="col"></div>
+									<!--  		<div class="col text-right view-report">
 										<a href="#">Full report</a>
 									</div>-->
 								</div>
@@ -412,12 +406,12 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="card-body">
 								<img src="./images/content-management/bmi-categories_med.jpeg" width="60%">
 							</div>
-				
-				
+
+
 				<!-- sollte BMI chart anzeigen, wird nicht ganz angezeigt, später ausbessern -->
 				<!-- <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 						<div class="card card-small card-post card-post--1">
@@ -430,22 +424,22 @@
 							
 						</div>
 					</div> -->
-					
-				
-					<!--  		<div class="card-body"
+
+
+				<!--  		<div class="card-body"
 								style="background-image: url('images/content-management/bmi_chart.jpeg');">
 								<a href="#"
 									class="card-post__category badge badge-pill badge-secondary"
 									style="background-color: #CBD9DE; color: black;">BMI</a>
 							</div> -->
-							
-							
-							
-						
-						
-				
-				
-				
+
+
+
+
+
+
+
+
 			</div>
 		</div>
 
@@ -489,7 +483,7 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script>
 	<script src="./scripts/extras.1.1.0.min.js"></script>
 	<script src="./scripts/shards-dashboards.1.1.0.min.js"></script>
-	
+
 	<!-- nächste Zeile für Thymeleaf -->
 	<script> var numbers = [[${logs}]] </script>
 	<script> var weights = [[${weights}]] </script>

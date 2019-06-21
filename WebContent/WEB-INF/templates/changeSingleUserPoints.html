@@ -1,15 +1,13 @@
 <!doctype html>
 <html class="no-js h-100" lang="en">
+
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Ultimate Fitness</title>
-<meta name="description"
-	content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
+<title>Update Profile</title>
+
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" type="text/css"
-	href="./styles/forum/animsition.min.css">
 <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
 	rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -24,12 +22,10 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
 <body class="h-100">
-
-
 	<div class="container-fluid">
 		<div class="row">
-
 			<!-- Main Sidebar -->
+
 			<aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
 				<div class="main-navbar">
 					<nav
@@ -37,8 +33,7 @@
 						<a class="navbar-brand w-100 mr-0" href="#"
 							style="line-height: 25px;">
 							<div class="d-table m-auto">
-							
-									<img id="main-logo" class="d-inline-block align-top mr-1"
+								<img id="main-logo" class="d-inline-block align-top mr-1"
 									style="max-width: 25px;"
 									src="./images/content-management/UltimateFitness_logo.jpeg"
 									alt="Ultimate Fitness"> 
@@ -58,11 +53,10 @@
 								<i class="fas fa-search"></i>
 							</div>
 						</div>
-						<input class="navbar-search form-control" type="text"
-							placeholder="Search for something..." aria-label="Search">
+						<!-- 	<input class="navbar-search form-control" type="text"
+							placeholder="Search for something..." aria-label="Search">  -->
 					</div>
 				</form>
-			
 				<!-- NAVIGATIONSLEISTE -->
 				<div class="nav-wrapper">
 					<ul class="nav flex-column">
@@ -81,7 +75,7 @@
 								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
 						
-						<li class="nav-item"><a class="nav-link active" href="messages.html">
+						<li class="nav-item"><a class="nav-link " href="messages.html">
 								<i class="material-icons">note_add</i> <span>Messages</span>
 						</a></li>
 
@@ -91,7 +85,7 @@
 						</a></li>
 
 						<li class="nav-item" sec:authorize="hasRole('ROLE_COACH')"><a
-							class="nav-link " href="changeUserPoints.html"> <i
+							class="nav-link active" href="changeUserPoints.html"> <i
 								class="material-icons">edit</i> <span>User Points</span>
 						</a></li>
 
@@ -101,7 +95,6 @@
 						</a></li>
 <!-- NAVIGATIONSLEISTE -->
 
-
 					</ul>
 				</div>
 			</aside>
@@ -109,7 +102,6 @@
 			<main
 				class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
 			<div class="main-navbar sticky-top bg-white">
-				<!-- Main Navbar, ist die leiste ganz oben-->
 				<nav
 					class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
 					<form action="#"
@@ -129,67 +121,7 @@
 								placeholder="Search for something..." aria-label="Search">  -->
 						</div>
 					</form>
-					<ul class="navbar-nav border-left flex-row ">
 
-						</a>
-						<div class="dropdown-menu dropdown-menu-small"
-							aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="#">
-								<div class="notification__icon-wrapper">
-									<div class="notification__icon">
-										<i class="material-icons">&#xE6E1;</i>
-									</div>
-								</div>
-								<div class="notification__content">
-									<span class="notification__category">Analytics</span>
-									<p>
-										Your website’s active users count increased by <span
-											class="text-success text-semibold">28%</span> in the last
-										week. Great job!
-									</p>
-								</div>
-							</a> <a class="dropdown-item" href="#">
-								<div class="notification__icon-wrapper">
-									<div class="notification__icon">
-										<i class="material-icons">&#xE8D1;</i>
-									</div>
-								</div>
-								<div class="notification__content">
-									<span class="notification__category">Sales</span>
-									<p>
-										Last week your store’s sales count decreased by <span
-											class="text-danger text-semibold">5.52%</span>. It could have
-										been worse!
-									</p>
-								</div>
-							</a> <a class="dropdown-item notification__all text-center" href="#">
-								View all Notifications </a>
-						</div>
-						</li>
-						<!--  profil pic		<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle text-nowrap px-3"
-							data-toggle="dropdown" href="#" role="button"
-							aria-haspopup="true" aria-expanded="false"> 
-							<img
-								class="user-avatar rounded-circle mr-2"
-								src="images/avatars/0.jpg" alt="User Avatar"> 
-								<span
-								class="d-none d-md-inline-block">Sierra Brooks</span>
-						</a>
-							<div class="dropdown-menu dropdown-menu-small">
-								<a class="dropdown-item" href="user-profile-lite.html"> <i
-									class="material-icons">&#xE7FD;</i> Profile
-								</a> <a class="dropdown-item" href="components-blog-posts.html">
-									<i class="material-icons">vertical_split</i> Blog Posts
-								</a> <a class="dropdown-item" href="add-new-post.html"> <i
-									class="material-icons">note_add</i> Add New Post
-								</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item text-danger" href="#"> <i
-									class="material-icons text-danger">&#xE879;</i> Logout
-								</a>
-							</div></li>  -->
-					</ul>
 					<!-- 		<nav class="nav">
 						<a href="#"
 							class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left"
@@ -200,76 +132,116 @@
 					</nav> -->
 				</nav>
 			</div>
-			<!-- / .main-navbar -->
+			<!-- / .main-navbar --> <!--     <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+            <i class="fa fa-check mx-2"></i>
+            <strong>Success!</strong> Your profile has been updated! </div>  success nachricht -->
 			<div class="main-content-container container-fluid px-4">
 				<!-- Page Header -->
 				<div class="page-header row no-gutters py-4">
-
 					<div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-						<h4>Messages</h4>
-						<a href="newMessage">
-							<button style="width: 50%;" class="btn btn-accent">write
-								a new message!</button>
-						</a>
+						<span class="text-uppercase page-subtitle">Overview</span>
+						<h3 class="page-title"
+							th:text="'User Profile of ' + ${user.userName}">User Profile</h3>
 					</div>
 				</div>
-				<div class="text-blo4 p-t-33"></div>
 				<!-- End Page Header -->
-
-				<!-- End Small Stats Blocks -->
+				<!-- Default Light Table -->
 				<div class="row">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-10">
+						<div class="card card-small mb-4">
+							<div class="card-header border-bottom">
+								<h6 class="m-0">Account Details</h6>
+							</div>
 
-					<!-- Users Stats -->
-					<div class="col-lg-8 col-md-12 col-sm-12 mb-4">
+							<div th:unless="${errorMessage} == null"
+								th:utext="${errorMessage}" class="alert alert-success"
+								role="warning"></div>
 
-						<!-- BLOG ENTRIES -->
+							<ul class="list-group list-group-flush ">
+								<li class="list-group-item p-3">
+									<div class="row">
+										<div class="col">
+											<form method="post"
+												th:action="${user} ? @{/safeSingleUserPoints(userId=${user.userId})}">
+												<div class="form-row">
+													<div class="form-group col-md-6">
+														<label for="inputFirstName">First Name</label> <input
+															type="text" class="form-control" id="inputFirstName"
+															name="firstName" readonly th:value="${user.firstName}">
+													</div>
 
-						<div class="row">
+													<div class="form-group col-md-6">
+														<label for="inputLastName">Last Name</label> <input
+															type="text" class="form-control" id="inputLastName"
+															name="lastName" readonly th:value="${user.lastName}">
+													</div>
 
-							<tr th:each="message : ${messages}">
+												</div>
+												<div class="form-row">
+													<div class="form-group col-md-3">
+														<label for="inputBirthDate">Day of Birth</label> <input
+															type="text" class="form-control" id="inputBirthDate"
+															name="birthDate" readonly
+															th:value="${user} ? ${#dates.format(user.birthDate, 'dd.MM.yyyy')}">
+													</div>
+
+													<div class="form-group col-md-3">
+														<label for="inputGender">Gender</label> <input
+															id="inputGender" class="form-control" name="gender"
+															th:value="${user.gender == 'm'} ? 'male' : 'female'"
+															readonly>
+
+													</div>
+
+													<div class="form-group col-md-3">
+														<label for="inputHeight">Height (m)</label> <input
+															type="text" class="form-control" id="inputHeight"
+															name="height" placeholder=1.75 readonly
+															th:value="${user.height} != 0.0 ? ${user.height}">
 
 
+													</div>
 
 
+													<div class="form-group col-md-3">
+														<label for="inputWeight">Weight (kg)</label> <input
+															type="text" class="form-control" id="inputWeight"
+															name="weight" placeholder="75" readonly
+															th:value="${user.weight} != 0.0 ? ${user.weight}">
+													</div>
 
-								<div class="col-lg-10 col-md-5 col-sm-10 mb-4">
-									<div class="card card-small card-post card-post--1">
+													<div class="form-group col-md-2">
+														<label for="inputPoints">Points</label> <input
+															type="number" class="form-control" id="inputPoints"
+															name="points" placeholder="100"
+															th:value="${user.points} != 0.0 ? ${user.points}">
+													</div>
 
-										<div class="card-body">
-											<p class="card-text text-muted"
-												th:text="${message.fromUser.userName}"></p>
+												</div>
 
-											<h5 class="card-title" th:text="${message.subject}"></h5>
-											<p class="card-text text-muted" th:text="${message.message}"></p>
+
+												<button type="submit" class="btn btn-accent">Update
+													User Points</button>
+											</form>
 										</div>
-											<a align="right" th:href="@{/deleteMessage(id=${message.id})}"><button class="mb-1 btn  btn-danger mr-2">Delete</button>
-									</a>
-
-
 									</div>
-								
-								</div>
-
-							</tr>
-
+								</li>
+							</ul>
 						</div>
-
-
-
-
-
 					</div>
 				</div>
-				<!-- End Users Stats -->
+				<!-- End Default Light Table -->
+
+
+
 			</div>
+
+			</main>
 		</div>
-
-
-
-
-	</div>
-	</main>
-	</div>
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -288,8 +260,19 @@
 	<script src="https://unpkg.com/shards-ui@latest/dist/js/shards.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script>
-	<script src="./scripts/extras.1.1.0.min.js"></script>
-	<script src="./scripts/shards-dashboards.1.1.0.min.js"></script>
+	<script src="scripts/extras.1.1.0.min.js"></script>
+	<script src="scripts/shards-dashboards.1.1.0.min.js"></script>
+
+	<!-- nächste Zeile für Thymeleaf -->
+	<script> var numbers = [[${logs}]] </script>
+	<script> var weights = [[${weights}]] </script>
+	<script> var bmis = [[${bmis}]] </script>
+	<script> var heights7 = [[${heights7}]] </script>
+	<script> var weights7 = [[${weights7}]] </script>
+	<script> var bmi7 = [[${bmi7}]] </script>
+	<script> var points7 = [[${points7}]] </script>
+	<script> var counterList = [[${counterList}]] </script>
 	<script src="./scripts/app/app-blog-overview.1.1.0.js"></script>
+
 </body>
 </html>

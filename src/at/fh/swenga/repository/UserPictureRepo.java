@@ -26,14 +26,9 @@ public interface UserPictureRepo extends JpaRepository<UserPictureModel, Integer
 
 	List<UserPictureModel> findByPictureLevel(String string);
 
-	/*@Query("delete from UserPicture where amount = 0")
-	List<UserPictureModel> deleteBymountZero();*/
-
 	void removeByAmount(int i);
 
-//	void removeByAmount(int i);
 
-	//void remove(UserPictureModel eintrag);
 		
 
 }
