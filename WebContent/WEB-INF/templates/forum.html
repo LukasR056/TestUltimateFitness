@@ -103,8 +103,7 @@
 
 						<div class="text-blo4 p-t-33">
 							<h4 class="p-b-16">
-								<a th:href="@{/blogEntries(thread='Exercise')}"
-									class="tit9">Exercise</a>
+								<a th:href="@{/blogEntries(thread='Exercise')}" class="tit9">Exercise</a>
 							</h4>
 
 							<div class="txt32 flex-w p-b-24">
@@ -140,8 +139,7 @@
 
 						<div class="text-blo4 p-t-33">
 							<h4 class="p-b-16">
-								<a th:href="@{/blogEntries(thread='Nutrition')}"
-									class="tit9">Nutrition</a>
+								<a th:href="@{/blogEntries(thread='Nutrition')}" class="tit9">Nutrition</a>
 							</h4>
 
 							<div class="txt32 flex-w p-b-24">
@@ -174,8 +172,8 @@
 
 						<div class="text-blo4 p-t-33">
 							<h4 class="p-b-16">
-								<a th:href="@{/blogEntries(thread='FAQ')}"
-									class="tit9">FAQ </a>
+								<a th:href="@{/blogEntries(thread='FAQ')}" class="tit9">FAQ
+								</a>
 							</h4>
 
 							<div class="txt32 flex-w p-b-24">
@@ -205,7 +203,7 @@
 		</section>
 	</main>
 	<!-- TEST -->
-	<div class="row">
+	
 		<!-- Main Sidebar -->
 		<aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
 			<div class="main-navbar">
@@ -253,6 +251,12 @@
 						href="forum.html"> <i class="material-icons">vertical_split</i>
 							<span>Forum</span>
 					</a></li>
+
+					<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+						class="nav-link " href="editUsers.html"> <i
+							class="material-icons">edit</i> <span>Edit Users</span>
+					</a></li>
+
 					<li class="nav-item"><a
 						class="nav-link dropdown-item text-danger " th:href="@{/logout}">
 							<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
@@ -273,7 +277,7 @@
 
 		<!-- eine push e -->
 
-	</div>
+	
 	</div>
 	<!-- End Users Stats -->
 
