@@ -23,22 +23,22 @@ public class EditUsersController
 {
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
     UserQueryRepository userQueryRepository;
-	
+
 	@Autowired
     RoleRepository roleRepository;
-	
+
 	@Autowired
     RoleQueryRepository roleQueryRepository;
-    
+
 
     @InitBinder
 	public void initDateBinder(final WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
 	}
-    
+
     public void findCoaches(Model model) {
 		List<UserModel> coaches = null;
 		coaches = userQueryRepository.findCoach();
@@ -82,7 +82,7 @@ public class EditUsersController
             findCoaches(model);
             return "registration";
         }
-        
+
         if(changedUserModel.getPassword().length() >= 6)
         {
             Optional user1 = userQueryRepository.findById(Integer.valueOf(userId));
@@ -125,5 +125,5 @@ public class EditUsersController
         return "forward:/editUsers";
     }
 
-    
+
 }
