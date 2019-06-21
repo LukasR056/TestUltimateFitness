@@ -1,5 +1,6 @@
 package at.fh.swenga.model;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -154,6 +155,16 @@ public class ExerciseModel {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+
+
+
+
+	@Override
+	public String toString() {
+		return "ExerciseModel [id=" + id + ", name=" + name + ", type=" + type + ", video=" + Arrays.toString(video)
+				+ ", description=" + description + "]";
 	}
 
 

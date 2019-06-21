@@ -234,7 +234,7 @@
     var ubdData = {
       datasets: [{
         hoverBorderColor: '#ffffff',
-        data: [10, 30, 40, 20],
+        data: counterList,//[1, 3, 4, 2], // nuller weg
         backgroundColor: [
           'rgba(0,123,255,0.9)',
           'rgba(0,123,255,0.5)',
@@ -242,7 +242,7 @@
           'rgba(0,123,255,0.1)'
         ]
       }],
-      labels: ["Stomach", "Leg", "Breast", "Shoulder"]
+      labels: ["Stomach", "Leg",  "Shoulder", "Chest"]
     };
 
     // Options
