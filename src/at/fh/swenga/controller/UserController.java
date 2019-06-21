@@ -1843,7 +1843,7 @@ public class UserController {
 			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getName() + "\"");
 			OutputStream out = response.getOutputStream();
 			// application/octet-stream
-			response.setContentType("image/jpg");
+			//response.setContentType("image/jpg");
 			out.write(doc.getPicture());
 			out.flush();
 		} catch (Exception e) {
