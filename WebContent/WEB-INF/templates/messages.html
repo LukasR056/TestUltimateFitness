@@ -72,16 +72,20 @@
 						<li class="nav-item"><a class="nav-link " href="picture.html">
 								<i class="material-icons">view_module</i> <span>Picture</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link active"
-							href="forum.html"> <i class="material-icons">vertical_split</i>
-								<span>Forum</span>
+						<li class="nav-item"><a class="nav-link " href="forum.html">
+								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
-						
+
+						<li class="nav-item"><a class="nav-link active"
+							href="messages.html"> <i class="material-icons">note_add</i>
+								<span>Message</span>
+						</a></li>
+
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link " href="editUsers.html"> <i
 								class="material-icons">edit</i> <span>Edit Users</span>
 						</a></li>
-						
+
 						<li class="nav-item"><a
 							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
 								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
@@ -199,37 +203,19 @@
 				<div class="page-header row no-gutters py-4">
 
 					<div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-						<span class="text-uppercase page-subtitle">Blog</span>
-						<h3 class="page-title" th:text="${thread}">Exercises</h3>
+						<h4>Messages</h4>
+						<a href="newMessage">
+							<button style="width: 50%;" class="btn btn-accent">write
+								a new message!</button>
+						</a>
 					</div>
 				</div>
-				<div class="text-blo4 p-t-33">
-
-
-					<div class="txt32 flex-w p-b-24">
-						<p class="card-title" th:unless="${lastForumentry} == null"
-							th:utext="'last post by ' + ${lastForumentryUser.firstName} + 
-							' ' + ${lastForumentryUser.lastName} + ' | ' + ${#dates.format(lastForumentry.createDate, 'dd.MM.yyyy')} +
-							' | '  + ${sizeForumentryModel} + ' posts'">USER
-							NAME</p>
-
-						<p>Everyday training is primarily aimed at compensating for the physical deficiencies that occur during the many hours spent at the desk. <br> It also gives you more strength, flexibility and endurance while you lose body fat, strengthen your muscles and stay painless.</p>
-					</div>
-
-
-					<h4 class="page-title">
-						<a th:href="@{/newPost(thread=${thread})}"><button
-								class="btn btn-accent" type="submit">
-								<i class="material-icons">note_add</i> Add new Post
-							</button></a>
-					</h4>
-
-
-				</div>
+				<div class="text-blo4 p-t-33"></div>
 				<!-- End Page Header -->
 
 				<!-- End Small Stats Blocks -->
 				<div class="row">
+
 					<!-- Users Stats -->
 					<div class="col-lg-8 col-md-12 col-sm-12 mb-4">
 
@@ -237,52 +223,37 @@
 
 						<div class="row">
 
-							<tr th:each="forumentry : ${forumentries}">
+							<tr th:each="message : ${messages}">
 
-								<div class="col-lg-4">
-									<div class="card card-small card-post mb-4">
+
+
+
+
+								<div class="col-lg-10 col-md-5 col-sm-10 mb-4">
+									<div class="card card-small card-post card-post--1">
+
 										<div class="card-body">
-											<h5 class="card-title" th:text="${forumentry.title}"></h5>
-											<p class="card-text text-muted" th:text="${forumentry.text}"></p>
+											<p class="card-text text-muted"
+												th:text="${message.fromUser.userName}"></p>
+
+											<h5 class="card-title" th:text="${message.subject}"></h5>
+											<p class="card-text text-muted" th:text="${message.message}"></p>
 										</div>
-										<div class="card-footer border-top d-flex">
-											<div class="card-post__author d-flex">
-												<a href="#"
-													class="card-post__author-avatar card-post__author-avatar--small"
-													style="background-image: url('images/avatars/1.jpg');">Written
-													by James Khan</a>
-												<!-- FÜR PROFILBILD -->
+											<a align="right" th:href="@{/deleteMessage(id=${message.id})}"><button class="mb-1 btn  btn-danger mr-2">Delete</button>
+									</a>
 
-												<div class="d-flex flex-column justify-content-center ml-3">
-													<span class="card-post__author-name"
-														th:text="${forumentry.user.firstName} + ' ' + ${forumentry.user.lastName}"></span>
-													<small class="text-muted"
-														th:text="${#dates.format(forumentry.createDate, 'dd.MM.yyyy')}">21
-														March 2011</small>
 
-													<!-- WICHTIG FÜR DIE ZUKUNFT -->
-
-													<a th:href="@{/editPost(forumentryId=${forumentry.id}, thread=${thread})}"><button
-															class="mb-2 btn btn-sm btn-warning mr-2"
-															sec:authorize="hasRole('ROLE_ADMIN')">Edit</button></a> 
-													<a th:href="@{/deletePost(forumentryId=${forumentry.id}, thread=${thread})}"><button
-															class="mb-2 btn btn-sm btn-danger mr-1"
-															sec:authorize="hasRole('ROLE_ADMIN')">Delete</button> </a>
-
-												</div>
-
-											</div>
-
-										</div>
 									</div>
+								
 								</div>
+
 							</tr>
 
 						</div>
 
 
 
-						<!-- eine push e -->
+
 
 					</div>
 				</div>
@@ -292,7 +263,7 @@
 
 
 
-		
+
 	</div>
 	</main>
 	</div>

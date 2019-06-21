@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html class="no-js h-100" lang="en">
 <head>
@@ -71,11 +72,15 @@
 						<li class="nav-item"><a class="nav-link " href="picture.html">
 								<i class="material-icons">view_module</i> <span>Picture</span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link active"
-							href="forum.html"> <i class="material-icons">vertical_split</i>
-								<span>Forum</span>
+						<li class="nav-item"><a class="nav-link " href="forum.html">
+								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
-						
+
+						<li class="nav-item"><a class="nav-link active"
+							href="messages.html"> <i class="material-icons">note_add</i>
+								<span>Message</span>
+						</a></li>
+
 						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="nav-link " href="editUsers.html"> <i
 								class="material-icons">edit</i> <span>Edit Users</span>
@@ -133,9 +138,8 @@
 					<div class="col">
 						<div class="page-header row no-gutters py-4">
 							<div class="col-12 col-sm-8 text-center text-sm-left mb-0">
-								<span class="text-uppercase page-subtitle">Blog Posts</span>
-								<h3 class="page-title" th:unless="${thread} == null"
-									th:utext="'Add New ' + ${thread} + ' Post'">Add New Post</h3>
+
+								<h3 class="page-title">Send a message!</h3>
 							</div>
 						</div>
 						<!-- End Page Header -->
@@ -145,8 +149,7 @@
 							<!-- Add New Post Form -->
 							<div class="card card-small mb-3" style="width: 100%;">
 								<div class="card-body">
-									<form method="post"
-										th:action="${forumentry} ? @{/safePost(thread=${thread})} : @{/newPost(thread=${thread})}">
+									<form method="post" th:action=" @{/sendMessage} ">
 
 										<div th:unless="${errorMessage} == null"
 											th:utext="${errorMessage}"
@@ -154,23 +157,28 @@
 											role="alert"></div>
 
 										<div>
-											<label for="inputTitle">Title</label> <input
+											<label for="inputToUser">To:</label> <input
 												class="form-control form-control-lg mb-3" type="text"
-												placeholder="Your Post Title" id="inputTitle" name="title"
-												th:value="${forumentry} ? ${forumentry.title}">
+												placeholder="Username" id="inputToUser" name="toUser">
 										</div>
 
 										<div>
-											<label for="inputText">Text</label>
+											<label for="inputTitle">Subject</label> <input
+												class="form-control form-control-lg mb-3" type="text"
+												placeholder="Subject" id="inputSubject" name="subject">
+										</div>
 
-											<textarea class="form-control" name="text" rows="5"
+										<div>
+											<label for="inputMessage">Text</label>
+
+											<textarea class="form-control" name="message" rows="5"
 												style="margin-top: 0px; margin-bottom: 10px; height: 173px;"
-												placeholder="Please insert your Post here" id="inputText"></textarea>
-											<!--   <input type="text" id="inputText" name="text"> -->
+												placeholder="Enter your text" id="inputMessage"></textarea>
+
 										</div>
 
 										<button type="submit" class="btn btn-outline-accent">
-											<i class="material-icons">save</i> Save Post
+											<i class="material-icons">send</i> Send Message
 										</button>
 									</form>
 								</div>

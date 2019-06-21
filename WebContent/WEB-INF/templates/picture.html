@@ -34,11 +34,12 @@
 						<a class="navbar-brand w-100 mr-0" href="#"
 							style="line-height: 25px;">
 							<div class="d-table m-auto">
-							<!-- Website Logo	<img id="main-logo" class="d-inline-block align-top mr-1"
+								<!-- Website Logo	<img id="main-logo" class="d-inline-block align-top mr-1"
 									style="max-width: 25px;"
 									src="./images/shards-dashboards-logo.svg"
-									alt="Shards Dashboard">  --> <span
-									class="d-none d-md-inline ml-1" style= "font-size: 20px;">  Ultimate Fitness </span>
+									alt="Shards Dashboard">  -->
+								<span class="d-none d-md-inline ml-1" style="font-size: 20px;">
+									Ultimate Fitness </span>
 							</div>
 						</a> <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none"> <i
 							class="material-icons">&#xE5C4;</i>
@@ -53,7 +54,7 @@
 								<i class="fas fa-search"></i>
 							</div>
 						</div>
-					<!-- 	<input class="navbar-search form-control" type="text"
+						<!-- 	<input class="navbar-search form-control" type="text"
 							placeholder="Search for something..." aria-label="Search">  -->
 					</div>
 				</form>
@@ -73,6 +74,17 @@
 						<li class="nav-item"><a class="nav-link " href="forum.html">
 								<i class="material-icons">vertical_split</i> <span>Forum</span>
 						</a></li>
+						
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link " href="editUsers.html"> <i
+								class="material-icons">edit</i> <span>Edit Users</span>
+						</a></li>
+
+						<li class="nav-item"><a
+							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
+								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
+						</a></li>
+						
 						<!-- <li class="nav-item"><a class="nav-link "
 							href="./tables.html"> <i class="material-icons">table_chart</i>
 								<span>Tables</span>
@@ -95,12 +107,17 @@
 					<form action="#"
 						class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
 						<div class="input-group input-group-seamless ml-3">
-							<div class="input-group-prepend"> <div style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px; "> <h5 class="card-title" th:text="${user.userName}" > USER NAME</h5>  </div>
-							<!-- Lupe für serach bar	<div class="input-group-text">
+							<div class="input-group-prepend">
+								<div
+									style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px;">
+									<h5 class="card-title" th:text="${user.userName}">USER
+										NAME</h5>
+								</div>
+								<!-- Lupe für serach bar	<div class="input-group-text">
 									<i class="fas fa-search"></i>
 								</div> -->
 							</div>
-					<!--  search bar		<input class="navbar-search form-control" type="text"
+							<!--  search bar		<input class="navbar-search form-control" type="text"
 								placeholder="Search for something..." aria-label="Search">  -->
 						</div>
 					</form>
@@ -141,7 +158,7 @@
 								View all Notifications </a>
 						</div>
 						</li>
-				<!--  profil pic		<li class="nav-item dropdown"><a
+						<!--  profil pic		<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle text-nowrap px-3"
 							data-toggle="dropdown" href="#" role="button"
 							aria-haspopup="true" aria-expanded="false"> 
@@ -200,7 +217,7 @@
 				<!-- erste Reihe gleiche -->
 				<div class="row">
 					<!-- start erstes Bilde -->
-					
+
 					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 						<div class="card card-small card-post card-post--1">
 							<div class="card-post__image"
@@ -210,42 +227,43 @@
 							</div>
 							<div class="card-body">
 								<h5 class="card-title">
-									<p class="text-fiord-blue" >Get the ultimate gold Picture!</p>
+									<p class="text-fiord-blue">Get the ultimate gold Picture!</p>
 								</h5>
-								
-								<table style="width:100%;">
-								<thead>
-								<tr>
-									<td>Name</td>
-									<td>Pic</td>
-									<td style="text-align: right;" >Amount</td>
-								</tr>
-								</thead>
-								<tbody>
-								<tr th:each="pic : ${goldPicOfUser}">
-								<td th:text= "${pic.picture.name}"></td>
-								<td th:text= "${pic.picture.picture}"></td>
-								<td  style="text-align: right;" th:text= "${pic.amount}"></td> 
-								</tr>
-								</tbody>
-							</table>
-							<br>
-							<h6>You still need:</h6>
-							
-								<table style="width:100%;">
-						
-								<tbody>
-								<tr th:each="picmis : ${missingGoldPics}">
-								<td th:text= "${picmis.name}"></td>
-								<td th:text= "${picmis.picture}"></td>
-								 
-								</tr>
-								</tbody>
-							</table>
-							
-								
+
+								<table style="width: 100%;">
+									<thead>
+										<tr>
+											<td>Name</td>
+											<td>Pic</td>
+											<td style="text-align: right;">Amount</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="pic : ${goldPicOfUser}">
+											<td th:text="${pic.picture.name}"></td>
+											<td th:text="${pic.picture.picture}"></td>
+											<td style="text-align: right;" th:text="${pic.amount}"></td>
+										</tr>
+									</tbody>
+								</table>
+								<br>
+								<h6>You still need:</h6>
+
+								<table style="width: 100%;">
+
+									<tbody>
+										<tr th:each="picmis : ${missingGoldPics}">
+											<td th:text="${picmis.name}"></td>
+											<td th:text="${picmis.picture}"></td>
+
+										</tr>
+									</tbody>
+								</table>
+
+
 
 							</div>
+
 							<div class = "card-footer border-top">
 							
 							<a type="button" class="mb-2 btn btn-lg" th:href="@{/goldReward}"
@@ -255,7 +273,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<!-- start 2 Bilde -->
 					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 						<div class="card card-small card-post card-post--1">
@@ -267,46 +285,46 @@
 							</div>
 							<div class="card-body">
 								<h5 class="card-title">
-									<p class="text-fiord-blue"   >Get the amazing silver Picture!</p>
+									<p class="text-fiord-blue">Get the amazing silver Picture!</p>
 								</h5>
-								
-								<table style="width:100%;">
-								<thead>
-								<tr>
-									<td>Name</td>
-									<td>Pic</td>
-									<td style="text-align: right;" >Amount</td>
-								</tr>
-								</thead>
-								<tbody>
-								<tr th:each="pic : ${silverPicOfUser}">
-								<td th:text= "${pic.picture.name}"></td>
-								<td th:text= "${pic.picture.picture}"></td>
-								<td  style="text-align: right;" th:text= "${pic.amount}"></td> 
-								</tr>
-								</tbody>
-							</table>
-							<br>
-							<h6>You still need:</h6>
-							
-								<table style="width:100%;">
-						
-								<tbody>
-								<tr th:each="picmis : ${missingSilverPics}">
-								<td th:text= "${picmis.name}"></td>
-								<td th:text= "${picmis.picture}"></td>
-								 
-								</tr>
-								</tbody>
-							</table>
-							
+
+								<table style="width: 100%;">
+									<thead>
+										<tr>
+											<td>Name</td>
+											<td>Pic</td>
+											<td style="text-align: right;">Amount</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="pic : ${silverPicOfUser}">
+											<td th:text="${pic.picture.name}"></td>
+											<td th:text="${pic.picture.picture}"></td>
+											<td style="text-align: right;" th:text="${pic.amount}"></td>
+										</tr>
+									</tbody>
+								</table>
+								<br>
+								<h6>You still need:</h6>
+
+								<table style="width: 100%;">
+
+									<tbody>
+										<tr th:each="picmis : ${missingSilverPics}">
+											<td th:text="${picmis.name}"></td>
+											<td th:text="${picmis.picture}"></td>
+
+										</tr>
+									</tbody>
+								</table>
+
 
 							</div>
+
 							<div class = "card-footer border-top">
 							
 							<a type="button" class="mb-2 btn btn-lg" th:href="@{/silverReward}"
 							 style="width:100%;  background-color: #CBD9DE; color:black;">Silver Rewards</a>
-							
 							
 							</div>
 						</div>
@@ -321,84 +339,88 @@
 							</div>
 							<div class="card-body">
 								<h5 class="card-title">
-									<p class="text-fiord-blue" >Get your bronze Picture!</p>
+									<p class="text-fiord-blue">Get your bronze Picture!</p>
 								</h5>
-								<table style="width:100%;">
-								<thead>
-								<tr>
-									<td>Name</td>
-									<td>Pic</td>
-									<td style="text-align: right;" >Amount</td>
-								</tr>
-								</thead>
-								<tbody>
-								<tr th:each="pic : ${bronzePicOfUser}">
-								<td th:text= "${pic.picture.name}"></td>
-								<td th:text= "${pic.picture.picture}"></td>
-								<td  style="text-align: right;" th:text= "${pic.amount}"></td> 
-								</tr>
-								</tbody>
-							</table>
-							<br>
-							<h6>You still need:</h6>
-							
-								<table style="width:100%;">
-						
-								<tbody>
-								<tr th:each="picmis : ${missingBronzePics}">
-								<td th:text= "${picmis.name}"></td>
-								<td th:text= "${picmis.picture}"></td>
-								 
-								</tr>
-								</tbody>
-							</table>
-							
+								<table style="width: 100%;">
+									<thead>
+										<tr>
+											<td>Name</td>
+											<td>Pic</td>
+											<td style="text-align: right;">Amount</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="pic : ${bronzePicOfUser}">
+											<td th:text="${pic.picture.name}"></td>
+											<td th:text="${pic.picture.picture}"></td>
+											<td style="text-align: right;" th:text="${pic.amount}"></td>
+										</tr>
+									</tbody>
+								</table>
+								<br>
+								<h6>You still need:</h6>
+
+								<table style="width: 100%;">
+
+									<tbody>
+										<tr th:each="picmis : ${missingBronzePics}">
+											<td th:text="${picmis.name}"></td>
+											<td th:text="${picmis.picture}"></td>
+
+										</tr>
+									</tbody>
+								</table>
+
 							</div>
-							<div class = "card-footer border-top">
-							
-							<a type="button" class="mb-2 btn btn-lg" th:href="@{/bronzeReward}"
-							 style="width:100%;  background-color: #E5C89E; color:black;">Bronze Rewards</a>
-							
-							
+							<div class="card-footer border-top">
+
+								<a type="button" class="mb-2 btn btn-lg"
+									th:href="@{/bronzeReward}"
+									style="width: 100%; background-color: #E5C89E; color: black;">Bronze
+									Rewards</a>
+
+
 							</div>
 						</div>
 					</div>
 					<!-- ende 1 Reihe -->
 
-				
+
 
 			
 
 					<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-							<h5>300 Points</h5>
-						<a type="button" class="mb-2 btn btn-lg"
-							th:href="@{/goldPack}" style="  background-color: #EAD679; color:black;">Gold Package</a>
-							<br><br>
-							<h5>150 Points</h5>
+						<h5>300 Points</h5>
+						<a type="button" class="mb-2 btn btn-lg" th:href="@{/goldPack}"
+							style="background-color: #EAD679; color: black;">Gold Package</a>
+						<br> <br>
+						<h5>150 Points</h5>
 						<a type="button" class="mb-2 btn  btn-lg" th:href="@{/silverPack}"
-							style="background-color: #CBD9DE; color:black;">Silber Package</a>
-							<br><br>
+							style="background-color: #CBD9DE; color: black;">Silber
+							Package</a> <br> <br>
 
-							<h5>100 Points</h5>
-						<a type="button" class="mb-2 btn  bronze btn-lg" th:href="@{/bronzePack}"
-							style="background-color: #E5C89E; color:black;">Bronze Package</a>
+						<h5>100 Points</h5>
+						<a type="button" class="mb-2 btn  bronze btn-lg"
+							th:href="@{/bronzePack}"
+							style="background-color: #E5C89E; color: black;">Bronze
+							Package</a> <br> <br>
+						<h5>Your Points:</h5>
+						<h5 th:text="${user.points}">100 Points</h5>
 
-							<br><br>
-						<h5>Your Points: </h5><h5 th:text="${user.points}">100 Points</h5>
+						<a href="picsoverview.html"><button
+								class="mb-2 btn btn-sm btn-warning mr-2"
+								sec:authorize="hasRole('ROLE_ADMIN')">EDIT PICTURES</button></a>
 					</div>
-					
-					
-		
 			</main>
-			
-			
-			
+
+
+
 		</div>
 	</div>
-	
-	
-	
-	
+
+
+
+
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="

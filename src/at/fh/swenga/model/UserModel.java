@@ -100,7 +100,7 @@ public class UserModel implements java.io.Serializable {
 	
 	//Relations
 	// ManyToMany
-  // diese Beziehung wird benöigt für die m:n mit die exercise
+  // diese Beziehung wird benoeigt fuer die m:n mit die exercise
 	
 	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
 	@JoinTable(
@@ -131,12 +131,25 @@ public class UserModel implements java.io.Serializable {
 	@OrderBy("id")
 	private Set<UserPictureModel> userPicture;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	private DocumentModel document;
+
+	@OneToMany(mappedBy="message",fetch=FetchType.EAGER)
+	@OrderBy("id")
+	private Set<MessageModel> messages; 
 	
+
 	
   
-  // Luki Exercises
+  public Set<MessageModel> getMessages() {
+		return messages;
+	}
+
+
+	public void setMessages(Set<MessageModel> messages) {
+		this.messages = messages;
+	}
+
+
+	// Luki Exercises
 	public void setExercises(List<ExerciseModel> exercises) {
 		this.exercises = exercises;
 	}
@@ -218,15 +231,7 @@ public class UserModel implements java.io.Serializable {
 	}
 
 	
-	public DocumentModel getDocument() {
-		return document;
-	}
- 
-public void setDocument(DocumentModel document) {
-	this.document = document;
-	}
 
-	
 
 
 	public UserModel(int userId, String firstName, String lastName, String userName, Date birthDate, String gender,

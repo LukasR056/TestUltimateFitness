@@ -1,5 +1,6 @@
 package at.fh.swenga.controller;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 //import org.springframework.data.domain.Page;
@@ -48,6 +52,7 @@ import at.fh.swenga.repository.DocumentRepository;
 import at.fh.swenga.repository.ExerciseRepository;
 import at.fh.swenga.repository.ForumentryRepository;
 import at.fh.swenga.repository.LogRepository;
+import at.fh.swenga.repository.PictureDao;
 import at.fh.swenga.repository.PictureRepository;
 import at.fh.swenga.repository.RoleQueryRepository;
 import at.fh.swenga.repository.RoleRepository;
@@ -58,7 +63,7 @@ import at.fh.swenga.repository.UserRepository;
 
 @Controller
 public class UserController {
-////kjfhgf
+
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
@@ -81,6 +86,14 @@ public class UserController {
 	ForumentryRepository forumentryRepository;
 	@Autowired
 	DocumentRepository documentRepository;
+	@Autowired
+	PictureDao pictureDao;
+
+	/*@Autowired
+	MailSender mailSender;
+	@Autowired
+	SimpleMailMessage templateMessage; */
+
 
 	@InitBinder
 	public void initDateBinder(final WebDataBinder binder) {
@@ -149,6 +162,7 @@ public class UserController {
 				" Hold two dumbbells just behind your shoulders, palms facing forward. Look up and tilt your body to the left, extending your right arm straight above you. Lower the dumbbell and repeat on the other side to create a see-saw motion. ");
 		ExerciseModel exercise4 = new ExerciseModel("Seated Lateral Raise", "Shoulders", null,
 				"Sit on a bench and hold a dumbbell in each hand by your side. Raise both dumbbells to your side until they're shoulder height. Lower under control and repeat.");
+
 		ExerciseModel exercise5 = new ExerciseModel("Regular push-ups","Chest",null,"This classic bodyweight exercise is excellent to start with as well as for keeping as a training staple in any full-body or upper-body workout. Make sure to use a wide grip, as this will work your chest muscles more than a narrow grip technique.");
 		ExerciseModel exercise6 = new ExerciseModel("Incline push-ups","Chest",null,"If you find a standard push-up too challenging at first, then you can start with an incline push-up. The steeper the incline, the less body weight you will need to work push. This is also a good exercise to target your lower chest.");
 		ExerciseModel exercise7 = new ExerciseModel("Decline push-ups","Chest",null,"What goes up, must come down. These push-ups will help you target your upper chest and deltoid muscles specifically. It will also add more of your body weight to the exercise than a standard push-up, thus making it harder.");
@@ -157,6 +171,24 @@ public class UserController {
 		ExerciseModel exercise11 = new ExerciseModel("Side Lunge","Legs",null,"Stand with your feet about twice shoulder-width apart. Keeping your right leg straight, push your hips back and to the left. Then bend your left knee and lower your body until your left thigh is parallel to the floor. Your feet should remain flat on the floor at all times. Pause for two seconds, and then return to the starting position. Complete all reps and switch sides.");
 		ExerciseModel exercise12 = new ExerciseModel("Scissor Box Jump","Legs",null,"Place your left foot on a box or bench with your right foot on the floor. In one movement, jump up and switch leg positions in midair. At the bottom position, pause for one second before alternating to the other leg.");
 		ExerciseModel exercise13 = new ExerciseModel("Single-Leg Hip Raise","Legs",null,"Lie faceup, arms out to your sides at 45-degree angles, left foot flat on the floor with that knee bent, and your right leg straight. Raise your right leg until it�s in line with your left thigh. Then squeeze your glutes and push your hips up�your lower back will elevate. Pause, and return to the starting position.");
+
+		ExerciseModel exercise5 = new ExerciseModel("Regular push-ups", "Chest", null,
+				"This classic bodyweight exercise is excellent to start with as well as for keeping as a training staple in any full-body or upper-body workout. Make sure to use a wide grip, as this will work your chest muscles more than a narrow grip technique.");
+		ExerciseModel exercise6 = new ExerciseModel("Incline push-ups", "Chest", null,
+				"If you find a standard push-up too challenging at first, then you can start with an incline push-up. The steeper the incline, the less body weight you will need to work push. This is also a good exercise to target your lower chest.");
+		ExerciseModel exercise7 = new ExerciseModel("Decline push-ups", "Chest", null,
+				"What goes up, must come down. These push-ups will help you target your upper chest and deltoid muscles specifically. It will also add more of your body weight to the exercise than a standard push-up, thus making it harder.");
+		ExerciseModel exercise8 = new ExerciseModel("Plyometric push-ups", "Chest", null,
+				"Are you ready to explode into action? These push-ups, can be executed in a variety of fun and fantastical way, think clap push-ups. These bursts of powerful plyometric movement will have your muscles firing on all cylinders.");
+		ExerciseModel exercise10 = new ExerciseModel("Squat Jump", "Legs", null,
+				"With your feet hip-width apart, squat until your thighs are parallel to the floor, and then jump as high as you can. Allow your knees to bend 45 degrees when you land, pause in deep squat position for one full second, and then jump again.");
+		ExerciseModel exercise11 = new ExerciseModel("Side Lunge", "Legs", null,
+				"Stand with your feet about twice shoulder-width apart. Keeping your right leg straight, push your hips back and to the left. Then bend your left knee and lower your body until your left thigh is parallel to the floor. Your feet should remain flat on the floor at all times. Pause for two seconds, and then return to the starting position. Complete all reps and switch sides.");
+		ExerciseModel exercise12 = new ExerciseModel("Scissor Box Jump", "Legs", null,
+				"Place your left foot on a box or bench with your right foot on the floor. In one movement, jump up and switch leg positions in midair. At the bottom position, pause for one second before alternating to the other leg.");
+		ExerciseModel exercise13 = new ExerciseModel("Single-Leg Hip Raise", "Legs", null,
+				"Lie faceup, arms out to your sides at 45-degree angles, left foot flat on the floor with that knee bent, and your right leg straight. Raise your right leg until its in line with your left thigh. Then squeeze your glutes and push your hips upyour lower back will elevate. Pause, and return to the starting position.");
+
 
 		exerciseRepository.save(exercise1);
 		exerciseRepository.save(exercise2);
@@ -208,7 +240,7 @@ public class UserController {
 
 		Set<LogModel> logs = user.getLogs();
 
-		// Liste mit Einträge für die Grafik für Javascript
+		// Liste mit EintrÃ¤ge fÃ¼r die Grafik fÃ¼r Javascript
 		List<Double> heigtnumbers = new ArrayList<Double>();
 		// int length =0;
 		for (LogModel log : logs) {
@@ -243,33 +275,27 @@ public class UserController {
 
 		// piediagram
 		List<ExerciseModel> exercisesFromUser = user.getExercises();
-		
+
 		int stomachCounter = 0;
 		int legCounter = 0;
 		int shoulderCounter = 0;
 		int chestCounter = 0;
 
-		
-		
 		for (ExerciseModel exercise : exercisesFromUser) {
-			
-			if (exercise.getType().equals("Stomach"))
-			{
-				stomachCounter = stomachCounter +1;
+
+			if (exercise.getType().equals("Stomach")) {
+				stomachCounter = stomachCounter + 1;
 			}
-			if (exercise.getType().equals("Legs"))
-			{
-				legCounter = legCounter +1;
+			if (exercise.getType().equals("Legs")) {
+				legCounter = legCounter + 1;
 			}
-			if (exercise.getType().equals("Shoulders"))
-			{
-				shoulderCounter = shoulderCounter +1;
+			if (exercise.getType().equals("Shoulders")) {
+				shoulderCounter = shoulderCounter + 1;
 			}
-			if (exercise.getType().equals("Chest"))
-			{
-				chestCounter = chestCounter +1;
+			if (exercise.getType().equals("Chest")) {
+				chestCounter = chestCounter + 1;
 			}
-			
+
 		}
 
 		List<Integer> counterList = new ArrayList<Integer>();
@@ -277,10 +303,10 @@ public class UserController {
 		counterList.add(shoulderCounter);
 		counterList.add(legCounter);
 		counterList.add(chestCounter);
-		
+
 		model.addAttribute("user", user);
-		model.addAttribute("logs", heigtnumbers.toString()); // keyword für die Liste in
-		model.addAttribute("counterList",counterList);														// /scripts/app/app-blog-overiew.1.1.0.js
+		model.addAttribute("logs", heigtnumbers.toString()); // keyword fÃ¼r die Liste in
+		model.addAttribute("counterList", counterList); // /scripts/app/app-blog-overiew.1.1.0.js
 		model.addAttribute("weights", weightnumbers.toString());
 		model.addAttribute("bmis", bminumbers.toString());
 		model.addAttribute("heights7", heights7.toString());
@@ -470,9 +496,9 @@ public class UserController {
 		model.addAttribute("silverPicOfUser", silverPicsOfUser);
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-		System.out.print(missingPicsBronze);
-		System.out.print(missingPicsSilver);
-		System.out.print(missingPicsGold);
+		////System.out.print(missingPicsBronze);
+		////System.out.print(missingPicsSilver);
+		////System.out.print(missingPicsGold);
 
 		model.addAttribute("missingBronzePics", missingPicsBronze);
 		model.addAttribute("missingSilverPics", missingPicsSilver);
@@ -488,7 +514,7 @@ public class UserController {
 		return "forum";
 	}
 
-	// Param thread wird im HTML abhängig vom tatsächlichen Thread übergeben!
+	// Param thread wird im HTML abhÃ¤ngig vom tatsÃ¤chlichen Thread Ã¼bergeben!
 	@RequestMapping(value = { "/blogEntries" })
 	public String getBlogEntries(Model model, @RequestParam String thread, Authentication authentication) {
 		UserModel user = null;
@@ -505,7 +531,7 @@ public class UserController {
 			model.addAttribute("lastForumentry", lastForumentry);
 			model.addAttribute("forumentries", forumentries);
 
-			System.out.print(forumentries);
+			////System.out.print(forumentries);
 		}
 
 		model.addAttribute("user", user);
@@ -549,11 +575,11 @@ public class UserController {
 		UserModel activeUser = userQueryRepository.findByUserName(authentication.getName());
 		newForumentrymodel.setUser(activeUser);
 
-		// System.out.print(activeUser);
-		System.out.print(newForumentrymodel);
+		// //System.out.print(activeUser);
+		//System.out.print(newForumentrymodel);
 
 		if (newForumentrymodel.getText() == "") {
-			System.out.print("Text empty");
+			//System.out.print("Text empty");
 			model.addAttribute("errorMessage", "Please insert a Text!");
 			return "forward:/newPost";
 		} else if (newForumentrymodel.getTitle() == "" && newForumentrymodel.getText() != "") {
@@ -583,8 +609,8 @@ public class UserController {
 	public String deletePost(Model model, @RequestParam int forumentryId) {// ,
 		// @RequestParam String thread) { -->, thread=${thread}
 
-		System.out.print("HALLO ICH BIN EIN ADMIN UND BERECHTIGT");
-		System.out.print(forumentryId);
+		//System.out.print("HALLO ICH BIN EIN ADMIN UND BERECHTIGT");
+		////System.out.print(forumentryId);
 
 		forumentryRepository.deleteById(forumentryId);
 
@@ -612,7 +638,7 @@ public class UserController {
 			}
 			model.addAttribute("errorMessage", errorMessage);
 
-			System.out.print(newUserModel);
+			////System.out.print(newUserModel);
 
 			model.addAttribute("user", newUserModel); //
 
@@ -655,7 +681,7 @@ public class UserController {
 				// newUser.addRoleModel(roleQueryRepository.findFirstRoleById(1));
 				newUser.addRoleModel(userRole);
 
-				System.out.print(newUser);
+				//System.out.print(newUser);
 				userRepository.persist(newUser);
 				
 				//Log
@@ -664,7 +690,7 @@ public class UserController {
 				logRepository.save(log);
 				
 
-				System.out.print("ERFOLGREICH!");
+				//System.out.print("ERFOLGREICH!");
 				model.addAttribute("message", "New User " + newUser.getUserName() + " successfully added!");
 
 				return "login";
@@ -676,9 +702,9 @@ public class UserController {
 
 		} else {
 
-			System.out.print("LENGTH: " + newUserModel.getPassword().length());
-			System.out.print("1. PASSWORD: " + newUserModel.getPassword());
-			System.out.print("1. PASSWORD CONFIRMED: " + newUserModel.getPasswordConfirmed());
+			//System.out.print("LENGTH: " + newUserModel.getPassword().length());
+			//System.out.print("1. PASSWORD: " + newUserModel.getPassword());
+			//System.out.print("1. PASSWORD CONFIRMED: " + newUserModel.getPasswordConfirmed());
 
 			model.addAttribute("errorMessage",
 					"Password is not the same or it has to be at least six characters long!");
@@ -690,8 +716,8 @@ public class UserController {
 
 		/*
 		 * else if (newUserModel.getPassword() != newUserModel.getPasswordConfirmed()) {
-		 * System.out.print("PASSWORD: " + newUserModel.getPassword());
-		 * System.out.print("PASSWORD CONFIRMED: " +
+		 * //System.out.print("PASSWORD: " + newUserModel.getPassword());
+		 * //System.out.print("PASSWORD CONFIRMED: " +
 		 * newUserModel.getPasswordConfirmed());
 		 * 
 		 * model.addAttribute("errorMessage", "Password has to be the same!");
@@ -899,6 +925,7 @@ public class UserController {
 	
 			// List of ownedPictureIds
 			List<Integer> ownedPictureIndexList = new ArrayList<Integer>();
+
 			for (UserPictureModel ownedPicture : ownedPictures) {
 				ownedPictureIndexList.add(ownedPicture.getPicture().getPictureId());
 			}
@@ -908,7 +935,7 @@ public class UserController {
 	
 				// get the size for the id
 				allModels = userPictureRepo.findAll();
-				// if fürs update
+				// if fÃ¼rs update
 				if (ownedPictureIndexList.contains(pic.getPictureId())) {
 					UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
 					updateModel.setAmount(updateModel.getAmount() + 1);
@@ -922,7 +949,6 @@ public class UserController {
 					newPicForUser.setAmount(1);
 					userPictureRepo.save(newPicForUser);
 	
-					System.out.print("in save");
 	
 				}
 	
@@ -1167,8 +1193,10 @@ public class UserController {
 				
 				model.addAttribute("pack", rewardMessage);
 
+				
+			//	sendMail(user, "REWARD-GOLD", rewardMessage);
+				
 				return "picture";
-
 
 	}
 
@@ -1309,12 +1337,12 @@ public class UserController {
 
 			// get the size for the id
 			allModels = userPictureRepo.findAll();
-			// if fürs update
+			// if fÃ¼rs update
 			if (ownedPictureIndexList.contains(pic.getPictureId())) {
 				UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
 				updateModel.setAmount(updateModel.getAmount() + 1);
 				userPictureDao.merge(updateModel);
-				System.out.print("in update");
+				//System.out.print("in update");
 			} else {
 				UserPictureModel newPicForUser = new UserPictureModel();
 				newPicForUser.setId(allModels.size() + 1);
@@ -1323,7 +1351,7 @@ public class UserController {
 				newPicForUser.setAmount(1);
 				userPictureRepo.save(newPicForUser);
 
-				System.out.print("in save");
+				//System.out.print("in save");
 
 			}
 			ownedPictures = userPictureRepo.findByUser(user);
@@ -1402,9 +1430,9 @@ public class UserController {
 		model.addAttribute("silverPicOfUser", silverPicsOfUser);
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-		System.out.print(missingPicsBronze);
-		System.out.print(missingPicsSilver);
-		System.out.print(missingPicsGold);
+		////System.out.print(missingPicsBronze);
+		////System.out.print(missingPicsSilver);
+		////System.out.print(missingPicsGold);
 
 		model.addAttribute("missingBronzePics", missingPicsBronze);
 		model.addAttribute("missingSilverPics", missingPicsSilver);
@@ -1561,7 +1589,7 @@ public class UserController {
 			model.addAttribute("user", user);
 			
 			model.addAttribute("pack", rewardMessage);
-
+			//sendMail(user, "REWARD-SILVER", rewardMessage);
 			return "picture";
 
 
@@ -1697,12 +1725,12 @@ public class UserController {
 
 			// get the size for the id
 			allModels = userPictureRepo.findAll();
-			// if fürs update
+			// if fÃ¼rs update
 			if (ownedPictureIndexList.contains(pic.getPictureId())) {
 				UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
 				updateModel.setAmount(updateModel.getAmount() + 1);
 				userPictureDao.merge(updateModel);
-				System.out.print("in update");
+				//System.out.print("in update");
 			} else {
 				UserPictureModel newPicForUser = new UserPictureModel();
 				newPicForUser.setId(allModels.size() + 1);
@@ -1711,7 +1739,7 @@ public class UserController {
 				newPicForUser.setAmount(1);
 				userPictureRepo.save(newPicForUser);
 
-				System.out.print("in save");
+				//System.out.print("in save");
 
 			}
 			ownedPictures = userPictureRepo.findByUser(user);
@@ -1790,10 +1818,12 @@ public class UserController {
 		model.addAttribute("silverPicOfUser", silverPicsOfUser);
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-		System.out.print(missingPicsBronze);
-		System.out.print(missingPicsSilver);
-		System.out.print(missingPicsGold);
-		
+
+		////System.out.print(missingPicsBronze);
+		////System.out.print(missingPicsSilver);
+		////System.out.print(missingPicsGold);
+
+
 		model.addAttribute("missingBronzePics", missingPicsBronze);
 		model.addAttribute("missingSilverPics", missingPicsSilver);
 		model.addAttribute("missingGoldPics", missingPicsGold);
@@ -1814,7 +1844,7 @@ public class UserController {
 		String[] partUserName = (changedUserModel.userName).split(",");
 
 		UserModel user = userQueryRepository.findByUserName(partUserName[0]);
-		// keine schöne lösung, wieso ist aber userName=MaMu,MaMu,??
+		// keine schÃ¶ne lÃ¶sung, wieso ist aber userName=MaMu,MaMu,??
 
 		// * if (user == null) { model.addAttribute("errorMessage",
 		// * "User does not exist!<br>"); }
@@ -1829,14 +1859,22 @@ public class UserController {
 
 		Date date = new Date();
 
-		// Hier werden die Änderungen eines Users in den Log eingetragen
+		// Hier werden die Ãnderungen eines Users in den Log eingetragen
 		LogModel log = new LogModel(user, user.getHeight(), user.getWeight(), user.getPoints(), date);
-		System.out.println(log);
+
+
+
+=======
+		//System.out.println(log);
+		// logRepository.save(log);
+		// log.setUser(user);
+		// user.addLogModel(log);
 
 		logRepository.save(log);
 
-		// unser Ansatz um das Problem zu l�sen. Jedoch funktioniert die zuweisung zu
+		// unser Ansatz um das Problem zu lï¿½sen. Jedoch funktioniert die zuweisung zu
 		// user nicht.
+
 
 		
 		model.addAttribute("message", "Profile has been updated successfully");
@@ -1915,6 +1953,7 @@ public class UserController {
 					rewardMessage = "Not enough pics";
 				}
 				
+
 				//kaufUserBronze.remove(kaufUserBronze);
 				//userPictureRepo.removeByAmount(0);
 				
@@ -1936,13 +1975,17 @@ public class UserController {
 				
 				
 				System.out.print("GLEICH");
+
+				// System.out.print("GLEICH");
+
 			} else {
-				System.out.print("NICHT GLEICH");
+				// System.out.print("NICHT GLEICH");
 				rewardMessage = "Not enough pics";
 			}
 			
-			System.out.print("BRONZE von User: " + bronzePicsOfUserIndexList1.toString());
-			System.out.print("BRONZE: " + bronzePicsIndexList1.toString());
+			//System.out.print("BRONZE von User: " + bronzePicsOfUserIndexList1.toString());
+			//System.out.print("BRONZE: " + bronzePicsIndexList1.toString());
+
 
 			
 			
@@ -2014,8 +2057,8 @@ public class UserController {
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
 		/*
-		 * System.out.print(missingPicsBronze); System.out.print(missingPicsSilver);
-		 * System.out.print(missingPicsGold);
+		 * //System.out.print(missingPicsBronze); //System.out.print(missingPicsSilver);
+		 * //System.out.print(missingPicsGold);
 		 */
 
 		model.addAttribute("missingBronzePics", missingPicsBronze);
@@ -2024,7 +2067,7 @@ public class UserController {
 		model.addAttribute("user", user);
 		
 		model.addAttribute("pack", rewardMessage);
-
+		//sendMail(user, "REWARD-SILVER", rewardMessage);
 		return "picture";
 
 	}
@@ -2036,9 +2079,11 @@ public class UserController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/upload", method = RequestMethod.GET)
-	public String showUploadForm(Model model, @RequestParam("id") int userId) {
-		model.addAttribute("userId", userId);
+	@RequestMapping(value = "/uploadform", method = RequestMethod.GET)
+	public String showUploadForm(Model model, Authentication authentication, @RequestParam int pictureId) {
+		PictureModel pic = pictureRepository.findByPictureId(pictureId);
+
+		model.addAttribute("pic", pic);
 		return "uploadFile";
 	}
 
@@ -2050,63 +2095,86 @@ public class UserController {
 	 * @param file
 	 * @return
 	 */
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String uploadDocument(Model model, @RequestParam("userId") int userId,
-			@RequestParam("myFile") MultipartFile file) {
+/*	@RequestMapping(value = "/upload", method = RequestMethod.POST) // FALSCH !!!!!!!!!!!!!!!!!!!!!
+	public String uploadDocument(Model model, Authentication authentication) {
 
-		try {
-
-			Optional<UserModel> userOpt = userQueryRepository.findById(userId);
-			if (!userOpt.isPresent())
-				throw new IllegalArgumentException("No user with id " + userId);
-
-			UserModel user = userOpt.get();
-
-			// Already a document available -> delete it
-			if (user.getDocument() != null) {
-				documentRepository.delete(user.getDocument());
-				// Don't forget to remove the relationship too
-				user.setDocument(null);
-			}
-
-			// Create a new document and set all available infos
-
-			DocumentModel document = new DocumentModel();
-			document.setContent(file.getBytes());
-			document.setContentType(file.getContentType());
-			document.setCreated(new Date());
-			document.setFilename(file.getOriginalFilename());
-			document.setName(file.getName());
-			user.setDocument(document);
-			userQueryRepository.save(user);
-		} catch (Exception e) {
-			model.addAttribute("errorMessage", "Error:" + e.getMessage());
-		}
-
-		// return "forward:/settings";
-		return "redirect:/picture";
-	}
+		List<PictureModel> allPics = new ArrayList<PictureModel>();
+		allPics = pictureRepository.findAll();
+		//System.out.print(allPics);
+		model.addAttribute("allPics", allPics);
+		return "picsoverview";
+	} */
 
 	@RequestMapping("/download")
-	public void download(@RequestParam("documentId") int documentId, HttpServletResponse response) {
+	public void download(@RequestParam("pictureId") int pictureId, HttpServletResponse response) {
 
-		Optional<DocumentModel> docOpt = documentRepository.findById(documentId);
+		Optional<PictureModel> docOpt = pictureRepository.findById(pictureId);
 		if (!docOpt.isPresent())
-			throw new IllegalArgumentException("No document with id " + documentId);
+			throw new IllegalArgumentException("No document with id " + pictureId);
 
-		DocumentModel doc = docOpt.get();
+		PictureModel doc = docOpt.get();
 
 		try {
-			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getFilename() + "\"");
+			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getName() + "\"");
 			OutputStream out = response.getOutputStream();
 			// application/octet-stream
-			response.setContentType(doc.getContentType());
-			out.write(doc.getContent());
+			//response.setContentType("image/jpg");
+			out.write(doc.getPicture());
 			out.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	
+	
+	// Pic added
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public String addpic(Model model, @RequestParam("id") int pictureId,
+			@RequestParam("myFile") MultipartFile file) {
+
+		PictureModel upgradePic = pictureRepository.findByPictureId(pictureId);
+		 ////System.out.print(upgradePic.getName()); 
+		
+		
+		
+		//System.out.print("Button geht");
+		
+	
+			try {
+				upgradePic.setPicture(file.getBytes());
+				pictureRepository.save(upgradePic);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/*pictureDao.merge(upgradePic);
+
+		} catch (Exception e) {
+
+			model.addAttribute("errorMessage", "Error:" + e.getMessage());
+		}
+
+		List<PictureModel> allPics = new ArrayList<PictureModel>();
+		allPics = pictureRepository.findAll();
+		//System.out.print(allPics);
+		model.addAttribute("allPics", allPics);*/ 
+		return "forward:/picsoverview";
+	}
+
+
+	// Pics Overview
+	@RequestMapping("/picsoverview")
+	public String picsOverview(Model model, Authentication authentication) {
+
+		List<PictureModel> allPics = new ArrayList<PictureModel>();
+		allPics = pictureRepository.findAll();
+		//System.out.print(allPics);
+		model.addAttribute("allPics", allPics);
+		return "picsoverview";
+	}
+
 
 	/*
 	 * @ExceptionHandler(Exception.class) public String handleAllException(Exception
