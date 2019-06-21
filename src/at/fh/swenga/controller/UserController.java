@@ -149,14 +149,22 @@ public class UserController {
 				" Hold two dumbbells just behind your shoulders, palms facing forward. Look up and tilt your body to the left, extending your right arm straight above you. Lower the dumbbell and repeat on the other side to create a see-saw motion. ");
 		ExerciseModel exercise4 = new ExerciseModel("Seated Lateral Raise", "Shoulders", null,
 				"Sit on a bench and hold a dumbbell in each hand by your side. Raise both dumbbells to your side until they're shoulder height. Lower under control and repeat.");
-		ExerciseModel exercise5 = new ExerciseModel("Regular push-ups","Chest",null,"This classic bodyweight exercise is excellent to start with as well as for keeping as a training staple in any full-body or upper-body workout. Make sure to use a wide grip, as this will work your chest muscles more than a narrow grip technique.");
-		ExerciseModel exercise6 = new ExerciseModel("Incline push-ups","Chest",null,"If you find a standard push-up too challenging at first, then you can start with an incline push-up. The steeper the incline, the less body weight you will need to work push. This is also a good exercise to target your lower chest.");
-		ExerciseModel exercise7 = new ExerciseModel("Decline push-ups","Chest",null,"What goes up, must come down. These push-ups will help you target your upper chest and deltoid muscles specifically. It will also add more of your body weight to the exercise than a standard push-up, thus making it harder.");
-		ExerciseModel exercise8 = new ExerciseModel("Plyometric push-ups","Chest",null,"Are you ready to explode into action? These push-ups, can be executed in a variety of fun and fantastical way, think clap push-ups. These bursts of powerful plyometric movement will have your muscles firing on all cylinders.");
-		ExerciseModel exercise10 = new ExerciseModel("Squat Jump","Legs",null,"With your feet hip-width apart, squat until your thighs are parallel to the floor, and then jump as high as you can. Allow your knees to bend 45 degrees when you land, pause in deep squat position for one full second, and then jump again.");
-		ExerciseModel exercise11 = new ExerciseModel("Side Lunge","Legs",null,"Stand with your feet about twice shoulder-width apart. Keeping your right leg straight, push your hips back and to the left. Then bend your left knee and lower your body until your left thigh is parallel to the floor. Your feet should remain flat on the floor at all times. Pause for two seconds, and then return to the starting position. Complete all reps and switch sides.");
-		ExerciseModel exercise12 = new ExerciseModel("Scissor Box Jump","Legs",null,"Place your left foot on a box or bench with your right foot on the floor. In one movement, jump up and switch leg positions in midair. At the bottom position, pause for one second before alternating to the other leg.");
-		ExerciseModel exercise13 = new ExerciseModel("Single-Leg Hip Raise","Legs",null,"Lie faceup, arms out to your sides at 45-degree angles, left foot flat on the floor with that knee bent, and your right leg straight. Raise your right leg until itís in line with your left thigh. Then squeeze your glutes and push your hips upóyour lower back will elevate. Pause, and return to the starting position.");
+		ExerciseModel exercise5 = new ExerciseModel("Regular push-ups", "Chest", null,
+				"This classic bodyweight exercise is excellent to start with as well as for keeping as a training staple in any full-body or upper-body workout. Make sure to use a wide grip, as this will work your chest muscles more than a narrow grip technique.");
+		ExerciseModel exercise6 = new ExerciseModel("Incline push-ups", "Chest", null,
+				"If you find a standard push-up too challenging at first, then you can start with an incline push-up. The steeper the incline, the less body weight you will need to work push. This is also a good exercise to target your lower chest.");
+		ExerciseModel exercise7 = new ExerciseModel("Decline push-ups", "Chest", null,
+				"What goes up, must come down. These push-ups will help you target your upper chest and deltoid muscles specifically. It will also add more of your body weight to the exercise than a standard push-up, thus making it harder.");
+		ExerciseModel exercise8 = new ExerciseModel("Plyometric push-ups", "Chest", null,
+				"Are you ready to explode into action? These push-ups, can be executed in a variety of fun and fantastical way, think clap push-ups. These bursts of powerful plyometric movement will have your muscles firing on all cylinders.");
+		ExerciseModel exercise10 = new ExerciseModel("Squat Jump", "Legs", null,
+				"With your feet hip-width apart, squat until your thighs are parallel to the floor, and then jump as high as you can. Allow your knees to bend 45 degrees when you land, pause in deep squat position for one full second, and then jump again.");
+		ExerciseModel exercise11 = new ExerciseModel("Side Lunge", "Legs", null,
+				"Stand with your feet about twice shoulder-width apart. Keeping your right leg straight, push your hips back and to the left. Then bend your left knee and lower your body until your left thigh is parallel to the floor. Your feet should remain flat on the floor at all times. Pause for two seconds, and then return to the starting position. Complete all reps and switch sides.");
+		ExerciseModel exercise12 = new ExerciseModel("Scissor Box Jump", "Legs", null,
+				"Place your left foot on a box or bench with your right foot on the floor. In one movement, jump up and switch leg positions in midair. At the bottom position, pause for one second before alternating to the other leg.");
+		ExerciseModel exercise13 = new ExerciseModel("Single-Leg Hip Raise", "Legs", null,
+				"Lie faceup, arms out to your sides at 45-degree angles, left foot flat on the floor with that knee bent, and your right leg straight. Raise your right leg until itís in line with your left thigh. Then squeeze your glutes and push your hips upóyour lower back will elevate. Pause, and return to the starting position.");
 
 		exerciseRepository.save(exercise1);
 		exerciseRepository.save(exercise2);
@@ -243,33 +251,27 @@ public class UserController {
 
 		// piediagram
 		List<ExerciseModel> exercisesFromUser = user.getExercises();
-		
+
 		int stomachCounter = 0;
 		int legCounter = 0;
 		int shoulderCounter = 0;
 		int chestCounter = 0;
 
-		
-		
 		for (ExerciseModel exercise : exercisesFromUser) {
-			
-			if (exercise.getType().equals("Stomach"))
-			{
-				stomachCounter = stomachCounter +1;
+
+			if (exercise.getType().equals("Stomach")) {
+				stomachCounter = stomachCounter + 1;
 			}
-			if (exercise.getType().equals("Legs"))
-			{
-				legCounter = legCounter +1;
+			if (exercise.getType().equals("Legs")) {
+				legCounter = legCounter + 1;
 			}
-			if (exercise.getType().equals("Shoulders"))
-			{
-				shoulderCounter = shoulderCounter +1;
+			if (exercise.getType().equals("Shoulders")) {
+				shoulderCounter = shoulderCounter + 1;
 			}
-			if (exercise.getType().equals("Chest"))
-			{
-				chestCounter = chestCounter +1;
+			if (exercise.getType().equals("Chest")) {
+				chestCounter = chestCounter + 1;
 			}
-			
+
 		}
 
 		List<Integer> counterList = new ArrayList<Integer>();
@@ -277,10 +279,10 @@ public class UserController {
 		counterList.add(shoulderCounter);
 		counterList.add(legCounter);
 		counterList.add(chestCounter);
-		
+
 		model.addAttribute("user", user);
 		model.addAttribute("logs", heigtnumbers.toString()); // keyword f√ºr die Liste in
-		model.addAttribute("counterList",counterList);														// /scripts/app/app-blog-overiew.1.1.0.js
+		model.addAttribute("counterList", counterList); // /scripts/app/app-blog-overiew.1.1.0.js
 		model.addAttribute("weights", weightnumbers.toString());
 		model.addAttribute("bmis", bminumbers.toString());
 		model.addAttribute("heights7", heights7.toString());
