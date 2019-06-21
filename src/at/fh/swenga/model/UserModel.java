@@ -131,9 +131,7 @@ public class UserModel implements java.io.Serializable {
 	@OrderBy("id")
 	private Set<UserPictureModel> userPicture;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	private DocumentModel document;
-	
+
 	
   
   // Luki Exercises
@@ -218,15 +216,7 @@ public class UserModel implements java.io.Serializable {
 	}
 
 	
-	public DocumentModel getDocument() {
-		return document;
-	}
- 
-public void setDocument(DocumentModel document) {
-	this.document = document;
-	}
 
-	
 
 
 	public UserModel(int userId, String firstName, String lastName, String userName, Date birthDate, String gender,

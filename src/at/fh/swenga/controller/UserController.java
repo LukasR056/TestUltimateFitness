@@ -1,5 +1,6 @@
 package at.fh.swenga.controller;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ import at.fh.swenga.repository.DocumentRepository;
 import at.fh.swenga.repository.ExerciseRepository;
 import at.fh.swenga.repository.ForumentryRepository;
 import at.fh.swenga.repository.LogRepository;
+import at.fh.swenga.repository.PictureDao;
 import at.fh.swenga.repository.PictureRepository;
 import at.fh.swenga.repository.RoleQueryRepository;
 import at.fh.swenga.repository.RoleRepository;
@@ -81,6 +83,8 @@ public class UserController {
 	ForumentryRepository forumentryRepository;
 	@Autowired
 	DocumentRepository documentRepository;
+	@Autowired
+	PictureDao pictureDao;
 
 	@InitBinder
 	public void initDateBinder(final WebDataBinder binder) {
@@ -288,7 +292,7 @@ public class UserController {
 			break;
 		}
 
-		System.out.print(searchString);
+		//System.out.print(searchString);
 
 		model.addAttribute("exercises", user.getExercises());
 		model.addAttribute("allexercises", exercises);
@@ -406,9 +410,9 @@ public class UserController {
 		model.addAttribute("silverPicOfUser", silverPicsOfUser);
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-		System.out.print(missingPicsBronze);
-		System.out.print(missingPicsSilver);
-		System.out.print(missingPicsGold);
+		////System.out.print(missingPicsBronze);
+		////System.out.print(missingPicsSilver);
+		////System.out.print(missingPicsGold);
 
 		model.addAttribute("missingBronzePics", missingPicsBronze);
 		model.addAttribute("missingSilverPics", missingPicsSilver);
@@ -441,7 +445,7 @@ public class UserController {
 			model.addAttribute("lastForumentry", lastForumentry);
 			model.addAttribute("forumentries", forumentries);
 
-			System.out.print(forumentries);
+			////System.out.print(forumentries);
 		}
 
 		model.addAttribute("user", user);
@@ -485,11 +489,11 @@ public class UserController {
 		UserModel activeUser = userQueryRepository.findByUserName(authentication.getName());
 		newForumentrymodel.setUser(activeUser);
 
-		// System.out.print(activeUser);
-		System.out.print(newForumentrymodel);
+		// //System.out.print(activeUser);
+		//System.out.print(newForumentrymodel);
 
 		if (newForumentrymodel.getText() == "") {
-			System.out.print("Text empty");
+			//System.out.print("Text empty");
 			model.addAttribute("errorMessage", "Please insert a Text!");
 			return "forward:/newPost";
 		} else if (newForumentrymodel.getTitle() == "" && newForumentrymodel.getText() != "") {
@@ -519,8 +523,8 @@ public class UserController {
 	public String deletePost(Model model, @RequestParam int forumentryId) {// ,
 		// @RequestParam String thread) { -->, thread=${thread}
 
-		System.out.print("HALLO ICH BIN EIN ADMIN UND BERECHTIGT");
-		System.out.print(forumentryId);
+		//System.out.print("HALLO ICH BIN EIN ADMIN UND BERECHTIGT");
+		////System.out.print(forumentryId);
 
 		forumentryRepository.deleteById(forumentryId);
 
@@ -548,7 +552,7 @@ public class UserController {
 			}
 			model.addAttribute("errorMessage", errorMessage);
 
-			System.out.print(newUserModel);
+			////System.out.print(newUserModel);
 
 			model.addAttribute("user", newUserModel); //
 
@@ -591,10 +595,10 @@ public class UserController {
 				// newUser.addRoleModel(roleQueryRepository.findFirstRoleById(1));
 				newUser.addRoleModel(userRole);
 
-				System.out.print(newUser);
+				//System.out.print(newUser);
 				userRepository.persist(newUser);
 
-				System.out.print("ERFOLGREICH!");
+				//System.out.print("ERFOLGREICH!");
 				model.addAttribute("message", "New User " + newUser.getUserName() + " successfully added!");
 
 				return "login";
@@ -606,9 +610,9 @@ public class UserController {
 
 		} else {
 
-			System.out.print("LENGTH: " + newUserModel.getPassword().length());
-			System.out.print("1. PASSWORD: " + newUserModel.getPassword());
-			System.out.print("1. PASSWORD CONFIRMED: " + newUserModel.getPasswordConfirmed());
+			//System.out.print("LENGTH: " + newUserModel.getPassword().length());
+			//System.out.print("1. PASSWORD: " + newUserModel.getPassword());
+			//System.out.print("1. PASSWORD CONFIRMED: " + newUserModel.getPasswordConfirmed());
 
 			model.addAttribute("errorMessage",
 					"Password is not the same or it has to be at least six characters long!");
@@ -620,8 +624,8 @@ public class UserController {
 
 		/*
 		 * else if (newUserModel.getPassword() != newUserModel.getPasswordConfirmed()) {
-		 * System.out.print("PASSWORD: " + newUserModel.getPassword());
-		 * System.out.print("PASSWORD CONFIRMED: " +
+		 * //System.out.print("PASSWORD: " + newUserModel.getPassword());
+		 * //System.out.print("PASSWORD CONFIRMED: " +
 		 * newUserModel.getPasswordConfirmed());
 		 * 
 		 * model.addAttribute("errorMessage", "Password has to be the same!");
@@ -743,7 +747,7 @@ public class UserController {
 				UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
 				updateModel.setAmount(updateModel.getAmount() + 1);
 				userPictureDao.merge(updateModel);
-				System.out.print("in update");
+				//System.out.print("in update");
 			} else {
 				UserPictureModel newPicForUser = new UserPictureModel();
 				newPicForUser.setId(allModels.size() + 1);
@@ -752,7 +756,7 @@ public class UserController {
 				newPicForUser.setAmount(1);
 				userPictureRepo.save(newPicForUser);
 
-				System.out.print("in save");
+				//System.out.print("in save");
 
 			}
 
@@ -832,9 +836,9 @@ public class UserController {
 		model.addAttribute("silverPicOfUser", silverPicsOfUser);
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-		System.out.print(missingPicsBronze);
-		System.out.print(missingPicsSilver);
-		System.out.print(missingPicsGold);
+		////System.out.print(missingPicsBronze);
+		////System.out.print(missingPicsSilver);
+		////System.out.print(missingPicsGold);
 
 		model.addAttribute("missingBronzePics", missingPicsBronze);
 		model.addAttribute("missingSilverPics", missingPicsSilver);
@@ -898,7 +902,7 @@ public class UserController {
 				UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
 				updateModel.setAmount(updateModel.getAmount() + 1);
 				userPictureDao.merge(updateModel);
-				System.out.print("in update");
+				//System.out.print("in update");
 			} else {
 				UserPictureModel newPicForUser = new UserPictureModel();
 				newPicForUser.setId(allModels.size() + 1);
@@ -907,7 +911,7 @@ public class UserController {
 				newPicForUser.setAmount(1);
 				userPictureRepo.save(newPicForUser);
 
-				System.out.print("in save");
+				//System.out.print("in save");
 
 			}
 			ownedPictures = userPictureRepo.findByUser(user);
@@ -986,9 +990,9 @@ public class UserController {
 		model.addAttribute("silverPicOfUser", silverPicsOfUser);
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-		System.out.print(missingPicsBronze);
-		System.out.print(missingPicsSilver);
-		System.out.print(missingPicsGold);
+		////System.out.print(missingPicsBronze);
+		////System.out.print(missingPicsSilver);
+		////System.out.print(missingPicsGold);
 
 		model.addAttribute("missingBronzePics", missingPicsBronze);
 		model.addAttribute("missingSilverPics", missingPicsSilver);
@@ -1046,7 +1050,7 @@ public class UserController {
 				UserPictureModel updateModel = userPictureRepo.findByUserAndPicture(user, pic);
 				updateModel.setAmount(updateModel.getAmount() + 1);
 				userPictureDao.merge(updateModel);
-				System.out.print("in update");
+				//System.out.print("in update");
 			} else {
 				UserPictureModel newPicForUser = new UserPictureModel();
 				newPicForUser.setId(allModels.size() + 1);
@@ -1055,7 +1059,7 @@ public class UserController {
 				newPicForUser.setAmount(1);
 				userPictureRepo.save(newPicForUser);
 
-				System.out.print("in save");
+				//System.out.print("in save");
 
 			}
 			ownedPictures = userPictureRepo.findByUser(user);
@@ -1133,9 +1137,9 @@ public class UserController {
 		model.addAttribute("silverPicOfUser", silverPicsOfUser);
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
-		System.out.print(missingPicsBronze);
-		System.out.print(missingPicsSilver);
-		System.out.print(missingPicsGold);
+		////System.out.print(missingPicsBronze);
+		////System.out.print(missingPicsSilver);
+		////System.out.print(missingPicsGold);
 
 		model.addAttribute("missingBronzePics", missingPicsBronze);
 		model.addAttribute("missingSilverPics", missingPicsSilver);
@@ -1169,7 +1173,7 @@ public class UserController {
 
 		// Hier werden die Änderungen eines Users in den Log eingetragen
 		LogModel log = new LogModel(user, user.getHeight(), user.getWeight(), user.getPoints(), date);
-		System.out.println(log);
+		//System.out.println(log);
 		// logRepository.save(log);
 		// log.setUser(user);
 		// user.addLogModel(log);
@@ -1232,13 +1236,13 @@ public class UserController {
 			 * }
 			 */
 
-			System.out.print("GLEICH");
+			//System.out.print("GLEICH");
 		} else {
-			System.out.print("NICHT GLEICH");
+			//System.out.print("NICHT GLEICH");
 		}
 
-		System.out.print("BRONZE von User: " + bronzePicsOfUserIndexList1.toString());
-		System.out.print("BRONZE: " + bronzePicsIndexList1.toString());
+		//System.out.print("BRONZE von User: " + bronzePicsOfUserIndexList1.toString());
+		//System.out.print("BRONZE: " + bronzePicsIndexList1.toString());
 
 		// generate the model for the frontend
 
@@ -1307,8 +1311,8 @@ public class UserController {
 		model.addAttribute("goldPicOfUser", goldPicsOfUser);
 
 		/*
-		 * System.out.print(missingPicsBronze); System.out.print(missingPicsSilver);
-		 * System.out.print(missingPicsGold);
+		 * //System.out.print(missingPicsBronze); //System.out.print(missingPicsSilver);
+		 * //System.out.print(missingPicsGold);
 		 */
 
 		model.addAttribute("missingBronzePics", missingPicsBronze);
@@ -1327,9 +1331,11 @@ public class UserController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/upload", method = RequestMethod.GET)
-	public String showUploadForm(Model model, @RequestParam("id") int userId) {
-		model.addAttribute("userId", userId);
+	@RequestMapping(value = "/uploadform", method = RequestMethod.GET)
+	public String showUploadForm(Model model, Authentication authentication, @RequestParam int pictureId) {
+		PictureModel pic = pictureRepository.findByPictureId(pictureId);
+
+		model.addAttribute("pic", pic);
 		return "uploadFile";
 	}
 
@@ -1341,62 +1347,84 @@ public class UserController {
 	 * @param file
 	 * @return
 	 */
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String uploadDocument(Model model, @RequestParam("userId") int userId,
-			@RequestParam("myFile") MultipartFile file) {
+/*	@RequestMapping(value = "/upload", method = RequestMethod.POST) // FALSCH !!!!!!!!!!!!!!!!!!!!!
+	public String uploadDocument(Model model, Authentication authentication) {
 
-		try {
-
-			Optional<UserModel> userOpt = userQueryRepository.findById(userId);
-			if (!userOpt.isPresent())
-				throw new IllegalArgumentException("No user with id " + userId);
-
-			UserModel user = userOpt.get();
-
-			// Already a document available -> delete it
-			if (user.getDocument() != null) {
-				documentRepository.delete(user.getDocument());
-				// Don't forget to remove the relationship too
-				user.setDocument(null);
-			}
-
-			// Create a new document and set all available infos
-
-			DocumentModel document = new DocumentModel();
-			document.setContent(file.getBytes());
-			document.setContentType(file.getContentType());
-			document.setCreated(new Date());
-			document.setFilename(file.getOriginalFilename());
-			document.setName(file.getName());
-			user.setDocument(document);
-			userQueryRepository.save(user);
-		} catch (Exception e) {
-			model.addAttribute("errorMessage", "Error:" + e.getMessage());
-		}
-
-		// return "forward:/settings";
-		return "redirect:/picture";
-	}
+		List<PictureModel> allPics = new ArrayList<PictureModel>();
+		allPics = pictureRepository.findAll();
+		//System.out.print(allPics);
+		model.addAttribute("allPics", allPics);
+		return "picsoverview";
+	} */
 
 	@RequestMapping("/download")
-	public void download(@RequestParam("documentId") int documentId, HttpServletResponse response) {
+	public void download(@RequestParam("pictureId") int pictureId, HttpServletResponse response) {
 
-		Optional<DocumentModel> docOpt = documentRepository.findById(documentId);
+		Optional<PictureModel> docOpt = pictureRepository.findById(pictureId);
 		if (!docOpt.isPresent())
-			throw new IllegalArgumentException("No document with id " + documentId);
+			throw new IllegalArgumentException("No document with id " + pictureId);
 
-		DocumentModel doc = docOpt.get();
+		PictureModel doc = docOpt.get();
 
 		try {
-			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getFilename() + "\"");
+			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getName() + "\"");
 			OutputStream out = response.getOutputStream();
 			// application/octet-stream
-			response.setContentType(doc.getContentType());
-			out.write(doc.getContent());
+			response.setContentType("image/jpg");
+			out.write(doc.getPicture());
 			out.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	
+	
+	// Pic added
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public String addpic(Model model, @RequestParam("id") int pictureId,
+			@RequestParam("myFile") MultipartFile file) {
+
+		PictureModel upgradePic = pictureRepository.findByPictureId(pictureId);
+		 ////System.out.print(upgradePic.getName()); 
+		
+		
+		
+		//System.out.print("Button geht");
+		
+	
+			try {
+				upgradePic.setPicture(file.getBytes());
+				pictureRepository.save(upgradePic);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/*pictureDao.merge(upgradePic);
+
+		} catch (Exception e) {
+
+			model.addAttribute("errorMessage", "Error:" + e.getMessage());
+		}
+
+		List<PictureModel> allPics = new ArrayList<PictureModel>();
+		allPics = pictureRepository.findAll();
+		//System.out.print(allPics);
+		model.addAttribute("allPics", allPics);*/ 
+		return "forward:/picsoverview";
+	}
+
+
+	// Pics Overview
+	@RequestMapping("/picsoverview")
+	public String picsOverview(Model model, Authentication authentication) {
+
+		List<PictureModel> allPics = new ArrayList<PictureModel>();
+		allPics = pictureRepository.findAll();
+		//System.out.print(allPics);
+		model.addAttribute("allPics", allPics);
+		return "picsoverview";
 	}
 
 	/*
