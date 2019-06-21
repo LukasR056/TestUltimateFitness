@@ -51,21 +51,28 @@ public class MessageController {
 
 	// sending Messages
 	@RequestMapping("/sendMessage")
-	public String sendMessages(Model model, Authentication authentication, @Valid MessageModel newMessage,
-			BindingResult bindingResult) {
+	public String sendMessages(Model model, Authentication authentication, 
+			@RequestParam String userName, @RequestParam String subject, @RequestParam String message ) {
 		
-		//username ok?
-		UserModel user = userQueryRepository.findByUserName(authentication.getName());
+		
+		UserModel toUser = userQueryRepository.findByUserName(userName);
+		UserModel fromUser = userQueryRepository.findByUserName(authentication.getName());
+		MessageModel newMessage = new MessageModel(subject,fromUser,toUser,message);
+		
+		
+		System.out.print(newMessage.toString()+ "aaaaaaaaaaaa");
+		
+		
 		List<UserModel> users = userQueryRepository.findAll();
-		if (users.contains(users)) {
-			newMessage.setFromUser(user);
+		if (users.contains(newMessage.getToUser())) {
+			newMessage.setFromUser(fromUser);
 			messageRepository.save(newMessage);
 		}  else {
 			model.addAttribute("errorMessage","No User with such a name!");
 			return "forward:/newMessage";
 			
 		}
-		model.addAttribute("user", user);
+		model.addAttribute("user", fromUser);
 		return "forward:/messages";
 	}
 
