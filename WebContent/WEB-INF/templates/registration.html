@@ -1,0 +1,173 @@
+<!doctype html>
+<html class="no-js h-100" lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Create new Account</title>
+<meta name="description"
+	content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet" id="main-stylesheet" data-version="1.1.0"
+	href="styles/shards-dashboards.1.1.0.min.css">
+<link rel="stylesheet" href="styles/extras.1.1.0.min.css">
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+<body class="h-100">
+	<div class="main-content-container container-fluid px-4">
+		<!-- Page Header -->
+		<div class="page-header row no-gutters py-4">
+			<div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+				<span class="text-uppercase page-subtitle">Overview</span>
+				<h3 class="page-title">Create new User Profile</h3>
+			</div>
+		</div>
+		<!-- End Page Header -->
+		<!-- Default Light Table -->
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-10">
+				<div class="card card-small mb-4">
+					<div class="card-header border-bottom">
+						<h6 class="m-0">Account Details</h6>
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item p-3">
+							<div class="row">
+								<div class="col">
+									<form method="post"
+										th:action="${user} ? @{/addUser} : @{/registration}"> <!-- @{/userSettings(userName=${user.userName})}  : -->
+										<div class="form-row">
+											<div class="form-group col-md-12">
+												<div th:unless="${errorMessage} == null" th:utext="${errorMessage}" class="alert alert-danger" role="alert"></div>
+											</div>								
+																				
+											<div class="form-group col-md-6">
+												<label for="inputFirstName">First Name</label> <input
+													type="text" class="form-control" id="inputFirstName"
+													name="firstName" placeholder="Max" th:value="${user} ? ${user.firstName}">
+											</div>
+
+											<div class="form-group col-md-6">
+												<label for="inputLastName">Last Name</label> <input type="text"
+													class="form-control" id="inputLastName" name="lastName"
+													placeholder="Mustermann" th:value="${user} ? ${user.lastName}">
+											</div>
+											
+											<div class="form-group col-md-4">
+												<label for="inputLastName">Username</label> <input type="text"
+													class="form-control" id="inputUserName" name="userName"
+													placeholder="MuMax" th:value="${user} ? ${user.userName}">
+											</div>
+
+											<div class="form-group col-md-4">
+												<label for="inputBirthDate">Day of Birth (yyyy-MM-dd)</label> <input
+													type="text" class="form-control" id="inputBirthDate"
+													name="birthDate" placeholder="1990-01-01" th:value="${user} ? ${#dates.format(user.birthDate, 'yyyy-MM-dd')}">
+											</div>
+					
+											<div class="form-group col-md-4">
+												<label for="inputGender">Gender</label> <select
+													id="inputGender" class="form-control" name="gender" 
+													th:value="${user} ? ${user.gender}">
+													<option selected th:value="${user} ? ${user.gender}">Choose...</option>
+													<option value="m">male</option> 	<!-- value="m" -->
+													<option value="f">female</option> 	<!-- value="f" -->
+												</select>
+											</div>
+											<div class="form-group col-md-6">
+												<label for="inputEMail">Email</label> <input
+													type="email" class="form-control" id="inputEMail"
+													name="eMail" placeholder="max@mustermann.at" th:value="${user} ? ${user.eMail}">
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-md-6">
+												<label for="inputPassword">Password</label> <input
+													type="password" class="form-control" id="inputPassword" name="password"
+													placeholder="Password" >
+											</div>
+											<div class="form-group col-md-6">
+												<label for="inputPassword2">Confirm Password</label> <input
+													type="password" class="form-control" id="inputPassword2" name="passwordConfirmed"
+													placeholder="Password">		<!-- den 2er nach Password whs entfernen! -->
+											</div>	
+											
+										</div>
+			
+										<div class="form-row">
+
+											<div class="form-group col-md-4">
+												<label for="inputHeight">Height (m)</label> <input type="text"
+													class="form-control" id="inputHeight" name="height"
+													placeholder=1.75
+													th:value="${user.height} != 0.0 ? ${user.height}">
+													
+													<!--  th:if="${user.height} == 0.0"--> 
+													 
+											</div>
+
+
+											<div class="form-group col-md-4">
+												<label for="inputWeight">Weight (kg)</label> <input type="text"
+													class="form-control" id="inputWeight" name="weight"
+													placeholder="75" 
+													th:value="${user.weight} != 0.0 ? ${user.weight}">
+											</div>
+
+											<div class="form-group col-md-4">
+												<label for="inputCoach">Coach</label> <select
+													id="inputCoach" class="form-control" name="coach">
+													<tr th:each="coach : ${coaches}">
+														<option th:value="${coach.userName}" th:text= "${coach.firstName} + ' ' + ${coach.lastName}"> test </option>
+													</tr>
+													
+											  	</select>
+												
+												
+											</div>
+
+										</div>
+
+
+										<button type="submit" class="btn btn-accent">Register</button>
+									</form>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- End Default Light Table -->
+	</div>
+
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+	<script src="https://unpkg.com/shards-ui@latest/dist/js/shards.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script>
+	<script src="scripts/extras.1.1.0.min.js"></script>
+	<script src="scripts/shards-dashboards.1.1.0.min.js"></script>
+</body>
+</html>

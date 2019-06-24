@@ -1,0 +1,306 @@
+<!doctype html>
+<html class="no-js h-100" lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Update Profile</title>
+
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet" id="main-stylesheet" data-version="1.1.0"
+	href="styles/shards-dashboards.1.1.0.min.css">
+<link rel="stylesheet" href="styles/extras.1.1.0.min.css">
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+<body class="h-100">
+	<div class="container-fluid">
+		<div class="row">
+			<!-- Main Sidebar -->
+
+			<aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
+				<div class="main-navbar">
+					<nav
+						class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
+						<a class="navbar-brand w-100 mr-0" href="#"
+							style="line-height: 25px;">
+							<div class="d-table m-auto">
+							
+									<img id="main-logo" class="d-inline-block align-top mr-1"
+									style="max-width: 25px;"
+									src="./images/content-management/UltimateFitness_logo.jpeg"
+									alt="Ultimate Fitness"> 
+								<span class="d-none d-md-inline ml-1" style="font-size: 20px;">
+									Ultimate Fitness </span>
+							</div>
+						</a> <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none"> <i
+							class="material-icons">&#xE5C4;</i>
+						</a>
+					</nav>
+				</div>
+				<form action="#"
+					class="main-sidebar__search w-100 border-right d-sm-flex d-md-none d-lg-none">
+					<div class="input-group input-group-seamless ml-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<i class="fas fa-search"></i>
+							</div>
+						</div>
+						<!-- 	<input class="navbar-search form-control" type="text"
+							placeholder="Search for something..." aria-label="Search">  -->
+					</div>
+				</form>
+				<!-- NAVIGATIONSLEISTE -->
+				<div class="nav-wrapper">
+					<ul class="nav flex-column">
+						<li class="nav-item"><a class="nav-link "
+							href="profile.html"> <i class="material-icons">person</i> <span>
+									Profil</span>
+						</a></li>
+						<li class="nav-item"><a class="nav-link "
+							href="exercise.html"> <i class="material-icons">table_chart</i>
+								<span>Exercise</span>
+						</a></li>
+						<li class="nav-item"><a class="nav-link " href="picture.html">
+								<i class="material-icons">view_module</i> <span>Picture</span>
+						</a></li>
+						<li class="nav-item"><a class="nav-link " href="forum.html">
+								<i class="material-icons">vertical_split</i> <span>Forum</span>
+						</a></li>
+						
+						<li class="nav-item"><a class="nav-link " href="messages.html">
+								<i class="material-icons">note_add</i> <span>Messages</span>
+						</a></li>
+
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link active" href="editUsers.html"> <i
+								class="material-icons">edit</i> <span>Edit Users</span>
+						</a></li>
+
+						<li class="nav-item" sec:authorize="hasRole('ROLE_COACH')"><a
+							class="nav-link " href="changeUserPoints.html"> <i
+								class="material-icons">edit</i> <span>User Points</span>
+						</a></li>
+
+						<li class="nav-item"><a
+							class="nav-link dropdown-item text-danger " th:href="@{/logout}">
+								<i class="material-icons text-danger">&#xE879;</i> <span>Logout</span>
+						</a></li>
+<!-- NAVIGATIONSLEISTE -->
+
+					</ul>
+				</div>
+			</aside>
+			<!-- End Main Sidebar -->
+			<main
+				class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
+			<div class="main-navbar sticky-top bg-white">
+				<nav
+					class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
+					<form action="#"
+						class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+						<div class="input-group input-group-seamless ml-3">
+							<div class="input-group-prepend">
+								<div
+									style="text-align: center; display: table-cell; vertical-align: middle; padding-top: 20px;">
+									<h5 class="card-title" th:text="${user.userName}">USER
+										NAME</h5>
+								</div>
+								<!-- Lupe für serach bar	<div class="input-group-text">
+									<i class="fas fa-search"></i>
+								</div> -->
+							</div>
+							<!--  search bar		<input class="navbar-search form-control" type="text"
+								placeholder="Search for something..." aria-label="Search">  -->
+						</div>
+					</form>
+
+					<!-- 		<nav class="nav">
+						<a href="#"
+							class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left"
+							data-toggle="collapse" data-target=".header-navbar"
+							aria-expanded="false" aria-controls="header-navbar"> <i
+							class="material-icons">&#xE5D2;</i>
+						</a>  
+					</nav> -->
+				</nav>
+			</div>
+			<!-- / .main-navbar --> <!--     <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+            <i class="fa fa-check mx-2"></i>
+            <strong>Success!</strong> Your profile has been updated! </div>  success nachricht -->
+			<div class="main-content-container container-fluid px-4">
+				<!-- Page Header -->
+				<div class="page-header row no-gutters py-4">
+					<div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+						<span class="text-uppercase page-subtitle">Overview</span>
+						<h3 class="page-title">User Profile</h3>
+					</div>
+				</div>
+				<!-- End Page Header -->
+				<!-- Default Light Table -->
+				<div class="row">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-10">
+						<div class="card card-small mb-4">
+							<div class="card-header border-bottom">
+								<h6 class="m-0">Account Details</h6>
+							</div>
+
+							<div th:unless="${errorMessage} == null"
+								th:utext="${errorMessage}" class="alert alert-success"
+								role="warning"></div>
+
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item p-3">
+									<div class="row">
+										<div class="col">
+											<form method="post" th:action="${user} ? @{/safeSingleUser(userId=${user.userId})}">
+												<div class="form-row">
+													<div class="form-group col-md-6">
+														<label for="feFirstName">First Name</label> <input
+															type="text" class="form-control" id="inputFirstName"
+															name="firstName" placeholder="First Name"
+															th:value="${user.firstName}">
+													</div>
+
+													<div class="form-group col-md-6">
+														<label for="feLastName">Last Name</label> <input
+															type="text" class="form-control" id="inputLastName"
+															name="lastName" placeholder="Last Name"
+															th:value="${user.lastName}">
+													</div>
+
+													<div class="form-group col-md-6">
+														<label for="feLastName">Username</label> <input
+															type="text" class="form-control" id="inputUserName"
+															name="userName" placeholder="Username"
+															th:value="${user.userName}">
+													</div>
+													<div class="form-group col-md-6">
+														<label for="feEmailAddress">Email</label> <input
+															type="email" class="form-control" id="inputEMail"
+															name="eMail" placeholder="Email" th:value="${user.eMail}">
+													</div>
+												</div>
+												<div class="form-row">
+													<div class="form-group col-md-3">
+														<label for="inputBirthDate">Day of Birth
+															(yyyy-MM-dd)</label> <input type="text" class="form-control"
+															id="inputBirthDate" name="birthDate"
+															placeholder="1990-01-01"
+															th:value="${user} ? ${#dates.format(user.birthDate, 'yyyy-MM-dd')}">
+													</div>
+
+													<div class="form-group col-md-3">
+														<label for="inputGender">Gender</label> <select
+															id="inputGender" class="form-control" name="gender"
+															th:value="${user} ? ${user.gender}">
+															<option selected th:value="${user} ? ${user.gender}">Choose... (Default if nothing is chosen)</option>
+															<option value="m">male</option>
+															<option value="f">female</option>
+														</select>
+													</div>
+
+													<div class="form-group col-md-3">
+														<label for="inputHeight">Height (m)</label> <input
+															type="text" class="form-control" id="inputHeight"
+															name="height" placeholder=1.75
+															th:value="${user.height} != 0.0 ? ${user.height}">
+
+														<!--  th:if="${user.height} == 0.0"-->
+
+													</div>
+
+
+													<div class="form-group col-md-3">
+														<label for="inputWeight">Weight (kg)</label> <input
+															type="text" class="form-control" id="inputWeight"
+															name="weight" placeholder="75"
+															th:value="${user.weight} != 0.0 ? ${user.weight}">
+													</div>
+
+													<div class="form-group col-md-2">
+														<label for="inputPoints">Points</label> <input type="text"
+															class="form-control" id="inputPoints" name="points"
+															placeholder="100"
+															th:value="${user.points} != 0.0 ? ${user.points}">
+													</div>
+
+													<div class="form-group col-md-2">
+														<label for="inputEnabled">Enabled</label> <input
+															type="text" class="form-control" id="inputEnabled"
+															name="enabled" th:value="${user.enabled}">
+													</div>
+
+													<div class="form-group col-md-2">
+														<label for="inputCoach">Coach</label> <select
+															id="inputCoach" class="form-control" name="coach">
+															<option selected th:value="${user.coach}">Choose... (Default if nothing is chosen)</option>
+															<option th:value=${null}>I am a Coach myself</option>
+															<tr th:each="coach : ${coaches}">
+																<option th:value="${coach.userName}"
+																	th:text="${coach.firstName} + ' ' + ${coach.lastName}">
+																	test</option>
+															</tr>
+
+														</select>
+
+
+													</div>
+
+													<div class="form-group col-md-6">
+														<label for="inputPassword">Password</label> <input
+															type="text" class="form-control" id="inputPassword"
+															name="Password" th:value="${user.password}">
+													</div>
+
+												</div>
+
+
+												<button type="submit" class="btn btn-accent">Update User</button>
+											</form>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- End Default Light Table -->
+			</div>
+
+			</main>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+	<script src="https://unpkg.com/shards-ui@latest/dist/js/shards.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script>
+	<script src="scripts/extras.1.1.0.min.js"></script>
+	<script src="scripts/shards-dashboards.1.1.0.min.js"></script>
+</body>
+</html>
