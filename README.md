@@ -19,7 +19,7 @@ Cynthia Zeya | Layout (Bootstrap),log, points and picture exchange system, dashb
 ## Setup
  
 This short guide explains how to run the Webapplication using the Eclipse IDE.
-1. Download the project from [github](https://github.com/LukasR056/UltimateFitness)
+1. Download the project from [github](https://github.com/LukasR056/TestUltimateFitness)
 2. Unzip the project into your workspace and import it in Eclipse.
 3. Adapt the settings in db.properties file (JavaRessources/src/db.properties) in order to match your database.
 4. Verify, that the jpa properties in the dispatcherservlet match your needs. Eighter use "create"/"create-drop" or "update" when initially starting the project. 
